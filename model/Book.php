@@ -14,6 +14,8 @@ class Book
 
   private $description;
 
+  private $categories = array();
+
   /**
    * Book constructor.
    *
@@ -117,4 +119,22 @@ class Book
   {
     $this->description = $description;
   }
+
+  /**
+   * @return array
+   */
+  public function getCategories(): Category
+  {
+    return $this->categories;
+  }
+
+  /**
+   * @param array $categories
+   */
+  public function setCategories(array $categories): void
+  {
+    $this->categories = $categories;
+  }
+
+
 }

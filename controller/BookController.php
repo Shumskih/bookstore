@@ -1,9 +1,10 @@
 <?php
 require_once ROOT . '/dao/ArticleDaoImpl.php';
+require_once ROOT . '/controller/Controller.php';
 require_once ROOT . '/model/Book.php';
 
 
-class BookController
+class BookController extends Controller
 {
 
   private $articleDao;
@@ -18,18 +19,11 @@ class BookController
 
   public function getBook($id)
   {
-    $book    = $this->articleDao->read($id);
-    $setBook = new Book(
-      $book['title'], $book['authorName'], $book['authorSurname'],
-      $book['description'], $book['pages']
-    );
-
-    return $setBook;
+    return $this->articleDao->read($id);
   }
 
-  public function render()
+  public function getAllBooks()
   {
-    $book = $this->getBook($this->id);
-    include ROOT . '/views/book.html.php';
+
   }
 }

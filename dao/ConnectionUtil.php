@@ -17,7 +17,7 @@ class ConnectionUtil
     if (!isset(self::$pdo)) {
       try {
         self::$pdo = new PDO(
-          'mysql:host='.self::DB_HOST.';dbname='.self::DB_NAME, self::DB_USER, self::DB_PASS,array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+          'mysql:host='.self::DB_HOST.';dbname='.self::DB_NAME, self::DB_USER, self::DB_PASS,[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
         );
       } catch (PDOException $e) {
         $e->getMessage();

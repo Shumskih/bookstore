@@ -5,5 +5,6 @@ create table books
   authorName varchar(150) not null,
   authorSurname varchar(150) not null,
   pages int null,
-  description text not null
+  description text not null,
+  img text null
 );

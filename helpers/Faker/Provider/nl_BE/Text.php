@@ -9654,7 +9654,7 @@ de kar, en de stemme nabootsend van een die bedronken is, neurde hij:
 
 
     Uw vriend en vrijer zag ik wel
-    Op een kar van 't oud model,
+    Op een kar van 't oud models,
     Met een papzak voor gezel,
     Zag ik hem wel!
 
@@ -12316,7 +12316,7 @@ op zijnen buik nemen, en ik leg ze dan weder, doch niet zonder beven;
 want als hij het wist, zou hij mij zeker in de olie doen koken.
 
 --Pompilius, sprak Uilenspiegel, al die moeite en schrik zijn onnoodig:
-neem de sleutels nog eenmaal; ik zal er van maken hetzelfde model en
+neem de sleutels nog eenmaal; ik zal er van maken hetzelfde models en
 de andere zullen wij gerust laten liggen op den buik van den goeden
 proost, onzen heer.
 

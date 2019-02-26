@@ -2,55 +2,60 @@
 require 'autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 
-/*
-* According to /sql/tablesData.php the class drop all tables from database then
- * create tables and populate it with faker https://github.com/fzaninotto/Faker
- * */
 
+/**
+ * According to /sql/tablesData.php the class drop all tables from database then
+ * create tables and populate it with faker https://github.com/fzaninotto/Faker
+ */
 class FillTables
 {
 
+  private static $pdo;
+
   /**
-   * This is main function, which need to be call to do all work.
-   * The parameters must be PDO $pdo and assoc arrays of tables and relations.
+   * This is main function, which need to be called to do all work.
+   * The parameters must be assoc arrays of tables and relations.
    * The example of arrays is in /sql/tablesData.php
    *
-   * @param \PDO  $pdo
    * @param array $tables
+   * @param array $relations
    *
    */
-  public static function faker(PDO $pdo, array $tables, array $relations)
+  public static function faker(array $tables, array $relations)
   {
     echo 'In faker<br>';
+
+    self::$pdo = ConnectionUtil::getConnection();
+
     $count = count($tables);
 
     if ($count > 0) {
       foreach ($tables as $table => $columns) {
         if (substr_count($table, '_') > 0) {
-          self::dropTable($pdo, $table);
+          self::dropTable($table);
         }
       }
 
       foreach ($tables as $table => $columns) {
-        self::dropTable($pdo, $table);
+        self::dropTable($table);
       }
     } else {
       echo 'В createTablesData.php нет таблиц!';
     }
 
     foreach ($tables as $table => $columns) {
-      self::createTable($pdo, $table, $columns);
+      self::createTable($table, $columns);
 
       if ($table == 'books') {
-        self::populateBooks($pdo);
+        self::populateBooks();
       }
 
       if ($table == 'categories') {
-        self::populateCategories($pdo);
+        self::populateCategories();
       }
 
       if ($table == 'categories_books') {
-        self::populateCategoriesBooks($pdo, $relations);
+        self::populateCategoriesBooks($relations);
       }
       //
       //        if ($table == 'users')
@@ -67,7 +72,7 @@ class FillTables
     }
   }
 
-  public static function populateBooks(PDO $pdo)
+  public static function populateBooks()
   {
     echo 'populate books<br>';
     $faker = Faker\Factory::create();
@@ -88,7 +93,7 @@ class FillTables
 
       $query
                = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img)';
-      $article = $pdo->prepare($query);
+      $article = self::$pdo->prepare($query);
       $article->execute([
         'title'         => $bookTitle,
         'authorName'    => $authorName,
@@ -100,7 +105,7 @@ class FillTables
     }
   }
 
-  public static function populateCategories(PDO $pdo)
+  public static function populateCategories()
   {
     echo 'Populate categories<br>';
     $faker = Faker\Factory::create();
@@ -110,21 +115,22 @@ class FillTables
       $categoryName = $faker->sentence($nbWords = 1, $variableNbWords = true);
 
       $query    = 'INSERT INTO categories VALUES (null, :name)';
-      $category = $pdo->prepare($query);
+      $category = self::$pdo->prepare($query);
       $category->execute([
         'name' => $categoryName,
       ]);
     }
   }
 
-  public static function populateCategoriesBooks(PDO $pdo, array $relations)
+  public static function populateCategoriesBooks(array $relations)
   {
-      foreach ($relations['categoriesBooksRelations'] as $category => $relations) {
-          foreach ($relations as $r) {
-              $query = "INSERT INTO categories_books VALUES ($category, $r)";
-              $pdo->query($query);
-          }
+    foreach ($relations['categoriesBooksRelations'] as $category => $relations)
+    {
+      foreach ($relations as $r) {
+        $query = "INSERT INTO categories_books VALUES ($category, $r)";
+        self::$pdo->query($query);
       }
+    }
   }
   //
   //function populateUsers(PDO $pdo, array $users)
@@ -198,11 +204,11 @@ class FillTables
   //    return $result !== false;
   //}
   //
-  public static function dropTable(PDO $pdo, string $table): bool
+  public static function dropTable(string $table): bool
   {
     echo 'Drop table<br>';
     try {
-      $result = $pdo->query("DROP TABLE IF EXISTS $table");
+      $result = self::$pdo->query("DROP TABLE IF EXISTS $table");
     } catch (PDOException $e) {
       $e->getMessage();
       return false;
@@ -228,12 +234,12 @@ class FillTables
   //    return $tables;
   //}
   //
-  public static function createTable(PDO $pdo, string $table, string $columns)
+  public static function createTable(string $table, string $columns)
   {
     echo 'Create table<br>';
     try {
       $query = "CREATE TABLE $table ($columns)";
-      $pdo->query($query);
+      self::$pdo->query($query);
     } catch (PDOException $e) {
       echo "Can't create table $table<br>" . $e->getMessage();
     }

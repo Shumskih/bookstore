@@ -1,5 +1,5 @@
 <?php
-require 'autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 
 
@@ -85,6 +85,7 @@ class FillTables
       $description   = '';
       $pages         = rand(150, 1200);
       $img           = '';
+      $price         = rand(10, 400);
 
       $desc = $faker->paragraphs($nb = 5, $asText = false);
       foreach ($desc as $d) {
@@ -92,7 +93,7 @@ class FillTables
       }
 
       $query
-               = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img)';
+               = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price)';
       $article = self::$pdo->prepare($query);
       $article->execute([
         'title'         => $bookTitle,
@@ -101,6 +102,7 @@ class FillTables
         'description'   => $description,
         'img'           => $img,
         'pages'         => $pages,
+        'price'         => $price
       ]);
     }
   }

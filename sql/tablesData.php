@@ -7,7 +7,8 @@ $tables = [
                  authorSurname           text                           not null,
                  description             text                           null,
                  pages                   int                            not null,
-                 img                     text',
+                 img                     text,
+                 price                   decimal                        not null',
 
   'categories' => 'id   int auto_increment primary key not null,
                    name varchar(100) not null',

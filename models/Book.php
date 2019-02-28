@@ -24,6 +24,7 @@ class Book implements Model
 
   private $img;
 
+  private $price;
   /**
    * @var array of Category objects
    */
@@ -74,6 +75,7 @@ class Book implements Model
     $this->description   = $book['description'];
     $this->pages         = $book['pages'];
     $this->img           = $book['img'];
+    $this->price         = $book['price'];
 
     return $this;
   }
@@ -180,6 +182,58 @@ class Book implements Model
   {
     $this->description = $description;
   }
+
+  /**
+   * @return mixed
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  /**
+   * @param mixed $id
+   */
+  public function setId($id): void
+  {
+    $this->id = $id;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getImg()
+  {
+    return $this->img;
+  }
+
+  /**
+   * @param mixed $img
+   */
+  public function setImg($img): void
+  {
+    $this->img = $img;
+  }
+
+
+
+  /**
+   * @return mixed
+   */
+  public function getPrice()
+  {
+    return $this->price;
+  }
+
+  /**
+   * @param mixed $price
+   */
+  public function setPrice($price): void
+  {
+    $this->price = $price;
+  }
+
+
 
   /**
    * @return array

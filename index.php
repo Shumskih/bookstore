@@ -7,19 +7,19 @@ require_once ROOT . '/sql/tablesData.php';
 if (URI == '/') {
   echo 'Главная страница';
 
-} else if (URI == '/fake-it') {
+} elseif (URI == '/fake-it') {
   FillTables::faker($tables, $relations);
 
-} else if (isset($_GET['id']) && URI == '/book?id='.$_GET['id']) {
+} elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']) {
   $controller = new BookController();
-  $book = $controller->getBook($_GET['id']);
+  $book       = $controller->getBook($_GET['id']);
   $controller->render(
     $book,
     '/views/books/book.html.php'
   );
-} else if (URI == '/books') {
+} elseif (URI == '/books') {
   $controller = new BookController();
-  $books = $controller->getAllBooks();
+  $books      = $controller->getAllBooks();
   $controller->render(
     $books,
     '/views/books/allBooks.html.php'

@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/controllers/BookController.php';
+require_once ROOT . '/controllers/CategoryController.php';
 require_once ROOT . '/helpers/FillTables.php';
 require_once ROOT . '/sql/tablesData.php';
 
@@ -24,6 +25,17 @@ if (URI == '/') {
     $books,
     '/views/books/allBooks.html.php'
   );
+
+} elseif (URI == '/categories') {
+  $controller = new CategoryController();
+  $categories = $controller->getAllCategories();
+  $controller->render(
+    $categories,
+    '/views/categories/categories.html.php'
+    );
+
+} elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id']) {
+  echo 'Id of category is ' . $_GET['id'];
 
 } else {
   echo "404!";

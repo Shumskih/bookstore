@@ -1,7 +1,7 @@
 <div class="main-menu">
   <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light">
-      <a class="navbar-brand" href="index.html"><img
+      <a class="navbar-brand" href="books"><img
           src="assets/images/logo.png" alt="logo"></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse"
               data-target="#navbarSupportedContent"
@@ -12,10 +12,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           <li class="navbar-item">
-            <a href="index.html" class="nav-link">Home</a>
+            <a href="/books" class="nav-link">Home</a>
           </li>
           <li class="navbar-item active">
             <a href="/books" class="nav-link">Shop</a>
+          </li>
+          <li class="navbar-item">
+            <a href="/categories" class="nav-link">Categories</a>
           </li>
           <li class="navbar-item">
             <a href="about.html" class="nav-link">About</a>

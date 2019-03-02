@@ -1,20 +1,6 @@
 <?php include_once ROOT . '/views/inc/head.html.php' ?>
   <body>
   <header>
-    <div class="header-top">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-3"><a href="#"
-                                   class="web-url">www.bookstore.com</a></div>
-          <div class="col-md-6">
-            <h5>Free Shipping Over $99 + 3 Free Samples With Every Order</h5>
-          </div>
-          <div class="col-md-3">
-            <span class="ph-number">Call : 800 1234 5678</span>
-          </div>
-        </div>
-      </div>
-    </div>
     <?php include_once ROOT . '/views/inc/menu.html.php'?>
   </header>
   <div class="breadcrumb">

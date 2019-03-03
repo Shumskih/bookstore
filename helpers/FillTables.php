@@ -21,7 +21,7 @@ class FillTables
    * @param array $relations
    *
    */
-  public static function faker(array $tables, array $relations)
+  public static function faker(array $tables, array $relations, array $users, array $addresses)
   {
     echo 'In faker<br>';
 
@@ -57,16 +57,19 @@ class FillTables
       if ($table == 'categories_books') {
         self::populateCategoriesBooks($relations);
       }
-      //
-      //        if ($table == 'users')
-      //            populateUsers($pdo, $users);
-      //
-      //        if ($table == 'roles')
-      //            populateRoles($pdo, $roles);
-      //
-      //        if ($table == 'users_roles')
-      //            populateUsersRoles($pdo, $relations);
-      //
+
+      if ($table == 'users') {
+        self::populateUsers($users);
+      }
+
+      if ($table == 'addresses') {
+        self::populateAddresses($addresses);
+      }
+
+      if ($table == 'users_addresses') {
+        self::populateUsersAddresses($relations);
+      }
+
       //        if ($table == 'users_articles')
       //            populateUsersArticles($pdo, $relations);
     }
@@ -102,7 +105,7 @@ class FillTables
         'description'   => $description,
         'img'           => $img,
         'pages'         => $pages,
-        'price'         => $price
+        'price'         => $price,
       ]);
     }
   }
@@ -134,57 +137,68 @@ class FillTables
       }
     }
   }
-  //
-  //function populateUsers(PDO $pdo, array $users)
-  //{
-  //    foreach ($users as $user) {
-  //        $name     = $user['name'];
-  //        $email    = $user['email'];
-  //        $password = md5($user['password'] . 'php_and_mysql');
-  //
-  //        try {
-  //            $query    = 'INSERT INTO users VALUES (null, :name, :email, :password)';
-  //            $category = $pdo->prepare($query);
-  //            $category->execute([
-  //              'name'     => $name,
-  //              'email'    => $email,
-  //              'password' => $password,
-  //            ]);
-  //        } catch (PDOException $e) {
-  //            $e->getMessage();
-  //        }
-  //    }
-  //}
-  //
-  //function populateRoles(PDO $pdo, array $roles)
-  //{
-  //    foreach ($roles as $role) {
-  //        $name     = $role['name'];
-  //        $description    = $role['description'];
-  //
-  //        try {
-  //            $query    = 'INSERT INTO roles VALUES (null, :name, :description)';
-  //            $category = $pdo->prepare($query);
-  //            $category->execute([
-  //              'name'        => $name,
-  //              'description' => $description
-  //            ]);
-  //        } catch (PDOException $e) {
-  //            $e->getMessage();
-  //        }
-  //    }
-  //}
-  //
-  //function populateUsersRoles(PDO $pdo, array $relations)
-  //{
-  //    foreach ($relations['usersRolesRelations'] as $user => $relations) {
-  //        foreach ($relations as $r) {
-  //            $query = "INSERT INTO users_roles VALUES ($user, $r)";
-  //            $pdo->query($query);
-  //        }
-  //    }
-  //}
-  //
+
+  public static function populateUsers(array $users)
+  {
+    foreach ($users as $user) {
+      $name     = $user['name'];
+      $surname  = $user['surname'];
+      $email    = $user['email'];
+      $password = md5($user['password'] . 'bookstore');
+
+      try {
+        $query
+                  = 'INSERT INTO users VALUES (null, :name, :surname, null, :email, :password)';
+        $category = self::$pdo->prepare($query);
+        $category->execute([
+          'name'     => $name,
+          'surname'  => $surname,
+          'email'    => $email,
+          'password' => $password,
+        ]);
+      } catch (PDOException $e) {
+        $e->getMessage();
+      }
+    }
+  }
+
+  public static function populateAddresses(array $addresses)
+  {
+    foreach ($addresses as $address) {
+      $country   = $address['country'];
+      $region    = $address['region'];
+      $city      = $address['cuty'];
+      $street    = $address['street'];
+      $building  = $address['building'];
+      $apartment = $address['apartment'];
+
+      try {
+        $query = 'INSERT INTO addresses VALUES (null, :country, :region, :city, :street, :building, :apertment)';
+        $category = self::$pdo->prepare($query);
+        $category->execute([
+          'country'   => $country,
+          'region'    => $region,
+          'city'      => $city,
+          'street'    => $street,
+          'building'  => $building,
+          'apartment' => $apartment,
+        ]);
+      } catch (PDOException $e) {
+        $e->getMessage();
+      }
+    }
+  }
+
+  public static function populateUsersAddresses(array $relations)
+  {
+      foreach ($relations['usersAddressesRelations'] as $user => $relations) {
+          foreach ($relations as $r) {
+              $query = "INSERT INTO users_addresses VALUES ($user, $r)";
+              self::$pdo->query($query);
+          }
+      }
+  }
+
   //function populateUsersArticles(PDO $pdo, array $relations)
   //{
   //    foreach ($relations['usersArticlesRelations'] as $user => $relations) {

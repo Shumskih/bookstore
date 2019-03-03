@@ -10,7 +10,6 @@ class BookController extends Controller
    * @var \Book
    */
   private $book;
-  private $id;
 
   public function __construct()
   {

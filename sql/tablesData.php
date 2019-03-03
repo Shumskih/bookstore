@@ -1,22 +1,42 @@
 <?php
 
 $tables = [
-  'books' =>    'id                      int auto_increment primary key not null, 
-                 title                   varchar(250)                   not null,
-                 authorName              varchar(500)                   not null,
-                 authorSurname           text                           not null,
-                 description             text                           null,
-                 pages                   int                            not null,
-                 img                     text,
-                 price                   decimal                        not null',
+  'books' => 'id            int auto_increment primary key not null, 
+              title         varchar(250)                   not null,
+              authorName    varchar(500)                   not null,
+              authorSurname text                           not null,
+              description   text                           null,
+              pages         int                            not null,
+              img           text,
+              price         decimal                        not null',
 
   'categories' => 'id   int auto_increment primary key not null,
-                   name varchar(100) not null',
+                   name varchar(100)                   not null',
 
   'categories_books' => 'category_id int,
-                         book_id  int,
+                         book_id     int,
                          foreign key (category_id) references categories (id),
-                         foreign key (book_id) references books (id)'
+                         foreign key (book_id) references books (id)',
+
+  'users' => 'id           int auto_increment primary key not null,
+              name         varchar(100)                   not null,
+              surname      varchar(200),
+              mobile_phone varchar(200),
+              email        varchar(200)                   not null,
+              password     varchar(200)                   not null',
+
+  'addresses' => 'id        int auto_increment primary key not null,
+                  country   varchar (200),
+                  region    varchar(200),
+                  city      varchar(200),
+                  street    varchar(200),
+                  building  varchar(200),
+                  apartment varchar(100)',
+
+  'users_addresses' => 'user_id    int,
+                        address_id int,
+                        foreign key (user_id) references users (id),
+                        foreign key (address_id) references addresses (id)',
 ];
 
 $relations = [
@@ -25,27 +45,37 @@ $relations = [
     2 => [3, 4],
     3 => [5, 6],
     4 => [7, 8],
-    5 => [9, 10]
-  ]
+    5 => [9, 10],
+  ],
+  'usersAddressesRelations' => [
+
+  ],
 ];
-//
-//$users = [
-//  Array (
-//    'name' =>     'Shumskih',
-//    'email' =>    'shumskih@email.com',
-//    'password' => '6457773'
-//  ),
-//  Array (
-//    'name' =>     'Dimon',
-//    'email' =>    'dimon@email.com',
-//    'password' => 'password'
-//  ),
-//  Array(
-//    'name' =>     'Siri',
-//    'email' =>    'siri@apple.com',
-//    'password' => '5555555'
-//  )
-//];
+
+$users = [
+  [
+    'name'     => 'Aleksander',
+    'surname'  => 'Shumskih',
+    'email'    => 'shumskih@email.com',
+    'password' => '6457773',
+  ],
+  [
+    'name'     => 'Dimon',
+    'surname'  => 'Dimonov',
+    'email'    => 'dimon@email.com',
+    'password' => 'password',
+  ],
+  [
+    'name'     => 'Siri',
+    'surname'  => 'Smith',
+    'email'    => 'siri@apple.com',
+    'password' => '5555555',
+  ],
+];
+
+$addresses = [
+
+];
 //
 //$roles = [
 //  Array(

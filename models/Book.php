@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
+require_once ROOT . '/helpers/FiveLastViewedBooks.php';
 require_once ROOT . '/sql/SqlQueries.php';
 
 /**
@@ -77,21 +78,7 @@ class Book implements Model
     $this->img           = $book['img'];
     $this->price         = $book['price'];
 
-    $viewedBooks = array();
-
-    if (isset($_SESSION['lastFiveViewedBooks'])) {
-      $viewedBooks = $_SESSION['lastFiveViewedBooks'];
-    }
-
-    if (count($viewedBooks) <= 4) {
-      array_unshift( $viewedBooks, $book);
-    } else {
-      array_pop($viewedBooks);
-      array_unshift($viewedBooks, $book);
-    }
-
-    unset($_SESSION['lastFiveViewedBooks']);
-    $_SESSION['lastFiveViewedBooks'] = $viewedBooks;
+    FiveLastViewedBooks::lastViewedBooks($book);
 
     return $this;
   }

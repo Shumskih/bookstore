@@ -11,24 +11,24 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-          <li class="navbar-item">
-            <a href="/books" class="nav-link">Home</a>
-          </li>
           <li class="navbar-item active">
             <a href="/books" class="nav-link">Shop</a>
           </li>
           <li class="navbar-item">
             <a href="/categories" class="nav-link">Categories</a>
           </li>
-          <li class="navbar-item">
-            <a href="about.html" class="nav-link">About</a>
-          </li>
-          <li class="navbar-item">
-            <a href="faq.html" class="nav-link">FAQ</a>
-          </li>
-          <li class="navbar-item">
-            <a href="login.html" class="nav-link">Login</a>
-          </li>
+          <?php if (!isset($_SESSION['login'])): ?>
+            <li class="navbar-item">
+              <a href="/login" class="nav-link">Login</a>
+            </li>
+          <?php else: ?>
+            <li class="navbar-item">
+              <a href="/account" class="nav-link">Account(<?php echo $_SESSION['email'] ?>)</a>
+            </li>
+            <li class="navbar-item">
+              <a href="/logout" class="nav-link">Logout</a>
+            </li>
+          <?php endif; ?>
         </ul>
         <div class="cart my-2 my-lg-0">
                             <span>

@@ -5,8 +5,8 @@
   </header>
   <div class="breadcrumb">
     <div class="container">
-      <a class="breadcrumb-item" href="index.html">Home</a>
-      <span class="breadcrumb-item active">Shop</span>
+      <a class="breadcrumb-item" href="/books">Home</a>
+      <span class="breadcrumb-item active">Books</span>
     </div>
   </div>
   <section class="static about-sec">

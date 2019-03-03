@@ -47,7 +47,14 @@ if (URI == '/') {
 } elseif (URI == '/registration') {
 
 
-} elseif (URI == '/fake-it') {
+} elseif(URI == '/logout') {
+  $controller = new UserController();
+  $controller->logout();
+  unset($controller);
+  header('Location: /books');
+}
+
+elseif (URI == '/fake-it') {
   FillTables::faker($tables, $relations, $users, $addresses);
 
 } elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']) {

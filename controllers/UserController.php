@@ -26,4 +26,9 @@ class UserController extends Controller
   {
     return $this->user->login($email, $password);
   }
+
+  public function logout()
+  {
+    $this->user->logout();
+  }
 }

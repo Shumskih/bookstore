@@ -5,6 +5,8 @@ require_once ROOT . '/controllers/CategoryController.php';
 require_once ROOT . '/helpers/FillTables.php';
 require_once ROOT . '/sql/tablesData.php';
 
+session_start();
+
 if (URI == '/') {
   echo 'Главная страница';
 
@@ -32,15 +34,23 @@ if (URI == '/') {
   $controller->render(
     $categories,
     '/views/categories/categories.html.php'
-    );
+  );
 
 } elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id']) {
   $controller = new CategoryController();
-  $category = $controller->getCategory($_GET['id']);
-  $controller->render(
-    $category,
-    '/views/categories/category.html.php'
-  );
+  $category   = $controller->getCategory($_GET['id']);
+  if (!empty($category->getId())) {
+    $controller->render(
+      $category,
+      '/views/categories/category.html.php'
+    );
+  } else {
+    $error = 'error';
+    $controller->render(
+      $error,
+      '/views/errors/404.html.php'
+    );
+  }
 
 } else {
   echo "404!";

@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/models/Model.php';
 
 class Category implements Model
 {
+
   private $id;
 
   private $name;
@@ -77,15 +78,15 @@ class Category implements Model
   {
     try {
       $query = SqlQueries::GET_CATEGORY;
-      $stmt = $this->pdo->prepare($query);
+      $stmt  = $this->pdo->prepare($query);
       $stmt->execute([
-        'id' => $id
+        'id' => $id,
       ]);
       $category = $stmt->fetch();
     } catch (PDOException $e) {
       echo 'Can\'t get category<br>' . $e->getMessage();
     }
-    $this->id = $category['id'];
+    $this->id   = $category['id'];
     $this->name = $category['name'];
 
     $books = $this->readBooksByCategory($id);
@@ -112,9 +113,9 @@ class Category implements Model
   {
     try {
       $query = SqlQueries::GET_BOOKS_BY_CATEGORY;
-      $stmt = $this->pdo->prepare($query);
+      $stmt  = $this->pdo->prepare($query);
       $stmt->execute([
-        'id' => $categoryId
+        'id' => $categoryId,
       ]);
     } catch (PDOException $e) {
       echo 'Can\'t get books by category<br>' . $e->getMessage();
@@ -127,7 +128,7 @@ class Category implements Model
   {
     try {
       $query = SqlQueries::GET_ALL_CATEGORIES;
-      $stmt = $this->pdo->query($query);
+      $stmt  = $this->pdo->query($query);
     } catch (PDOException $e) {
       echo 'Can\'t get all categories<br>' . $e->getMessage();
     }

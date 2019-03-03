@@ -35,7 +35,12 @@ if (URI == '/') {
     );
 
 } elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id']) {
-  echo 'Id of category is ' . $_GET['id'];
+  $controller = new CategoryController();
+  $category = $controller->getCategory($_GET['id']);
+  $controller->render(
+    $category,
+    '/views/categories/category.html.php'
+  );
 
 } else {
   echo "404!";

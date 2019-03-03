@@ -7,7 +7,7 @@ class Category implements Model
 
   private $name;
 
-  private $books;
+  private $books = [];
 
   private $pdo;
 
@@ -75,7 +75,52 @@ class Category implements Model
 
   function read($id)
   {
-    // TODO: Implement read() method.
+    try {
+      $query = SqlQueries::GET_CATEGORY;
+      $stmt = $this->pdo->prepare($query);
+      $stmt->execute([
+        'id' => $id
+      ]);
+      $category = $stmt->fetch();
+    } catch (PDOException $e) {
+      echo 'Can\'t get category<br>' . $e->getMessage();
+    }
+    $this->id = $category['id'];
+    $this->name = $category['name'];
+
+    $books = $this->readBooksByCategory($id);
+
+    foreach ($books as $b) {
+      $book = new Book();
+      $book->setId($b['id']);
+      $book->setTitle($b['title']);
+      $book->setAuthorName($b['authorName']);
+      $book->setAuthorSurname($b['authorSurname']);
+      $book->setDescription($b['description']);
+      $book->setPages($b['pages']);
+      $book->setImg($b['img']);
+      $book->setPrice($b['price']);
+
+      array_unshift($this->books, $book);
+      unset($book);
+    }
+
+    return $this;
+  }
+
+  function readBooksByCategory($categoryId)
+  {
+    try {
+      $query = SqlQueries::GET_BOOKS_BY_CATEGORY;
+      $stmt = $this->pdo->prepare($query);
+      $stmt->execute([
+        'id' => $categoryId
+      ]);
+    } catch (PDOException $e) {
+      echo 'Can\'t get books by category<br>' . $e->getMessage();
+    }
+
+    return $stmt->fetchAll();
   }
 
   function readAll()

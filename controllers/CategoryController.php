@@ -13,7 +13,7 @@ class CategoryController extends Controller
 
   public function getCategory($id)
   {
-//    return $this->category->read($id);
+    return $this->category->read($id);
   }
 
   public function getAllCategories()

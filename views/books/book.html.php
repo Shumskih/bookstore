@@ -5,8 +5,9 @@
   </header>
   <div class="breadcrumb">
     <div class="container">
-      <a class="breadcrumb-item" href="index.html">Home</a>
-      <span class="breadcrumb-item active">Terms and Condition</span>
+      <a class="breadcrumb-item" href="/books">Home</a>
+      <a class="breadcrumb-item" href="/books">Books</a>
+      <span class="breadcrumb-item active"><?php echo $var->getTitle(); ?></span>
     </div>
   </div>
   <section class="product-sec">

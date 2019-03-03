@@ -77,6 +77,22 @@ class Book implements Model
     $this->img           = $book['img'];
     $this->price         = $book['price'];
 
+    $viewedBooks = array();
+
+    if (isset($_SESSION['lastFiveViewedBooks'])) {
+      $viewedBooks = $_SESSION['lastFiveViewedBooks'];
+    }
+
+    if (count($viewedBooks) <= 4) {
+      array_unshift( $viewedBooks, $book);
+    } else {
+      array_pop($viewedBooks);
+      array_unshift($viewedBooks, $book);
+    }
+
+    unset($_SESSION['lastFiveViewedBooks']);
+    $_SESSION['lastFiveViewedBooks'] = $viewedBooks;
+
     return $this;
   }
 

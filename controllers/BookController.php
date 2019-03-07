@@ -25,4 +25,9 @@ class BookController extends Controller
   {
     return $this->book->readAll();
   }
+
+  public function getNewBooks(int $quantity = 6) : array
+  {
+    return $this->book->getNewBooks($quantity);
+  }
 }

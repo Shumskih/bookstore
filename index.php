@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/controllers/IndexPageController.php';
 require_once ROOT . '/controllers/BookController.php';
 require_once ROOT . '/controllers/CategoryController.php';
 require_once ROOT . '/controllers/UserController.php';
@@ -9,20 +10,23 @@ require_once ROOT . '/sql/tablesData.php';
 session_start();
 
 if (URI == '/') {
-  echo 'Главная страница';
+  $controller = new IndexPageController();
+  $books = $controller->getNewBooks();
+  $controller->render(
+    $books,
+    '/views/index.html.php'
+  );
 
 } elseif (URI == '/login') {
   if ((isset($_POST['email']) && !isset($_POST['password']))
-      || (isset($_POST['password']) && !isset($_POST['email']))) {
+      || ((isset($_POST['password']) && !isset($_POST['email'])))) {
     $controller = new UserController();
     $error      = 'loginError';
     $controller->render(
       $error,
       '/views/users/login/login.html.php'
     );
-  }
-
-  if (isset($_POST['email']) && isset($_POST['password'])) {
+  } elseif (isset($_POST['email']) && isset($_POST['password'])) {
     $controller = new UserController();
     $login      = $controller->checkUser($_POST['email'], $_POST['password']);
     if ($login) {
@@ -35,17 +39,17 @@ if (URI == '/') {
         '/views/users/login/login.html.php'
       );
     }
+  } else {
+    $controller = new UserController();
+    $error      = false;
+    $controller->render(
+      $error,
+      '/views/users/login/login.html.php'
+    );
   }
 
-  $controller = new UserController();
-  $error      = false;
-  $controller->render(
-    $error,
-    '/views/users/login/login.html.php'
-  );
-
 } elseif (URI == '/registration') {
-
+  ;$controller = new UserController();
 
 } elseif(URI == '/logout') {
   $controller = new UserController();

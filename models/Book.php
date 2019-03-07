@@ -26,6 +26,7 @@ class Book implements Model
   private $img;
 
   private $price;
+
   /**
    * @var array of Category objects
    */
@@ -83,11 +84,11 @@ class Book implements Model
     return $this;
   }
 
-  function readAll() : array
+  function readAll(): array
   {
     try {
       $query = SqlQueries::GET_ALL_BOOKS;
-      $stmt = $this->pdo->query($query);
+      $stmt  = $this->pdo->query($query);
     } catch (PDOException $e) {
       echo 'Can\'t get all books<br>' . $e->getMessage();
     }
@@ -105,6 +106,20 @@ class Book implements Model
     // TODO: Implement delete() method.
   }
 
+  public function getNewBooks(int $quantity = 6) : array
+  {
+    try {
+      $query = SqlQueries::GET_NEW_BOOKS;
+      $stmt  = $this->pdo->prepare($query);
+      $stmt->bindParam(
+        ':quantity', $quantity, PDO::PARAM_INT
+      );
+      $stmt->execute();
+    } catch (PDOException $e) {
+      echo 'Can\'t get new books<br>' . $e->getMessage();
+    }
+    return $stmt->fetchAll();
+  }
 
   /**
    * @return string
@@ -219,7 +234,6 @@ class Book implements Model
   }
 
 
-
   /**
    * @return mixed
    */
@@ -235,7 +249,6 @@ class Book implements Model
   {
     $this->price = $price;
   }
-
 
 
   /**

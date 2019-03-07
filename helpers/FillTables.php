@@ -96,7 +96,7 @@ class FillTables
       }
 
       $query
-               = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price)';
+               = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price, now())';
       $article = self::$pdo->prepare($query);
       $article->execute([
         'title'         => $bookTitle,
@@ -105,7 +105,7 @@ class FillTables
         'description'   => $description,
         'img'           => $img,
         'pages'         => $pages,
-        'price'         => $price,
+        'price'         => $price
       ]);
     }
   }

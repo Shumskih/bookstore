@@ -1,82 +1,55 @@
-<footer>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="address">
-          <h4>Our Address</h4>
-          <h6>The BookStore Theme, 4th Store
-            Beside that building, USA</h6>
-          <h6>Call : 800 1234 5678</h6>
-          <h6>Email : info@bookstore.com</h6>
-        </div>
-        <div class="timing">
-          <h4>Timing</h4>
-          <h6>Mon - Fri: 7am - 10pm</h6>
-          <h6>​​Saturday: 8am - 10pm</h6>
-          <h6>​Sunday: 8am - 11pm</h6>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="navigation">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="privacy-policy.html">Privacy Policy</a></li>
-            <li><a href="terms-conditions.html">Terms</a></li>
-            <li><a href="/books">Products</a></li>
-          </ul>
-        </div>
-        <div class="navigation">
-          <h4>Help</h4>
-          <ul>
-            <li><a href="">Shipping & Returns</a></li>
-            <li><a href="privacy-policy.html">Privacy</a></li>
-            <li><a href="faq.html">FAQ’s</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="form">
-          <h3>Quick Contact us</h3>
-          <h6>We are now offering some good discount
-            on selected books go and shop them</h6>
-          <form>
-            <div class="row">
-              <div class="col-md-6">
-                <input placeholder="Name" required>
-              </div>
-              <div class="col-md-6">
-                <input type="email" placeholder="Email" required>
-              </div>
-              <div class="col-md-12">
-                <textarea placeholder="Messege"></textarea>
-              </div>
-              <div class="col-md-12">
-                <button class="btn black">Alright, Submit</button>
-              </div>
+<!-- Footer Area -->
+<footer id="wn__footer" class="footer__area bg__cat--8 brown--color">
+  <div class="footer-static-top">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="footer__widget footer__menu">
+            <div class="ft__logo">
+              <a href="index.html">
+                <img src="/assets/images/logo/3.png" alt="logo">
+              </a>
+              <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered duskam alteration variations of passages</p>
             </div>
-          </form>
+            <div class="footer__content">
+              <ul class="social__net social__net--2 d-flex justify-content-center">
+                <li><a href="#"><i class="bi bi-facebook"></i></a></li>
+                <li><a href="#"><i class="bi bi-google"></i></a></li>
+                <li><a href="#"><i class="bi bi-twitter"></i></a></li>
+                <li><a href="#"><i class="bi bi-linkedin"></i></a></li>
+                <li><a href="#"><i class="bi bi-youtube"></i></a></li>
+              </ul>
+              <ul class="mainmenu d-flex justify-content-center">
+                <li><a href="index.html">Trending</a></li>
+                <li><a href="index.html">Best Seller</a></li>
+                <li><a href="index.html">All Product</a></li>
+                <li><a href="index.html">Wishlist</a></li>
+                <li><a href="index.html">Blog</a></li>
+                <li><a href="index.html">Contact</a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="copy-right">
+  <div class="copyright__wrapper">
     <div class="container">
       <div class="row">
-        <div class="col-md-6">
-          <h5>(C) 2017. All Rights Reserved. BookStore Wordpress Theme</h5>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="copyright">
+            <div class="copy__right__inner text-left">
+              <p>Copyright <i class="fa fa-copyright"></i> <a href="#">Boighor.</a> All Rights Reserved</p>
+            </div>
+          </div>
         </div>
-        <div class="col-md-6">
-          <div class="share align-middle">
-            <span class="fb"><i class="fa fa-facebook-official"></i></span>
-            <span class="instagram"><i class="fa fa-instagram"></i></span>
-            <span class="twitter"><i class="fa fa-twitter"></i></span>
-            <span class="pinterest"><i class="fa fa-pinterest"></i></span>
-            <span class="google"><i class="fa fa-google-plus"></i></span>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+          <div class="payment text-right">
+            <img src="/assets/images/icons/payment.png" alt="" />
           </div>
         </div>
       </div>
     </div>
   </div>
 </footer>
+<!-- //Footer Area -->

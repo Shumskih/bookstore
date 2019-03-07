@@ -14,6 +14,8 @@ class SqlQueries
                                  INNER JOIN categories ON categories.id = categories_books.category_id
                                  WHERE categories_books.category_id = :id';
 
+  const GET_NEW_BOOKS = 'SELECT * FROM books ORDER BY added DESC LIMIT :quantity';
+
   // Categories
   const GET_ALL_CATEGORIES = 'SELECT * FROM categories';
 

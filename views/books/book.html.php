@@ -95,9 +95,12 @@
                     </div>
                   </div>
                   <div class="product_meta">
-											<span class="posted_in">Categories: 
-												<a href="#">Adventure</a>, 
-												<a href="#">Kids' Music</a>
+											<span class="posted_in">Categories:
+                        <?php foreach ($book->getCategories() as $category): ?>
+                        <?php $category = (object) $category; ?>
+												<a href="/category?id=<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></a>
+                          <br>
+                        <?php endforeach; ?>
 											</span>
                   </div>
                   <div class="product-share">

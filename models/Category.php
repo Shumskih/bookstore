@@ -40,7 +40,7 @@ class Category implements Model
     /**
      * @return array
      */
-    public function getBooks()
+    public function getBooks() : array
     {
         return $this->books;
     }
@@ -48,7 +48,7 @@ class Category implements Model
     /**
      * @param mixed $books
      */
-    public function setBooks($books): void
+    public function setBooks($books) : void
     {
         $this->books = $books;
     }
@@ -70,25 +70,10 @@ class Category implements Model
         } catch (PDOException $e) {
             echo 'Can\'t get category<br>' . $e->getMessage();
         }
-        $this->id   = $category['id'];
+        $this->id = $category['id'];
         $this->name = $category['name'];
 
-        $books = $this->readBooksByCategory($id);
-
-        foreach ($books as $b) {
-            $book = new Book();
-            $book->setId($b['id']);
-            $book->setTitle($b['title']);
-            $book->setAuthorName($b['authorName']);
-            $book->setAuthorSurname($b['authorSurname']);
-            $book->setDescription($b['description']);
-            $book->setPages($b['pages']);
-            $book->setImg($b['img']);
-            $book->setPrice($b['price']);
-
-            array_unshift($this->books, $book);
-            unset($book);
-        }
+        $this->readBooksByCategory();
 
         return $this;
     }
@@ -99,13 +84,28 @@ class Category implements Model
             $query = SqlQueries::GET_BOOKS_BY_CATEGORY;
             $stmt  = $this->pdo->prepare($query);
             $stmt->execute([
-              'id' => $this->getId(),
+              'id' => $this->id,
             ]);
+            $books = $stmt->fetchAll();
         } catch (PDOException $e) {
             echo 'Can\'t get books by category<br>' . $e->getMessage();
         }
 
-        return $stmt->fetchAll();
+        foreach ($books as $b) {
+            $book = new Book();
+            $book->setId($b[0]);
+            $book->setTitle($b['title']);
+            $book->setAuthorName($b['authorName']);
+            $book->setAuthorSurname($b['authorSurname']);
+            $book->setDescription($b['description']);
+            $book->setPages($b['pages']);
+            $book->setImg($b['img']);
+            $book->setPrice($b['price']);
+            $book->setAdded($b['added']);
+
+            array_unshift($this->books, $book);
+            unset($book);
+        }
     }
 
     /**

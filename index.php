@@ -9,6 +9,7 @@ require_once ROOT . '/sql/tablesData.php';
 
 session_start();
 
+// home page
 if (URI == '/') {
     $controller = new IndexPageController();
     $books      = $controller->getNewBooks();
@@ -17,6 +18,7 @@ if (URI == '/') {
       '/views/index.html.php'
     );
 
+// /login
 } elseif (URI == '/login') {
     if ((isset($_POST['email']) && !isset($_POST['password']))
         || ((isset($_POST['password']) && !isset($_POST['email'])))) {
@@ -49,18 +51,23 @@ if (URI == '/') {
         );
     }
 
+// /registration
 } elseif (URI == '/registration') {
     ;
     $controller = new UserController();
 
+// /logout
 } elseif (URI == '/logout') {
     $controller = new UserController();
     $controller->logout();
     unset($controller);
     header('Location: /books');
+
+// /fake-it
 } elseif (URI == '/fake-it') {
     FillTables::faker($tables, $relations, $users, $addresses);
 
+// /book?id=?
 } elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']) {
     $vars = [];
 
@@ -77,6 +84,8 @@ if (URI == '/') {
       $vars,
       '/views/books/book.html.php'
     );
+
+// /books
 } elseif (URI == '/books') {
     $vars = [];
 
@@ -94,6 +103,7 @@ if (URI == '/') {
       '/views/books/allBooks.html.php'
     );
 
+// categories
 } elseif (URI == '/categories') {
     $controller = new CategoryController();
     $categories = $controller->getAllCategories();
@@ -102,12 +112,23 @@ if (URI == '/') {
       '/views/categories/categories.html.php'
     );
 
+// /category?id=?
 } elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id']) {
+    $vars = [];
+
     $controller = new CategoryController();
     $category   = $controller->getCategory($_GET['id']);
+    $categories = $controller->getAllCategories();
+
+    array_unshift($vars, ['category' => $category]);
+    array_unshift($vars, ['categories' => $categories]);
+
     if (!empty($category->getId())) {
+        unset($category);
+        unset($categories);
+
         $controller->render(
-          $category,
+          $vars,
           '/views/categories/category.html.php'
         );
     } else {

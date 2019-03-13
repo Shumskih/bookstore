@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
+require_once ROOT . '/models/Category.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
 require_once ROOT . '/helpers/FiveLastViewedBooks.php';
 require_once ROOT . '/sql/SqlQueries.php';
@@ -26,6 +27,8 @@ class Book implements Model
     private $img;
 
     private $price;
+
+    private $added;
 
     /**
      * @var array of Category objects
@@ -250,12 +253,49 @@ class Book implements Model
         $this->price = $price;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getAdded()
+    {
+        return $this->added;
+    }
+
+    /**
+     * @param mixed $added
+     */
+    public function setAdded($added) : void
+    {
+        $this->added = $added;
+    }
+
 
     /**
      * @return array
      */
-    public function getCategories(): Category
+    public function getCategories()
     {
+        try {
+            $query = SqlQueries::GET_CATEGORIES_OF_BOOK;
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([
+              'id' => $this->getId()
+            ]);
+            $categories = $stmt->fetchAll();
+        } catch (PDOException $e) {
+            echo 'Can\'t get categories of book<br>' . $e->getMessage();
+        }
+
+        foreach ($categories as $c){
+            $category = new Category();
+            $category->setId($c['id']);
+            $category->setName($c['name']);
+
+            array_unshift($this->categories, $category);
+
+            unset($category);
+        }
+
         return $this->categories;
     }
 

@@ -1,4 +1,4 @@
-<header id="wn__header" class="header__area header__absolute sticky__header">
+<header id="wn__header" class="<?php if (URI !== '/'): ?>oth-page <?php endif; ?>header__area header__absolute sticky__header">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-sm-6 col-6 col-lg-2">
@@ -16,7 +16,6 @@
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
-            <li class="drop"><a href="/categories">Categories</a></li>
             <li class="drop"><a href="shop-grid.html">Kids</a>
               <div class="megamenu mega02">
                 <ul class="item item02">
@@ -235,7 +234,6 @@
               <a href="/">Home</a>
             </li>
             <li><a href="/books">Books</a></li>
-            <li><a href="/categories">Categories</a></li>
             <li><a href="blog.html">Blog</a>
               <ul>
                 <li><a href="blog.html">Blog Page</a></li>

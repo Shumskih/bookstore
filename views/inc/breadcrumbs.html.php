@@ -9,11 +9,12 @@
                   echo 'All Books';
               } else {
                   foreach ($var as $k => $v) {
-                      foreach ($v as $key => $value) {
-                          if ($key == 'book') {
-                              $book = (object)$value;
-                          }
-                      }
+                    if (isset($v['book'])) {
+                          $book = (object) $v['book'];
+                    }
+                    if (isset($v['category'])) {
+                      $category = (object) $v['category'];
+                    }
                   }
               } ?>
           </h2>
@@ -23,7 +24,9 @@
             <span class="breadcrumb_item active">
               <?php if (URI == '/books') {
                   echo 'Books';
-              } else {
+              } elseif (isset($category)) {
+                  echo $category->getName();
+              } elseif (isset($book)) {
                   echo $book->getTitle();
               } ?>
             </span>

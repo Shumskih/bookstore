@@ -5,30 +5,31 @@ require_once ROOT . '/models/User.php';
 
 class UserController extends Controller
 {
-  private $user;
 
-  public function __construct()
-  {
-    $this->user = new User();
-  }
+    private $user;
 
-  public function getUser($id) : User
-  {
-    return $this->user->read($id);
-  }
+    public function __construct()
+    {
+        $this->user = new User();
+    }
 
-  public function getAllUsers() : array
-  {
+    public function getUser($id): User
+    {
+        return $this->user->read($id);
+    }
 
-  }
+    public function getAllUsers(): array
+    {
 
-  public function checkUser($email, $password)
-  {
-    return $this->user->login($email, $password);
-  }
+    }
 
-  public function logout()
-  {
-    $this->user->logout();
-  }
+    public function checkUser($email, $password)
+    {
+        return $this->user->login($email, $password);
+    }
+
+    public function logout()
+    {
+        $this->user->logout();
+    }
 }

@@ -1,7 +1,7 @@
 <?php include_once ROOT . '/views/inc/head.html.php' ?>
   <body>
   <header>
-    <?php include_once ROOT . '/views/inc/menu.html.php'?>
+      <?php include_once ROOT . '/views/inc/menu.html.php' ?>
   </header>
   <div class="breadcrumb">
     <div class="container">

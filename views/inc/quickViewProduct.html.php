@@ -4,7 +4,8 @@
     <div class="modal-dialog modal__container" role="document">
       <div class="modal-content">
         <div class="modal-header modal__header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
         </div>
         <div class="modal-body">
           <div class="modal-product">
@@ -36,7 +37,8 @@
                 </div>
               </div>
               <div class="quick-desc">
-                Designed for simplicity and made from high quality materials. Its sleek geometry and material combinations creates a modern look.
+                Designed for simplicity and made from high quality materials. Its sleek geometry and material
+                combinations creates a modern look.
               </div>
               <div class="select__color">
                 <h2>Select color</h2>
@@ -62,8 +64,10 @@
                   <h3 class="widget-title-modal">Share this product</h3>
                   <ul class="social__net social__net--2 d-flex justify-content-start">
                     <li class="facebook"><a href="#" class="rss social-icon"><i class="zmdi zmdi-rss"></i></a></li>
-                    <li class="linkedin"><a href="#" class="linkedin social-icon"><i class="zmdi zmdi-linkedin"></i></a></li>
-                    <li class="pinterest"><a href="#" class="pinterest social-icon"><i class="zmdi zmdi-pinterest"></i></a></li>
+                    <li class="linkedin"><a href="#" class="linkedin social-icon"><i class="zmdi zmdi-linkedin"></i></a>
+                    </li>
+                    <li class="pinterest"><a href="#" class="pinterest social-icon"><i class="zmdi zmdi-pinterest"></i></a>
+                    </li>
                     <li class="tumblr"><a href="#" class="tumblr social-icon"><i class="zmdi zmdi-tumblr"></i></a></li>
                   </ul>
                 </div>

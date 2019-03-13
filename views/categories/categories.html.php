@@ -1,7 +1,7 @@
 <?php include_once ROOT . '/views/inc/head.html.php' ?>
   <body>
   <header>
-    <?php include_once ROOT . '/views/inc/menu.html.php'?>
+      <?php include_once ROOT . '/views/inc/menu.html.php' ?>
   </header>
   <div class="breadcrumb">
     <div class="container">
@@ -14,13 +14,13 @@
       <h1>Categories:</h1>
       <hr>
       <ul class="list-group list-group-flus">
-        <?php foreach ($var as $category): ?>
-          <li class="list-group-item">
-            <a href="/category?id=<?php echo $category['id'] ?>">
-              <?php echo $category['name'] ?>
-            </a>
-          </li>
-        <?php endforeach; ?>
+          <?php foreach ($var as $category): ?>
+            <li class="list-group-item">
+              <a href="/category?id=<?php echo $category['id'] ?>">
+                  <?php echo $category['name'] ?>
+              </a>
+            </li>
+          <?php endforeach; ?>
       </ul>
     </div>
   </section>

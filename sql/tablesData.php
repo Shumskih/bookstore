@@ -48,7 +48,7 @@ $relations = [
     4 => [7, 8],
     5 => [9, 10],
   ],
-  'usersAddressesRelations' => [
+  'usersAddressesRelations'  => [
 
   ],
 ];

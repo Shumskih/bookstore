@@ -9,7 +9,8 @@
               <a href="index.html">
                 <img src="/assets/images/logo/3.png" alt="logo">
               </a>
-              <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered duskam alteration variations of passages</p>
+              <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered duskam
+                alteration variations of passages</p>
             </div>
             <div class="footer__content">
               <ul class="social__net social__net--2 d-flex justify-content-center">
@@ -45,7 +46,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12">
           <div class="payment text-right">
-            <img src="/assets/images/icons/payment.png" alt="" />
+            <img src="/assets/images/icons/payment.png" alt=""/>
           </div>
         </div>
       </div>

@@ -3,13 +3,14 @@
 
 interface Model
 {
-  function create();
 
-  function read($id);
+    function create();
 
-  function readAll();
+    function read($id);
 
-  function update($id);
+    function readAll();
 
-  function delete($id);
+    function update($id);
+
+    function delete($id);
 }

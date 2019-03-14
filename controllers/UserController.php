@@ -23,9 +23,14 @@ class UserController extends Controller
 
     }
 
-    public function checkUser($email, $password)
+    public function login($email, $password) : bool
     {
         return $this->user->login($email, $password);
+    }
+
+    public function register($email, $password) : bool
+    {
+        return $this->user->register($email, $password);
     }
 
     public function logout()

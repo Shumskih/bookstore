@@ -162,6 +162,28 @@ class User implements Model
         }
     }
 
+    public function register($email, $password)
+    {
+        if (CheckUser::isEmailExists($email)) {
+            return false;
+        } else {
+            try {
+                $query = SqlQueries::REGISTER_NEW_USER;
+                $stmt = $this->pdo->prepare($query);
+                $stmt->execute([
+                  'email' => $email,
+                  'password' => $password
+                ]);
+            } catch (PDOException $e) {
+                echo 'Can\'t insert new user to database<br>' . $e->getMessage();
+            }
+
+            $this->login($email, $password);
+
+            return true;
+        }
+    }
+
     public function logout()
     {
         unset($_SESSION['login']);

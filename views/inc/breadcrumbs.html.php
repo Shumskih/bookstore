@@ -5,9 +5,7 @@
         <div class="bradcaump__inner text-center">
           <h2 class="bradcaump-title">
               <?php
-              if (URI == '/books') {
-                  echo 'All Books';
-              } else {
+              if (URI !== '/books' && URI !== '/account') {
                   foreach ($var as $k => $v) {
                     if (isset($v['book'])) {
                           $book = (object) $v['book'];
@@ -28,7 +26,10 @@
                   echo $category->getName();
               } elseif (isset($book)) {
                   echo $book->getTitle();
-              } ?>
+              } elseif (URI == '/account') {
+                echo 'Account';
+              }
+              ?>
             </span>
           </nav>
         </div>

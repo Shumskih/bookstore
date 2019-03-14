@@ -1,4 +1,5 @@
-<header id="wn__header" class="<?php if (URI !== '/'): ?>oth-page <?php endif; ?>header__area header__absolute sticky__header">
+<header id="wn__header"
+        class="<?php if (URI !== '/'): ?>oth-page <?php endif; ?>header__area header__absolute sticky__header">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-6 col-sm-6 col-6 col-lg-2">
@@ -16,7 +17,7 @@
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
-            <li class="drop"><a href="shop-grid.html">Kids</a>
+            <li class="drop"><a href="shop-grid.html">Something</a>
               <div class="megamenu mega02">
                 <ul class="item item02">
                   <li class="title">Top Collections</li>
@@ -47,7 +48,7 @@
                       <li><a href="portfolio-details.html">Portfolio Details</a></li>
                     </ul>
                   </li>
-                  <li><a href="my-account.html">My Account</a></li>
+                  <li><a href="/account">My Account</a></li>
                   <li><a href="cart.html">Cart Page</a></li>
                   <li><a href="checkout.html">Checkout Page</a></li>
                   <li><a href="wishlist.html">Wishlist Page</a></li>
@@ -159,62 +160,25 @@
               <div class="content-inner">
                 <div class="switcher-currency">
                   <strong class="label switcher-label">
-                    <span>Currency</span>
-                  </strong>
-                  <div class="switcher-options">
-                    <div class="switcher-currency-trigger">
-                      <span class="currency-trigger">USD - US Dollar</span>
-                      <ul class="switcher-dropdown">
-                        <li>GBP - British Pound Sterling</li>
-                        <li>EUR - Euro</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="switcher-currency">
-                  <strong class="label switcher-label">
-                    <span>Language</span>
-                  </strong>
-                  <div class="switcher-options">
-                    <div class="switcher-currency-trigger">
-                      <span class="currency-trigger">English01</span>
-                      <ul class="switcher-dropdown">
-                        <li>English02</li>
-                        <li>English03</li>
-                        <li>English04</li>
-                        <li>English05</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="switcher-currency">
-                  <strong class="label switcher-label">
-                    <span>Select Store</span>
-                  </strong>
-                  <div class="switcher-options">
-                    <div class="switcher-currency-trigger">
-                      <span class="currency-trigger">Fashion Store</span>
-                      <ul class="switcher-dropdown">
-                        <li>Furniture</li>
-                        <li>Shoes</li>
-                        <li>Speaker Store</li>
-                        <li>Furniture</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div class="switcher-currency">
-                  <strong class="label switcher-label">
                     <span>My Account</span>
                   </strong>
                   <div class="switcher-options">
                     <div class="switcher-currency-trigger">
                       <div class="setting__menu">
+                          <?php if (isset($_SESSION['login'])): ?>
+                            <span><a href="">
+                              <?php echo 'Hello, ' . $_SESSION['email']; ?>
+                        </a></span>
+                          <?php endif; ?>
                         <span><a href="#">Compare Product</a></span>
-                        <span><a href="#">My Account</a></span>
+                        <span><a href="/account">My Account</a></span>
                         <span><a href="#">My Wishlist</a></span>
-                        <span><a href="#">Sign In</a></span>
-                        <span><a href="#">Create An Account</a></span>
+                          <?php if (!isset($_SESSION['login'])): ?>
+                            <span><a href="/account">Sign In</a></span>
+                            <span><a href="/account">Create An Account</a></span>
+                          <?php else: ?>
+                            <span><a href="/logout">Logout</a></span>
+                          <?php endif; ?>
                       </div>
                     </div>
                   </div>

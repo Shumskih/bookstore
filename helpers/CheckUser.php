@@ -16,7 +16,7 @@ class CheckUser
             $stmt      = self::$pdo->prepare($query);
             $stmt->execute([
               'email'    => $email,
-              'password' => md5($password . 'bookstore'),
+              'password' => $password
             ]);
         } catch (PDOException $e) {
             echo 'Can\'t get user from database<br>' . $e->getMessage();
@@ -31,8 +31,25 @@ class CheckUser
         return true;
     }
 
-    private function isEmailExists($email)
+    public static function isEmailExists($email)
     {
+        try {
+            $query     = SqlQueries::GET_EMAIL;
+            self::$pdo = ConnectionUtil::getConnection();
+            $stmt      = self::$pdo->prepare($query);
+            $stmt->execute([
+              'email'    => $email
+            ]);
+        } catch (PDOException $e) {
+            echo 'Can\'t get user from database<br>' . $e->getMessage();
+        }
 
+        $user = $stmt->fetch();
+
+        if (empty($user)) {
+            return false;
+        }
+
+        return true;
     }
 }

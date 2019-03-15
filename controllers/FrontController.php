@@ -84,7 +84,11 @@ class FrontController
 
     public function account()
     {
-        echo 'You are already logged in!';
+        $user = new UserController();
+
+        $user->render(
+          '/views/users/account/account.html.php'
+        );
     }
 
     public function register()

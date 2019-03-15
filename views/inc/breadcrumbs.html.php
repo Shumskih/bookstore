@@ -5,7 +5,7 @@
         <div class="bradcaump__inner text-center">
           <h2 class="bradcaump-title">
               <?php
-              if (URI !== '/books' && URI !== '/account') {
+              if (URI !== '/books' && URI !== '/account' && URI !== '/account/info') {
                   foreach ($var as $k => $v) {
                     if (isset($v['book'])) {
                           $book = (object) $v['book'];
@@ -20,14 +20,16 @@
             <a class="breadcrumb_item" href="/">Home</a>
             <span class="brd-separetor">/</span>
             <span class="breadcrumb_item active">
-              <?php if (URI == '/books') {
+              <?php if (URI == '/books' || URI == '/books/') {
                   echo 'Books';
               } elseif (isset($category)) {
                   echo $category->getName();
               } elseif (isset($book)) {
                   echo $book->getTitle();
-              } elseif (URI == '/account') {
+              } elseif (URI == '/account' || URI == '/account/') {
                 echo 'Account';
+              } elseif (URI == '/account/info' || URI == '/account/info/') {
+                echo 'Account Info';
               }
               ?>
             </span>

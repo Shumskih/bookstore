@@ -31,11 +31,15 @@
                     <input type="text" name="surname" id="surname">
                   </div>
                   <div class="input__box">
+                    <label for="email">Email <span>*</span></label>
+                    <input type="email" name="email" id="email" value="<?php echo $_SESSION['email'] ?>">
+                  </div>
+                  <div class="input__box">
                     <label for="mobilePhone">Mobile Phone <span>*</span></label>
                     <input type="tel" name="mobilePhone" id="mobilePhone" placeholder="+7 (123) 45-67-891" >
                   </div>
                   <div class="form__btn">
-                    <button type="submit" name="login">Save</button>
+                    <button type="submit" name="personalInfo">Save</button>
                   </div>
                 </div>
               </form>
@@ -71,7 +75,7 @@
                     <input type="text" name="apartment" id="apartment">
                   </div>
                   <div class="form__btn">
-                    <button type="submit" name="register">Save</button>
+                    <button type="submit" name="deliveryAddress">Save</button>
                   </div>
                 </div>
               </form>

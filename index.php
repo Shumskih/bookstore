@@ -17,7 +17,7 @@ if (URI == '/') {
     $frontController->indexPage();
 
     // /account
-} elseif (URI == '/account') {
+} elseif (URI == '/account' || URI == '/account/') {
     if (!isset($_SESSION['login']) && isset($_POST['login'])) {
         $frontController->login();
 
@@ -33,32 +33,41 @@ if (URI == '/') {
     }
 
     if (isset($_SESSION['login'])) {
+        header('Location: /account/info');
+    }
+
+
+} elseif (URI == '/account/info' || URI == '//account/info/') {
+    if (isset($_SESSION['login'])) {
+        $frontController->account();
+    } else {
         $frontController->account();
     }
 
-    // /restore-password
-} elseif
-(URI == '/restore-password') {
+} // /restore-password
+elseif (URI == '/restore-password' || URI == '/restore-password/') {
     echo 'Restore Password';
 
     // /logout
-} elseif (URI == '/logout') {
+} elseif (URI == '/logout' || URI == '/logout/') {
     $frontController->logout();
 
     // /fake-it
-} elseif (URI == '/fake-it') {
+} elseif (URI == '/fake-it' || URI == '/fake-it/') {
     FillTables::faker($tables, $relations, $users, $addresses);
 
     // /book?id=?
-} elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']) {
+} elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] ||
+          isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] . '/') {
     $frontController->showBook($_GET['id']);
 
     // /books
-} elseif (URI == '/books') {
+} elseif (URI == '/books' || URI == '/books/') {
     $frontController->books();
 
     // /category?id=?
-} elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id']) {
+} elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id'] ||
+          isset($_GET['id']) && URI == '/category?id=' . $_GET['id'] . '/') {
     $frontController->showCategory($_GET['id']);
 
 } else {

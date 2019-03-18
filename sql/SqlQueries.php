@@ -61,4 +61,10 @@ class SqlQueries
                               building = :building,
                               apartment = :apartment
                           WHERE id = :id';
+
+    // Roles
+    const GET_USER_ROLES = 'SELECT * FROM roles
+                                   INNER JOIN users_roles ON users_roles.role_id = roles.id
+                                   INNER JOIN users ON users.id = users_roles.role_id
+                                   WHERE users_roles.user_id = :id';
 }

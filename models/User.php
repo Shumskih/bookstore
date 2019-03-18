@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/models/Address.php';
+require_once ROOT . '/models/Role.php';
 require_once ROOT . '/controllers/AddressController.php';
 require_once ROOT . '/sql/SqlQueries.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
@@ -22,7 +23,11 @@ class User implements Model
 
     private $mobilePhone;
 
+    // Object
     private $address;
+
+    // Array of Roles Objects
+    private $roles = [];
 
     private $pdo;
 
@@ -106,8 +111,9 @@ class User implements Model
             $this->address->setStreet($result['street']);
             $this->address->setBuilding($result['building']);
             $this->address->setApartment($result['apartment']);
+
+            return $this->address;
         }
-        return $this->address;
     }
 
     /**
@@ -116,6 +122,48 @@ class User implements Model
     public function setAddress($address): void
     {
         $this->address = $address;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoles($userId): array
+    {
+        if (!empty($this->roles)) {
+            return $this->roles;
+        } else {
+            try {
+                $query = SqlQueries::GET_USER_ROLES;
+                $stmt  = $this->pdo->prepare($query);
+                $stmt->execute([
+                  'id' => $userId,
+                ]);
+            } catch (PDOException $e) {
+                echo 'Can\'t get user\'s roles from database<br>' . $e->getMessage();
+            }
+            $result = $stmt->fetchAll();
+
+            foreach ($result as $r) {
+                $role = new Role();
+                $role->setId($r['id']);
+                $role->setName($r['name']);
+                $role->setDescription($r['description']);
+
+                array_unshift($this->roles, $role);
+
+                $role = null;
+            }
+
+            return $this->roles;
+        }
+    }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles): void
+    {
+        $this->roles = $roles;
     }
 
     /**
@@ -236,9 +284,27 @@ class User implements Model
     public function login($email, $password)
     {
         if (CheckUser::isUserExists($email, $password)) {
-            $_SESSION['login']    = true;
-            $_SESSION['email']    = $email;
-            $_SESSION['password'] = $password;
+            $user  = $this->readUserByEmail($email);
+            $roles = $user->getRoles($user->getId());
+            foreach ($roles as $role) {
+                $role = (object)$role;
+
+                if ($role->getName() == 'Content Manager') {
+                    $_SESSION['content manager'] = true;
+                }
+
+                if ($role->getName() == 'Super User') {
+                    $_SESSION['super user'] = true;
+                }
+            }
+            $_SESSION['user']        = true;
+            $_SESSION['userName']    = $user->getName();
+            $_SESSION['userSurname'] = $user->getSurname();
+            $_SESSION['login']       = true;
+            $_SESSION['email']       = $email;
+            $_SESSION['password']    = $password;
+
+            $role = null;
 
             return true;
         } else {

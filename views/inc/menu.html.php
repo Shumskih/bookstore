@@ -167,7 +167,7 @@
                       <div class="setting__menu">
                           <?php if (isset($_SESSION['login'])): ?>
                             <span><a href="">
-                              <?php echo 'Hello, ' . $_SESSION['email']; ?>
+                              <?php echo 'Hello, ' . $_SESSION['userSurname'] . ' ' . $_SESSION['userName']; ?>
                         </a></span>
                           <?php endif; ?>
                         <span><a href="#">Compare Product</a></span>

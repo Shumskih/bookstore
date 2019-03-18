@@ -21,9 +21,10 @@ class FillTables
      * @param array $relations
      *
      */
-    public static function faker(array $tables, array $relations, array $users, array $addresses)
+    public static function faker(array $tables, array $relations, array $users, array $addresses, array $roles)
     {
         echo 'In faker<br>';
+        echo '------------<br>';
 
         self::$pdo = ConnectionUtil::getConnection();
 
@@ -40,7 +41,7 @@ class FillTables
                 self::dropTable($table);
             }
         } else {
-            echo 'В createTablesData.php нет таблиц!';
+            echo 'В createTablesData.php нет таблиц!<br>';
         }
 
         foreach ($tables as $table => $columns) {
@@ -54,10 +55,6 @@ class FillTables
                 self::populateCategories();
             }
 
-            if ($table == 'categories_books') {
-                self::populateCategoriesBooks($relations);
-            }
-
             if ($table == 'users') {
                 self::populateUsers($users);
             }
@@ -66,18 +63,28 @@ class FillTables
                 self::populateAddresses($addresses);
             }
 
+            if ($table == 'roles') {
+                self::populateRoles($roles);
+            }
+
+            if ($table == 'categories_books') {
+                self::populateCategoriesBooks($relations);
+            }
+
             if ($table == 'users_addresses') {
                 self::populateUsersAddresses($relations);
             }
 
-            //        if ($table == 'users_articles')
-            //            populateUsersArticles($pdo, $relations);
+            if ($table == 'users_roles') {
+                self::populateUsersRoles($relations);
+            }
         }
     }
 
     public static function dropTable(string $table): bool
     {
-        echo 'Drop table<br>';
+        echo 'Drop table ' . $table . '<br>';
+        echo '------------<br>';
         try {
             $result = self::$pdo->query("DROP TABLE IF EXISTS $table");
         } catch (PDOException $e) {
@@ -90,7 +97,8 @@ class FillTables
 
     public static function createTable(string $table, string $columns)
     {
-        echo 'Create table<br>';
+        echo 'Create table ' . $table . '<br>';
+        echo '------------<br>';
         try {
             $query = "CREATE TABLE $table ($columns)";
             self::$pdo->query($query);
@@ -101,7 +109,8 @@ class FillTables
 
     public static function populateBooks()
     {
-        echo 'populate books<br>';
+        echo 'Populate books<br>';
+        echo '------------<br>';
         $faker = Faker\Factory::create();
 
         for ($i = 0; $i < 10; $i++) {
@@ -137,6 +146,7 @@ class FillTables
     public static function populateCategories()
     {
         echo 'Populate categories<br>';
+        echo '------------<br>';
         $faker = Faker\Factory::create();
 
         for ($i = 0; $i < 5; $i++) {
@@ -153,6 +163,8 @@ class FillTables
 
     public static function populateCategoriesBooks(array $relations)
     {
+        echo 'Populate Categories_Books<br>';
+        echo '------------<br>';
         foreach ($relations['categoriesBooksRelations'] as $category => $relations) {
             foreach ($relations as $r) {
                 $query = "INSERT INTO categories_books VALUES ($category, $r)";
@@ -163,6 +175,8 @@ class FillTables
 
     public static function populateUsers(array $users)
     {
+        echo 'Populate Users<br>';
+        echo '------------<br>';
         foreach ($users as $user) {
             $name     = $user['name'];
             $surname  = $user['surname'];
@@ -185,41 +199,21 @@ class FillTables
         }
     }
 
-    //function populateUsersArticles(PDO $pdo, array $relations)
-    //{
-    //    foreach ($relations['usersArticlesRelations'] as $user => $relations) {
-    //        foreach ($relations as $r) {
-    //            $query = "INSERT INTO users_articles VALUES ($user, $r)";
-    //            $pdo->query($query);
-    //        }
-    //    }
-    //}
-    //
-    //function isTableExists(PDO $pdo, string $table) : bool
-    //{
-    //    try {
-    //        $result = $pdo->query("SELECT * from $table LIMIT 1");
-    //    } catch (Exception $e) {
-    //        return false;
-    //    }
-    //
-    //    return $result !== false;
-    //}
-    //
-
     public static function populateAddresses(array $addresses)
     {
+        echo 'Populate addresses<br>';
+        echo '------------<br>';
         foreach ($addresses as $address) {
             $country   = $address['country'];
             $region    = $address['region'];
-            $city      = $address['cuty'];
+            $city      = $address['city'];
             $street    = $address['street'];
             $building  = $address['building'];
             $apartment = $address['apartment'];
 
             try {
                 $query
-                          = 'INSERT INTO addresses VALUES (null, :country, :region, :city, :street, :building, :apertment)';
+                          = 'INSERT INTO addresses VALUES (null, :country, :region, :city, :street, :building, :apartment)';
                 $category = self::$pdo->prepare($query);
                 $category->execute([
                   'country'   => $country,
@@ -234,30 +228,47 @@ class FillTables
             }
         }
     }
-    //
-    //function tablesList(PDO $pdo) {
-    //    $query = 'SHOW TABLES';
-    //    $tables = [];
-    //
-    //    try {
-    //        $query = $pdo->query($query);
-    //    } catch (PDOException $e) {
-    //        echo 'Ошибка извлечения списка таблиц';
-    //    }
-    //
-    //    while ($t = $query->fetch()) {
-    //        array_push($tables, $t[0]);
-    //    }
-    //
-    //    return $tables;
-    //}
-    //
 
     public static function populateUsersAddresses(array $relations)
     {
+        echo 'Populate Users_Addresses<br>';
+        echo '------------<br>';
         foreach ($relations['usersAddressesRelations'] as $user => $relations) {
             foreach ($relations as $r) {
                 $query = "INSERT INTO users_addresses VALUES ($user, $r)";
+                self::$pdo->query($query);
+            }
+        }
+    }
+
+    public static function populateRoles(array $roles)
+    {
+        echo 'Populate Roles<br>';
+        echo '------------<br>';
+        foreach ($roles as $role) {
+            $name        = $role['name'];
+            $description = $role['description'];
+
+            try {
+                $query    = 'INSERT INTO roles VALUES (null, :name, :description)';
+                $category = self::$pdo->prepare($query);
+                $category->execute([
+                  'name'        => $name,
+                  'description' => $description,
+                ]);
+            } catch (PDOException $e) {
+                $e->getMessage();
+            }
+        }
+    }
+
+    public static function populateUsersRoles($relations)
+    {
+        echo 'Populate Users_Roles<br>';
+        echo '------------<br>';
+        foreach ($relations['usersRolesRelations'] as $user => $relations) {
+            foreach ($relations as $r) {
+                $query = "INSERT INTO users_roles VALUES ($user, $r)";
                 self::$pdo->query($query);
             }
         }

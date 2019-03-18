@@ -55,7 +55,7 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 
     // /fake-it
 } elseif (URI == '/fake-it' || URI == '/fake-it/') {
-    FillTables::faker($tables, $relations, $users, $addresses);
+    FillTables::faker($tables, $relations, $users, $addresses, $roles);
 
     // /book?id=?
 } elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] ||

@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 
 class FrontController
 {
+
     public function indexPage()
     {
         $controller = new IndexPageController();
@@ -89,6 +90,71 @@ class FrontController
         $user->render(
           '/views/users/account/account.html.php'
         );
+    }
+
+    public function accountInfo()
+    {
+        $userController = new UserController();
+
+        $name        = null;
+        $surname     = null;
+        $email       = null;
+        $mobilePhone = null;
+
+        $user = (object)$userController->getUserByEmail($_SESSION['email']);
+
+        $errors         = [];
+        $incorrectField = false;
+
+        if (isset($_POST['personalInfo'])) {
+            if (!empty($_POST['name'])) {
+                $name = $_POST['name'];
+            } else {
+                $incorrectField = true;
+                $errorName      = 'Incorrect field \'Name\'';
+                array_unshift($errors, $errorName);
+            }
+
+            if (!empty($_POST['surname'])) {
+                $surname = $_POST['surname'];
+            } else {
+                $incorrectField = true;
+                $errorSurname   = 'Incorrect field \'Surname\'';
+                array_unshift($errors, $errorSurname);
+            }
+
+            if (!empty($_POST['email'])) {
+                $email = $_POST['email'];
+            } else {
+                $incorrectField = true;
+                $errorEmail     = 'Incorrect field \'Email\'';
+                array_unshift($errors, $errorEmail);
+            }
+
+            if (!empty($_POST['mobilePhone'])) {
+                $mobilePhone = $_POST['mobilePhone'];
+            } else {
+                $incorrectField = true;
+                $errorPhone     = 'Incorrect field \'Mobile Phone\'';
+                array_unshift($errors, $errorPhone);
+            }
+        }
+
+        if ($incorrectField) {
+            $userController->render(
+              '/views/users/account/account.html.php',
+              $errors
+            );
+        } elseif (isset($_POST['personalInfo']) && !$incorrectField) {
+            $userController->create();
+        }
+
+        if (!isset($_POST['personalInfo'])) {
+            $userController->render(
+              '/views/users/account/account.html.php',
+              $user
+            );
+        }
     }
 
     public function register()

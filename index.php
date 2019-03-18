@@ -36,12 +36,12 @@ if (URI == '/') {
         header('Location: /account/info');
     }
 
-
-} elseif (URI == '/account/info' || URI == '//account/info/') {
-    if (isset($_SESSION['login'])) {
-        $frontController->account();
+// /account/info
+} elseif (URI == '/account/info' || URI == '/account/info/') {
+    if (!isset($_SESSION['login'])) {
+        header('Location: /account');
     } else {
-        $frontController->account();
+        $frontController->accountInfo();
     }
 
 } // /restore-password

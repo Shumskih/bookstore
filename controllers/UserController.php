@@ -18,9 +18,19 @@ class UserController extends Controller
         return $this->user->read($id);
     }
 
+    public function getUserByEmail($email)
+    {
+        return $this->user->readUserByEmail($email);
+    }
+
     public function getAllUsers(): array
     {
 
+    }
+
+    public function create()
+    {
+        $this->user->create();
     }
 
     public function login($email, $password) : bool

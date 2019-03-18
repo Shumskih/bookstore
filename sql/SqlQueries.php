@@ -34,9 +34,15 @@ class SqlQueries
     // Users
     const GET_USER = 'SELECT * FROM users WHERE email = :email and password = :password';
 
-    const GET_EMAIL = 'SELECT * FROM users WHERE email = :email';
+    const GET_BY_EMAIL = 'SELECT * FROM users WHERE email = :email';
 
     const GET_USER_BY_EMAIL = 'SELECT * FROM users WHERE email = :email';
 
     const REGISTER_NEW_USER = 'INSERT INTO users(id, email, password) VALUES (null, :email, :password)';
+
+    // Address
+    const GET_USER_ADDRESS = 'SELECT * FROM addresses
+                                   INNER JOIN users_addresses ON users_addresses.address_id = addresses.id
+                                   INNER JOIN users ON users.id = users_addresses.user_id
+                                   WHERE users_addresses.user_id = :id';
 }

@@ -1,6 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
+require_once ROOT . '/models/Address.php';
 require_once ROOT . '/sql/SqlQueries.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
 require_once ROOT . '/helpers/CheckUser.php';
@@ -17,6 +18,8 @@ class User implements Model
     private $email;
 
     private $password;
+
+    private $mobilePhone;
 
     private $address;
 
@@ -76,10 +79,30 @@ class User implements Model
     }
 
     /**
-     * @return mixed
+     * @return \Address
      */
-    public function getAddress()
+    public function getAddress($userId) : \Address
     {
+        try {
+            $query = SqlQueries::GET_USER_ADDRESS;
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([
+              'id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            echo 'Can\'t get user\'s address from database<br>' . $e->getMessage();
+        }
+        $result = $stmt->fetch();
+
+        $this->address = new Address();
+        $this->address->setId($result['id']);
+        $this->address->setCountry($result['country']);
+        $this->address->setRegion($result['region']);
+        $this->address->setCity($result['city']);
+        $this->address->setStreet($result['street']);
+        $this->address->setBuilding($result['building']);
+        $this->address->setApartment($result['apartment']);
+
         return $this->address;
     }
 
@@ -123,13 +146,52 @@ class User implements Model
         $this->password = $password;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMobilePhone()
+    {
+        return $this->mobilePhone;
+    }
+
+    /**
+     * @param mixed $mobilePhone
+     */
+    public function setMobilePhone($mobilePhone): void
+    {
+        $this->mobilePhone = $mobilePhone;
+    }
+
     function create()
     {
-        // TODO: Implement create() method.
+        echo 'Creating user info.';
     }
 
     function read($id): User
     {
+
+        return $this;
+    }
+
+    public function readUserByEmail($email): \User
+    {
+        try {
+            $query = SqlQueries::GET_BY_EMAIL;
+            $stmt  = $this->pdo->prepare($query);
+            $stmt->execute([
+              'email' => $email,
+            ]);
+        } catch (PDOException $e) {
+            echo 'Can\'t get user from database<br>' . $e->getMessage();
+        }
+
+        $user = $stmt->fetch();
+
+        $this->setId($user['id']);
+        $this->setName($user['name']);
+        $this->setSurname($user['surname']);
+        $this->setMobilePhone($user['mobile_phone']);
+        $this->setEmail($user['email']);
 
         return $this;
     }
@@ -169,10 +231,10 @@ class User implements Model
         } else {
             try {
                 $query = SqlQueries::REGISTER_NEW_USER;
-                $stmt = $this->pdo->prepare($query);
+                $stmt  = $this->pdo->prepare($query);
                 $stmt->execute([
-                  'email' => $email,
-                  'password' => $password
+                  'email'    => $email,
+                  'password' => $password,
                 ]);
             } catch (PDOException $e) {
                 echo 'Can\'t insert new user to database<br>' . $e->getMessage();

@@ -39,6 +39,9 @@
               <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
                 <div class="account__form">
                   <div class="input__box">
+                    <input type="hidden" name="userId" value="<?php echo $user->getId(); ?>">
+                  </div>
+                  <div class="input__box">
                     <label for="name">Name <span>*</span></label>
                     <input type="text" name="name" id="name" value="<?php echo $user->getName(); ?>" autofocus>
                   </div>
@@ -55,47 +58,59 @@
                     <input type="tel" name="mobilePhone" id="mobilePhone" placeholder="+7 (123) 45-67-891"
                            value="<?php echo $user->getMobilePhone(); ?>">
                   </div>
-                  <div class="form__btn">
-                    <button type="submit" name="personalInfo">Save</button>
-                  </div>
                 </div>
-              </form>
             </div>
           </div>
           <div class="col-lg-6 col-12">
             <div class="my__account__wrapper">
               <h3 class="account__title">Delivery address</h3>
-              <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                <div class="account__form">
-                  <div class="input__box">
-                    <label for="country">Country <span>*</span></label>
-                    <input type="text" name="country" id="country" value="<?php echo $address->getCountry(); ?>">
-                  </div>
-                  <div class="input__box">
-                    <label for="state">State <span>*</span></label>
-                    <input type="text" name="state" id="state" value="<?php echo $address->getRegion(); ?>">
-                  </div>
-                  <div class="input__box">
-                    <label for="city">City <span>*</span></label>
-                    <input type="text" name="city" id="city" value="<?php echo $address->getCity(); ?>">
-                  </div>
-                  <div class="input__box">
-                    <label for="street">Street <span>*</span></label>
-                    <input type="text" name="street" id="street" value="<?php echo $address->getStreet(); ?>">
-                  </div>
-                  <div class="input__box">
-                    <label for="building">Building <span>*</span></label>
-                    <input type="text" name="building" id="building" value="<?php echo $address->getBuilding(); ?>">
-                  </div>
-                  <div class="input__box">
-                    <label for="apartment">Apartment <span>*</span></label>
-                    <input type="text" name="apartment" id="apartment" value="<?php echo $address->getApartment(); ?>">
-                  </div>
-                  <div class="form__btn">
-                    <button type="submit" name="deliveryAddress">Save</button>
-                  </div>
+              <div class="account__form">
+                <div class="input__box">
+                  <input type="hidden" name="addressId" value="<?php echo $address->getId(); ?>">
                 </div>
-              </form>
+                <div class="input__box">
+                  <label for="country">Country <span>*</span></label>
+                  <select class="select__option" id="country" name="country">
+                      <?php foreach (Countries::$countries as $code => $name): ?>
+                        <option name="<?php echo $name; ?>" <?php if ($name == $address->getCountry()) {
+                            echo 'selected';
+                        } ?>><?php echo $name; ?></option>
+                      <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="input__box">
+                  <label for="state">State <span>*</span></label>
+                  <input type="text" name="state" id="state" value="<?php echo $address->getRegion(); ?>">
+                </div>
+                <div class="input__box">
+                  <label for="city">City <span>*</span></label>
+                  <input type="text" name="city" id="city" value="<?php echo $address->getCity(); ?>">
+                </div>
+                <div class="input__box">
+                  <label for="street">Street <span>*</span></label>
+                  <input type="text" name="street" id="street" value="<?php echo $address->getStreet(); ?>">
+                </div>
+                <div class="input__box">
+                  <label for="building">Building <span>*</span></label>
+                  <input type="text" name="building" id="building" value="<?php echo $address->getBuilding(); ?>">
+                </div>
+                <div class="input__box">
+                  <label for="apartment">Apartment <span>*</span></label>
+                  <input type="text" name="apartment" id="apartment" value="<?php echo $address->getApartment(); ?>">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="my__account__wrapper">
+              <div class="account__form">
+                <div class="form__btn">
+                  <button type="submit" name="personalInfo">Save</button>
+                </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>

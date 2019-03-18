@@ -21,6 +21,8 @@ class Address implements Model
 
     private $apartment;
 
+    private $user;
+
     private $pdo;
 
     public function __construct()
@@ -140,7 +142,7 @@ class Address implements Model
         $this->apartment = $apartment;
     }
 
-    function create()
+    function create($address)
     {
         // TODO: Implement create() method.
     }
@@ -155,9 +157,24 @@ class Address implements Model
         // TODO: Implement readAll() method.
     }
 
-    function update($id)
+    function update($address)
     {
-        // TODO: Implement update() method.
+        $address = (object)$address;
+        try {
+            $query = SqlQueries::UPDATE_ADDRESS;
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute([
+              'id' => $address->getId(),
+              'country' => $address->getCountry(),
+              'region' => $address->getRegion(),
+              'city' => $address->getCity(),
+              'street' => $address->getStreet(),
+              'building' => $address->getBuilding(),
+              'apartment' => $address->getApartment()
+            ]);
+        } catch (PDOException $e) {
+            echo 'Can\'t update address in database<br>' . $e->getMessage();
+        }
     }
 
     function delete($id)

@@ -49,7 +49,7 @@ class Book implements Model
         $this->pdo = ConnectionUtil::getConnection();
     }
 
-    function create()
+    function create($book)
     {
         // TODO: Implement create() method.
     }
@@ -99,7 +99,7 @@ class Book implements Model
     }
 
 
-    function update($id)
+    function update($book)
     {
         // TODO: Implement update() method.
     }

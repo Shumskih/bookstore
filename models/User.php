@@ -2,6 +2,7 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/models/Address.php';
+require_once ROOT . '/controllers/AddressController.php';
 require_once ROOT . '/sql/SqlQueries.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
 require_once ROOT . '/helpers/CheckUser.php';
@@ -81,28 +82,31 @@ class User implements Model
     /**
      * @return \Address
      */
-    public function getAddress($userId) : \Address
+    public function getAddress($userId): \Address
     {
-        try {
-            $query = SqlQueries::GET_USER_ADDRESS;
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $userId
-            ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t get user\'s address from database<br>' . $e->getMessage();
+        if (!empty($this->address)) {
+            return $this->address;
+        } else {
+            try {
+                $query = SqlQueries::GET_USER_ADDRESS;
+                $stmt  = $this->pdo->prepare($query);
+                $stmt->execute([
+                  'id' => $userId,
+                ]);
+            } catch (PDOException $e) {
+                echo 'Can\'t get user\'s address from database<br>' . $e->getMessage();
+            }
+            $result = $stmt->fetch();
+
+            $this->address = new Address();
+            $this->address->setId($result['id']);
+            $this->address->setCountry($result['country']);
+            $this->address->setRegion($result['region']);
+            $this->address->setCity($result['city']);
+            $this->address->setStreet($result['street']);
+            $this->address->setBuilding($result['building']);
+            $this->address->setApartment($result['apartment']);
         }
-        $result = $stmt->fetch();
-
-        $this->address = new Address();
-        $this->address->setId($result['id']);
-        $this->address->setCountry($result['country']);
-        $this->address->setRegion($result['region']);
-        $this->address->setCity($result['city']);
-        $this->address->setStreet($result['street']);
-        $this->address->setBuilding($result['building']);
-        $this->address->setApartment($result['apartment']);
-
         return $this->address;
     }
 
@@ -162,7 +166,7 @@ class User implements Model
         $this->mobilePhone = $mobilePhone;
     }
 
-    function create()
+    function create($user)
     {
         echo 'Creating user info.';
     }
@@ -201,9 +205,27 @@ class User implements Model
         // TODO: Implement readAll() method.
     }
 
-    function update($id)
+    function update($user)
     {
-        // TODO: Implement update() method.
+        $user = (object)$user;
+        try {
+            $query = SqlQueries::UPDATE_USER;
+            $stmt  = $this->pdo->prepare($query);
+            $stmt->execute([
+              'id'          => $user->getId(),
+              'name'        => $user->getName(),
+              'surname'     => $user->getSurname(),
+              'email'       => $user->getEmail(),
+              'mobilePhone' => $user->getMobilePhone(),
+            ]);
+        } catch (PDOException $e) {
+            echo 'Can\'t update user!<br>' . $e->getMessage();
+        }
+
+        $address = (object)$user->getAddress($user->getId());
+        vardump($address);
+        $addressController = new AddressController();
+        $addressController->update($address);
     }
 
     function delete($id)

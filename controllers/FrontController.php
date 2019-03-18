@@ -96,10 +96,21 @@ class FrontController
     {
         $userController = new UserController();
 
+        // User
+        $userId      = null;
         $name        = null;
         $surname     = null;
         $email       = null;
         $mobilePhone = null;
+
+        // Address
+        $addressId = null;
+        $country   = null;
+        $region     = null;
+        $city      = null;
+        $street    = null;
+        $building  = null;
+        $apartment = null;
 
         $user = (object)$userController->getUserByEmail($_SESSION['email']);
 
@@ -107,6 +118,11 @@ class FrontController
         $incorrectField = false;
 
         if (isset($_POST['personalInfo'])) {
+            // User
+            if (!empty($_POST['userId'])) {
+                $userId = $_POST['userId'];
+            }
+
             if (!empty($_POST['name'])) {
                 $name = $_POST['name'];
             } else {
@@ -138,6 +154,59 @@ class FrontController
                 $errorPhone     = 'Incorrect field \'Mobile Phone\'';
                 array_unshift($errors, $errorPhone);
             }
+
+            // Address
+            if (!empty($_POST['addressId'])) {
+                $addressId = $_POST['addressId'];
+            }
+
+            if (!empty($_POST['country'])) {
+                $country = $_POST['country'];
+            } else {
+                $incorrectField = true;
+                $errorCountry   = 'Incorrect field \'Country\'';
+                array_unshift($errors, $errorCountry);
+            }
+
+            if (!empty($_POST['state'])) {
+                $region = $_POST['state'];
+            } else {
+                $incorrectField = true;
+                $errorState     = 'Incorrect field \'State\'';
+                array_unshift($errors, $errorState);
+            }
+
+            if (!empty($_POST['city'])) {
+                $city = $_POST['city'];
+            } else {
+                $incorrectField = true;
+                $errorCity      = 'Incorrect field \'City\'';
+                array_unshift($errors, $errorCity);
+            }
+
+            if (!empty($_POST['street'])) {
+                $street = $_POST['street'];
+            } else {
+                $incorrectField = true;
+                $errorStreet    = 'Incorrect field \'Street\'';
+                array_unshift($errors, $errorStreet);
+            }
+
+            if (!empty($_POST['building'])) {
+                $building = $_POST['building'];
+            } else {
+                $incorrectField = true;
+                $errorBuilding  = 'Incorrect field \'Building\'';
+                array_unshift($errors, $errorBuilding);
+            }
+
+            if (!empty($_POST['apartment'])) {
+                $apartment = $_POST['apartment'];
+            } else {
+                $incorrectField = true;
+                $errorApartment = 'Incorrect field \'Apartment\'';
+                array_unshift($errors, $errorApartment);
+            }
         }
 
         if ($incorrectField) {
@@ -146,10 +215,30 @@ class FrontController
               $errors
             );
         } elseif (isset($_POST['personalInfo']) && !$incorrectField) {
-            $userController->create();
+            $user = new User();
+            $user->setId($userId);
+            $user->setName($name);
+            $user->setSurname($surname);
+            $user->setEmail($email);
+            $user->setMobilePhone($mobilePhone);
+
+            $address = new Address();
+            $address->setId($addressId);
+            $address->setCountry($country);
+            $address->setRegion($region);
+            $address->setCity($city);
+            $address->setStreet($street);
+            $address->setBuilding($building);
+            $address->setApartment($apartment);
+
+            $user->setAddress($address);
+
+            $userController->update($user);
+
+            header('Location: /account');
         }
 
-        if (!isset($_POST['personalInfo'])) {
+        if (!isset($_POST['personalInfo']) && !isset($_POST['deliveryAddress'])) {
             $userController->render(
               '/views/users/account/account.html.php',
               $user

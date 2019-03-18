@@ -53,7 +53,7 @@ class Category implements Model
         $this->books = $books;
     }
 
-    function create()
+    function create($category)
     {
         // TODO: Implement create() method.
     }
@@ -148,7 +148,7 @@ class Category implements Model
         return $categoriesObjectsArray;
     }
 
-    function update($id)
+    function update($category)
     {
         // TODO: Implement update() method.
     }

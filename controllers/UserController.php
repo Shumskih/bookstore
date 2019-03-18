@@ -28,9 +28,9 @@ class UserController extends Controller
 
     }
 
-    public function create()
+    public function update($user)
     {
-        $this->user->create();
+        $this->user->update($user);
     }
 
     public function login($email, $password) : bool

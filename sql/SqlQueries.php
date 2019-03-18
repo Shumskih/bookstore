@@ -40,9 +40,25 @@ class SqlQueries
 
     const REGISTER_NEW_USER = 'INSERT INTO users(id, email, password) VALUES (null, :email, :password)';
 
+    const UPDATE_USER = 'UPDATE users 
+                          SET name = :name, 
+                              surname = :surname,  
+                              email = :email, 
+                              mobile_phone = :mobilePhone
+                          WHERE id = :id';
+
     // Address
     const GET_USER_ADDRESS = 'SELECT * FROM addresses
                                    INNER JOIN users_addresses ON users_addresses.address_id = addresses.id
                                    INNER JOIN users ON users.id = users_addresses.user_id
                                    WHERE users_addresses.user_id = :id';
+
+    const UPDATE_ADDRESS = 'UPDATE addresses 
+                          SET country = :country, 
+                              region = :region, 
+                              city = :city, 
+                              street = :street,
+                              building = :building,
+                              apartment = :apartment
+                          WHERE id = :id';
 }

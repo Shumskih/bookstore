@@ -1,7 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
+require_once ROOT . '/controllers/Controller.php';
 
-class FrontController
+class FrontController extends Controller
 {
 
     public function indexPage()
@@ -238,7 +239,7 @@ class FrontController
             header('Location: /account');
         }
 
-        if (!isset($_POST['personalInfo']) && !isset($_POST['deliveryAddress'])) {
+        if (!isset($_POST['personalInfo'])) {
             $userController->render(
               '/views/users/account/account.html.php',
               $user
@@ -289,5 +290,12 @@ class FrontController
         unset($controller);
 
         header('Location: /books');
+    }
+
+    public function cart()
+    {
+        $this->render(
+          '/views/cart/cart.html.php'
+        );
     }
 }

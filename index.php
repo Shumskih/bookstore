@@ -4,6 +4,7 @@ require_once ROOT . '/controllers/FrontController.php';
 require_once ROOT . '/controllers/IndexPageController.php';
 require_once ROOT . '/controllers/BookController.php';
 require_once ROOT . '/controllers/CategoryController.php';
+require_once ROOT . '/controllers/CartController.php';
 require_once ROOT . '/controllers/UserController.php';
 require_once ROOT . '/helpers/FillTables.php';
 require_once ROOT . '/helpers/Countries.php';
@@ -60,6 +61,12 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     // /book?id=?
 } elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] ||
           isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] . '/') {
+
+    if (isset($_POST['addToCart']) && isset($_POST['id']) && isset($_POST['qty'])) {
+        $cartController = new CartController();
+        $cartController->addToCart();
+    }
+
     $frontController->showBook($_GET['id']);
 
     // /books
@@ -71,7 +78,18 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
           isset($_GET['id']) && URI == '/category?id=' . $_GET['id'] . '/') {
     $frontController->showCategory($_GET['id']);
 
-} else {
+// /cart
+} elseif (URI == '/cart' || URI == '/cart/') {
+    if (isset($_GET['id']) && isset($_GET['qty']))
+        echo 'Book with id = ' . $_GET['id'] . ' and qty = ' . $_GET['qty'];
+//    $frontController->cart();
+
+// /cart/checkout
+} elseif (URI == '/cart/checkout' || URI == '/cart/checkout/') {
+
+}
+
+else {
     $controller = new UserController();
     $controller->renderError(404);
 }

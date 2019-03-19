@@ -289,6 +289,10 @@ class User implements Model
             foreach ($roles as $role) {
                 $role = (object)$role;
 
+                if ($role->getName() == 'User') {
+                    $_SESSION['user'] = true;
+                }
+
                 if ($role->getName() == 'Content Manager') {
                     $_SESSION['content manager'] = true;
                 }
@@ -297,14 +301,13 @@ class User implements Model
                     $_SESSION['super user'] = true;
                 }
             }
-            $_SESSION['user']        = true;
             $_SESSION['userName']    = $user->getName();
             $_SESSION['userSurname'] = $user->getSurname();
             $_SESSION['login']       = true;
             $_SESSION['email']       = $email;
-            $_SESSION['password']    = $password;
 
-            $role = null;
+            unset($role);
+            unset($user);
 
             return true;
         } else {

@@ -30,6 +30,8 @@
                 echo 'Account';
               } elseif (URI == '/account/info' || URI == '/account/info/') {
                 echo 'Account Info';
+              } elseif (URI == '/cart' || URI == '/cart/') {
+                echo 'Shopping Cart';
               }
               ?>
             </span>

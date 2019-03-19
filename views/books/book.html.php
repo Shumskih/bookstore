@@ -79,26 +79,25 @@
                       <strong>Pages:&nbsp;&nbsp;</strong><?php echo $book->getPages(); ?>
                     </p>
                   </div>
-                  <div class="box-tocart d-flex">
-                    <span>Qty</span>
-                    <input id="qty" class="input-text qty" name="qty"
-                           min="1"
-                           value="1" title="Qty" type="number">
-                    <div class="addtocart__actions">
-                      <button class="tocart" type="submit"
-                              title="Add to Cart">Add to Cart
-                      </button>
+                  <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                    <div class="box-tocart d-flex">
+                      <input type="hidden" name="id" value="<?php echo $book->getId(); ?>">
+                      <span>Qty</span>
+                      <input type="number" class="input-text qty" name="qty" min="1" value="1" title="Qty">
+                      <div class="addtocart__actions">
+                        <button class="tocart" type="submit" name="addToCart" title="Add to Cart">Add to Cart</button>
+                      </div>
+                      <div class="product-addto-links clearfix">
+                        <a class="wishlist" href="#"></a>
+                        <a class="compare" href="#"></a>
+                      </div>
                     </div>
-                    <div class="product-addto-links clearfix">
-                      <a class="wishlist" href="#"></a>
-                      <a class="compare" href="#"></a>
-                    </div>
-                  </div>
+                  </form>
                   <div class="product_meta">
 											<span class="posted_in">Categories:
                         <?php foreach ($book->getCategories() as $category): ?>
-                        <?php $category = (object) $category; ?>
-												<a href="/category?id=<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></a>
+                            <?php $category = (object)$category; ?>
+                          <a href="/category?id=<?php echo $category->getId(); ?>"><?php echo $category->getName(); ?></a>
                           <br>
                         <?php endforeach; ?>
 											</span>

@@ -85,11 +85,10 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     if (isset($_POST['updateCart'])) {
         $cartController = new cartController();
         $cartController->updateCart();
-        $frontController->cart();
-    } else {
-        $frontController->cart();
     }
+    $frontController->cart();
 
+// /cart/delete-from-cart
 } elseif (URI == '/cart/delete-from-cart?id=' . $_GET['id']
           || URI == '/cart/delete-from-cart?id=' . $_GET['id'] . '/') {
     $cartController = new CartController();
@@ -98,7 +97,7 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
         $cartController->deleteBook();
         header('Location: /cart');
     } else {
-        header('Location: /cart');
+        $cartController->getCart();
     }
 
     // /cart/checkout

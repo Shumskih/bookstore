@@ -188,7 +188,18 @@ class Cart implements Model
 
     public function getCart()
     {
-
+        if (isset($_SESSION['cart'])) {
+            $grandTotal = null;
+            $bookTotal = null;
+            $count = count($_SESSION['cart']);
+            for ($i = 0; $i < $count; $i++) {
+                $book = (object) unserialize($_SESSION['cart'][$i]['book']);
+                $bookTotal = $book->getPrice() * $_SESSION['cart'][$i]['qty'];
+                $grandTotal += $bookTotal;
+                unset($book);
+            }
+            $_SESSION['grandTotal'] = $grandTotal;
+        }
     }
 
     public function updateCart()
@@ -210,10 +221,14 @@ class Cart implements Model
             unset($_SESSION['cart']);
         } else {
             for ($i = 0; $i < $count; $i++) {
-                if ($_GET['id'] == $_SESSION['cart'][$i]['bookId']) {
+                $book = (object) unserialize($_SESSION['cart'][$i]['book']);
+
+                if ($_GET['id'] == $book->getId()) {
                     unset($_SESSION['cart'][$i]);
                 }
+                unset($book);
             }
+            $_SESSION['cart'] = array_values($_SESSION['cart']);
         }
     }
 }

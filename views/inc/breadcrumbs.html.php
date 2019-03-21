@@ -5,7 +5,7 @@
         <div class="bradcaump__inner text-center">
           <h2 class="bradcaump-title">
               <?php
-              if (URI !== '/books' && URI !== '/account' && URI !== '/account/info' && URI !== '/cart') {
+              if (URI !== '/books' && URI !== '/account' && URI !== '/account/info' && URI !== '/cart' && URI !== '/cart/') {
                   foreach ($var as $k => $v) {
                     if (isset($v['book'])) {
                           $book = (object) $v['book'];

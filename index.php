@@ -38,7 +38,7 @@ if (URI == '/') {
         header('Location: /account/info');
     }
 
-// /account/info
+    // /account/info
 } elseif (URI == '/account/info' || URI == '/account/info/') {
     if (!isset($_SESSION['login'])) {
         header('Location: /account');
@@ -59,12 +59,14 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     FillTables::faker($tables, $relations, $users, $addresses, $roles);
 
     // /book?id=?
-} elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] ||
-          isset($_GET['id']) && URI == '/book?id=' . $_GET['id'] . '/') {
+} elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']
+          || isset($_GET['id'])
+             && URI == '/book?id=' . $_GET['id'] . '/') {
 
     if (isset($_POST['addToCart']) && isset($_POST['id']) && isset($_POST['qty'])) {
         $cartController = new CartController();
         $cartController->addToCart();
+        unset($cartController);
     }
 
     $frontController->showBook($_GET['id']);
@@ -74,22 +76,35 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     $frontController->books();
 
     // /category?id=?
-} elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id'] ||
-          isset($_GET['id']) && URI == '/category?id=' . $_GET['id'] . '/') {
+} elseif (isset($_GET['id']) && URI == '/category?id=' . $_GET['id']
+          || isset($_GET['id']) && URI == '/category?id=' . $_GET['id'] . '/') {
     $frontController->showCategory($_GET['id']);
 
-// /cart
+    // /cart
 } elseif (URI == '/cart' || URI == '/cart/') {
-    if (isset($_GET['id']) && isset($_GET['qty']))
-        echo 'Book with id = ' . $_GET['id'] . ' and qty = ' . $_GET['qty'];
-//    $frontController->cart();
+    if (isset($_POST['updateCart'])) {
+        $cartController = new cartController();
+        $cartController->updateCart();
+        $frontController->cart();
+    } else {
+        $frontController->cart();
+    }
 
-// /cart/checkout
+} elseif (URI == '/cart/delete-from-cart?id=' . $_GET['id']
+          || URI == '/cart/delete-from-cart?id=' . $_GET['id'] . '/') {
+    $cartController = new CartController();
+
+    if (isset($_SESSION['cart'])) {
+        $cartController->deleteBook();
+        header('Location: /cart');
+    } else {
+        header('Location: /cart');
+    }
+
+    // /cart/checkout
 } elseif (URI == '/cart/checkout' || URI == '/cart/checkout/') {
 
-}
-
-else {
+} else {
     $controller = new UserController();
     $controller->renderError(404);
 }

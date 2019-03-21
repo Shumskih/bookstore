@@ -1,6 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/controllers/Controller.php';
+require_once ROOT . '/controllers/BookController.php';
+require_once ROOT . '/controllers/CartController.php';
 
 class FrontController extends Controller
 {
@@ -294,8 +296,12 @@ class FrontController extends Controller
 
     public function cart()
     {
+        $cartController = new CartController();
+        $books = $cartController->getCart();
+
         $this->render(
-          '/views/cart/cart.html.php'
+          '/views/cart/cart.html.php',
+          $books
         );
     }
 }

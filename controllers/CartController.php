@@ -19,4 +19,18 @@ class CartController extends Controller
         $this->cart->addToCart();
     }
 
+    public function getCart()
+    {
+        return $this->cart->getCart();
+    }
+
+    public function updateCart()
+    {
+        $this->cart->updateCart();
+    }
+
+    public function deleteBook()
+    {
+        $this->cart->deleteBook();
+    }
 }

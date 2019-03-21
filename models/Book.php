@@ -12,23 +12,23 @@ require_once ROOT . '/sql/SqlQueries.php';
 class Book implements Model
 {
 
-    private $id;
+    private $id = null;
 
-    private $title;
+    private $title = null;
 
-    private $authorName;
+    private $authorName = null;
 
-    private $authorSurname;
+    private $authorSurname = null;
 
-    private $pages;
+    private $pages = null;
 
-    private $description;
+    private $description = null;
 
-    private $img;
+    private $img = null;
 
-    private $price;
+    private $price = null;
 
-    private $added;
+    private $added = null;
 
     /**
      * @var array of Category objects
@@ -264,7 +264,7 @@ class Book implements Model
     /**
      * @param mixed $added
      */
-    public function setAdded($added) : void
+    public function setAdded($added): void
     {
         $this->added = $added;
     }
@@ -277,16 +277,16 @@ class Book implements Model
     {
         try {
             $query = SqlQueries::GET_CATEGORIES_OF_BOOK;
-            $stmt = $this->pdo->prepare($query);
+            $stmt  = $this->pdo->prepare($query);
             $stmt->execute([
-              'id' => $this->getId()
+              'id' => $this->getId(),
             ]);
             $categories = $stmt->fetchAll();
         } catch (PDOException $e) {
             echo 'Can\'t get categories of book<br>' . $e->getMessage();
         }
 
-        foreach ($categories as $c){
+        foreach ($categories as $c) {
             $category = new Category();
             $category->setId($c['id']);
             $category->setName($c['name']);
@@ -305,5 +305,21 @@ class Book implements Model
     public function setCategories(array $categories): void
     {
         $this->categories = $categories;
+    }
+
+    public function __sleep()
+    {
+        return [
+          'id',
+          'title',
+          'authorName',
+          'authorSurname',
+          'pages',
+          'description',
+          'img',
+          'price',
+          'added',
+          'categories'
+        ];
     }
 }

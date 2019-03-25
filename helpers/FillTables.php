@@ -210,10 +210,11 @@ class FillTables
             $street    = $address['street'];
             $building  = $address['building'];
             $apartment = $address['apartment'];
+            $postcode  = $address['postcode'];
 
             try {
                 $query
-                          = 'INSERT INTO addresses VALUES (null, :country, :region, :city, :street, :building, :apartment)';
+                          = 'INSERT INTO addresses VALUES (null, :country, :region, :city, :street, :building, :apartment, :postcode)';
                 $category = self::$pdo->prepare($query);
                 $category->execute([
                   'country'   => $country,
@@ -222,6 +223,7 @@ class FillTables
                   'street'    => $street,
                   'building'  => $building,
                   'apartment' => $apartment,
+                  'postcode'  => $postcode
                 ]);
             } catch (PDOException $e) {
                 $e->getMessage();

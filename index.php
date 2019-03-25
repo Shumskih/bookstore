@@ -9,6 +9,7 @@ require_once ROOT . '/controllers/UserController.php';
 require_once ROOT . '/helpers/FillTables.php';
 require_once ROOT . '/helpers/Countries.php';
 require_once ROOT . '/sql/tablesData.php';
+require_once ROOT . '/helpers/Delivery.php';
 
 session_start();
 
@@ -89,8 +90,8 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     $frontController->cart();
 
 // /cart/delete-from-cart
-} elseif (URI == '/cart/delete-from-cart?id=' . $_GET['id']
-          || URI == '/cart/delete-from-cart?id=' . $_GET['id'] . '/') {
+} elseif (isset($_GET['id']) && URI == '/cart/delete-from-cart?id=' . $_GET['id']
+          || isset($_GET['id']) && URI == '/cart/delete-from-cart?id=' . $_GET['id'] . '/') {
     $cartController = new CartController();
 
     if (isset($_SESSION['cart'])) {
@@ -102,6 +103,12 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 
     // /cart/checkout
 } elseif (URI == '/cart/checkout' || URI == '/cart/checkout/') {
+    if(isset($_POST['updateCheckout'])) {
+        $shippingMethod = $_POST['shippingMethod'];
+        $frontController->checkout($shippingMethod);
+    } else {
+        $frontController->checkout();
+    }
 
 } else {
     $controller = new UserController();

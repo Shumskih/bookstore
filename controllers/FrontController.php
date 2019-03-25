@@ -304,4 +304,15 @@ class FrontController extends Controller
           $books
         );
     }
+
+    public function checkout($shippingMethod = 'Courier')
+    {
+        $cartController = new CartController();
+        $user = $cartController->checkout($shippingMethod);
+
+        $this->render(
+          '/views/cart/checkout/checkout.html.php',
+          $user
+        );
+    }
 }

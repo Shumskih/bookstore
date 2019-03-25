@@ -111,6 +111,7 @@ class User implements Model
             $this->address->setStreet($result['street']);
             $this->address->setBuilding($result['building']);
             $this->address->setApartment($result['apartment']);
+            $this->address->setPostcode($result['postcode']);
 
             return $this->address;
         }

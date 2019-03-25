@@ -5,14 +5,15 @@
         <div class="bradcaump__inner text-center">
           <h2 class="bradcaump-title">
               <?php
-              if (URI !== '/books' && URI !== '/account' && URI !== '/account/info' && URI !== '/cart' && URI !== '/cart/') {
+              if (URI !== '/books' && URI !== '/account' && URI !== '/account/info' && URI !== '/cart'
+                  && URI !== '/cart/' && URI !== '/cart/checkout') {
                   foreach ($var as $k => $v) {
-                    if (isset($v['book'])) {
-                          $book = (object) $v['book'];
-                    }
-                    if (isset($v['category'])) {
-                      $category = (object) $v['category'];
-                    }
+                      if (isset($v['book'])) {
+                          $book = (object)$v['book'];
+                      }
+                      if (isset($v['category'])) {
+                          $category = (object)$v['category'];
+                      }
                   }
               } ?>
           </h2>
@@ -27,11 +28,17 @@
               } elseif (isset($book)) {
                   echo $book->getTitle();
               } elseif (URI == '/account' || URI == '/account/') {
-                echo 'Account';
+                  echo 'Account';
               } elseif (URI == '/account/info' || URI == '/account/info/') {
-                echo 'Account Info';
+                  echo '<a class="breadcrumb_item" href="/account">Account</a>
+                        <span class="brd-separetor">/</span>';
+                  echo 'Account Info';
               } elseif (URI == '/cart' || URI == '/cart/') {
-                echo 'Shopping Cart';
+                  echo 'Shopping Cart';
+              } elseif (URI == '/cart/checkout' || URI == '/cart/checkout/') {
+                  echo '<a class="breadcrumb_item" href="/cart">Shopping Cart</a>
+                        <span class="brd-separetor">/</span>';
+                  echo 'Checkout';
               }
               ?>
             </span>

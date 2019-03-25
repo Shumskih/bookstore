@@ -63,7 +63,7 @@
                   <li><a href="#">Coupon Code</a></li>
                   <li><a href="#">Apply Code</a></li>
                   <li><button class="cart-button-list" type="submit" name="updateCart">Update Cart</button></li>
-                  <li><a href="#">Check Out</a></li>
+                  <li><a href="/cart/checkout">Check Out</a></li>
                 </ul>
               </div>
             </form>

@@ -21,7 +21,7 @@ class CartController extends Controller
 
     public function getCart()
     {
-        return $this->cart->getCart();
+        $this->cart->getCart();
     }
 
     public function updateCart()
@@ -32,5 +32,10 @@ class CartController extends Controller
     public function deleteBook()
     {
         $this->cart->deleteBook();
+    }
+
+    public function checkout($shippingMethod)
+    {
+        return $this->cart->checkout($shippingMethod);
     }
 }

@@ -7,23 +7,25 @@ require_once ROOT . '/helpers/ConnectionUtil.php';
 class Address implements Model
 {
 
-    private $id;
+    private $id = null;
 
-    private $country;
+    private $country = null;
 
-    private $region;
+    private $region = null;
 
-    private $city;
+    private $city = null;
 
-    private $street;
+    private $street = null;
 
-    private $building;
+    private $building = null;
 
-    private $apartment;
+    private $apartment = null;
 
-    private $user;
+    private $postcode = null;
 
-    private $pdo;
+    private $user = null;
+
+    private $pdo = null;
 
     public function __construct()
     {
@@ -142,6 +144,38 @@ class Address implements Model
         $this->apartment = $apartment;
     }
 
+    /**
+     * @return null
+     */
+    public function getPostcode()
+    {
+        return $this->postcode;
+    }
+
+    /**
+     * @param null $postcode
+     */
+    public function setPostcode($postcode): void
+    {
+        $this->postcode = $postcode;
+    }
+
+    /**
+     * @return null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param null $user
+     */
+    public function setUser($user): void
+    {
+        $this->user = $user;
+    }
+
     function create($address)
     {
         // TODO: Implement create() method.
@@ -170,7 +204,8 @@ class Address implements Model
               'city' => $address->getCity(),
               'street' => $address->getStreet(),
               'building' => $address->getBuilding(),
-              'apartment' => $address->getApartment()
+              'apartment' => $address->getApartment(),
+              'postcode'  => $address->getPostcode()
             ]);
         } catch (PDOException $e) {
             echo 'Can\'t update address in database<br>' . $e->getMessage();

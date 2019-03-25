@@ -27,7 +27,8 @@ $tables = [
                   city      varchar(200),
                   street    varchar(200),
                   building  varchar(200),
-                  apartment varchar(100)',
+                  apartment varchar(100),
+                  postcode  varchar(100)',
 
   'roles' => 'id   int auto_increment primary key not null,
               name varchar(150)                   not null,
@@ -99,22 +100,25 @@ $addresses = [
     'street'    => 'Таганрогская',
     'building'  => '1',
     'apartment' => '57',
+    'postcode'  => '350059'
   ],
   [
     'country'   => 'Russian Federation',
     'region'    => 'Краснодарский край',
     'city'      => 'Краснодар',
     'street'    => 'Таганрогская',
-    'building'  => '1',
-    'apartment' => '57',
+    'building'  => '110',
+    'apartment' => '576',
+    'postcode'  => '350061'
   ],
   [
     'country'   => 'Russian Federation',
     'region'    => 'Краснодарский край',
     'city'      => 'Краснодар',
     'street'    => 'Таганрогская',
-    'building'  => '1',
-    'apartment' => '57',
+    'building'  => '111',
+    'apartment' => '577',
+    'postcode'  => '350060'
   ]
 ];
 

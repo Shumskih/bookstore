@@ -21,7 +21,7 @@ class FillTables
      * @param array $relations
      *
      */
-    public static function faker(array $tables, array $relations, array $users, array $addresses, array $roles, array $delivery)
+    public static function faker(array $tables, array $relations, array $users, array $addresses, array $roles, array $delivery, array $statuses)
     {
         echo 'In faker<br>';
         echo '------------<br>';
@@ -69,6 +69,10 @@ class FillTables
 
             if ($table == 'deliveries') {
                 self::populateDelivery($delivery);
+            }
+
+            if ($table == 'statuses') {
+                self::populateStatus($statuses);
             }
 
             if ($table == 'categories_books') {
@@ -297,6 +301,25 @@ class FillTables
                 ]);
             } catch (PDOException $e) {
                 echo 'Can\'t create delivery<br>' . $e->getMessage();
+            }
+        }
+    }
+
+    public static function populateStatus(array $statuses)
+    {
+        echo 'Populate Status<br>';
+        echo '------------<br>';
+        foreach ($statuses as $status) {
+            $status = $status['status'];
+
+            try {
+                $query = 'INSERT INTO statuses VALUES (null, :status)';
+                $stmt  = self::$pdo->prepare($query);
+                $stmt->execute([
+                  'status' => $status,
+                ]);
+            } catch (PDOException $e) {
+                echo 'Can\'t create status<br>' . $e->getMessage();
             }
         }
     }

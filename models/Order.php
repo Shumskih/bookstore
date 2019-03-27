@@ -1,7 +1,8 @@
 <?php
+require_once ROOT . '/models/Model.php';
 require_once ROOT . '/controllers/DeliveryController.php';
 
-class Order
+class Order implements Model
 {
 
     private $orderId = null;
@@ -10,11 +11,13 @@ class Order
 
     private $userId = null;
 
-    private $orderMessage = null;
+    private $userMessage = null;
 
     private $deliveryMethod = null;
 
     private $deliveryCost = null;
+
+    private $status = null;
 
     private $pdo = null;
 
@@ -27,34 +30,39 @@ class Order
         $this->pdo = ConnectionUtil::getConnection();
     }
 
-    public function createOrder(array $bookIdsAndQty, $userId, $orderMessage)
+    public function createOrder(array $bookIdsAndQty, $userId, $userMessage)
     {
-        $this->bookIdsAndQty = $bookIdsAndQty;
-        $this->userId        = $userId;
-        $this->orderMessage  = $orderMessage;
 
+    }
+
+    function create($order)
+    {
+
+        $order = (object) $order;
         // add order
         try {
             $query = SqlQueries::CREATE_ORDER;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'orderMessage' => $this->orderMessage,
+            $this->pdo
+              ->prepare($query)
+              ->execute([
+              'userMessage' => $order->getUserMessage(),
             ]);
         } catch (PDOException $e) {
             echo 'Can\'t create order<br>' . $e->getMessage();
         }
 
-        $this->orderId = $this->pdo->lastInsertId();
+        $order->setOrderId($this->pdo->lastInsertId());
 
         // add book
-        foreach ($this->bookIdsAndQty as $key => $value) {
+        foreach ($order->bookIdsAndQty as $key => $value) {
             $book     = (object)$value['book'];
             $quantity = $value['qty'];
             try {
                 $query = SqlQueries::ADD_BOOK_TO_ORDER;
-                $stmt  = $this->pdo->prepare($query);
-                $stmt->execute([
-                  'orderId'  => $this->orderId,
+                $this->pdo
+                  ->prepare($query)
+                  ->execute([
+                  'orderId'  => $order->getOrderId(),
                   'bookId'   => $book->getId(),
                   'quantity' => $quantity,
                 ]);
@@ -66,13 +74,14 @@ class Order
         // add user
         try {
             $query = SqlQueries::ADD_USER_TO_ORDER;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'orderId' => $this->orderId,
-              'userId'  => $this->userId,
+            $this->pdo
+              ->prepare($query)
+              ->execute([
+              'orderId' => $order->getOrderId(),
+              'userId'  => $order->getUserId(),
             ]);
         } catch (PDOException $e) {
-            echo 'Can\'t add user to order<br>' . $e->getMessage();
+            echo 'Can\'t add user to order in ' . $e->getFile() . ': line ' . $e->getLine() .  '<br>' . $e->getMessage();
         }
 
         $deliveryController = new DeliveryController();
@@ -80,21 +89,67 @@ class Order
 
         try {
             $query = SqlQueries::ADD_DELIVERY_TO_ORDER;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'orderId'    => $this->orderId,
-              'deliveryId' => $delivery->getId(),
-            ]);
+            $this->pdo
+              ->prepare($query)
+              ->execute([
+                'orderId'    => $order->getOrderId(),
+                'deliveryId' => $delivery->getId(),
+              ]);
         } catch (PDOException $e) {
             echo 'Can\'t add delivery to order<br>' . $e->getMessage();
         }
 
+        // get all statuses
+        try {
+            $query    = SqlQueries::GET_ALL_STATUSES;
+            $statuses = $this->pdo
+              ->query($query)
+              ->fetchAll();
+        } catch (PDOException $e) {
+            echo 'Can\'t add status to order<br>' . $e->getMessage();
+        }
+
+        // add status 'Open' to order
+        foreach ($statuses as $status) {
+            if ($status['status'] == 'Open') {
+                try {
+                    $query = SqlQueries::ADD_STATUS_TO_ORDER;
+                    $this->pdo
+                      ->prepare($query)
+                      ->execute([
+                        'orderId'  => $order->getOrderId(),
+                        'statusId' => $status['id'],
+                      ]);
+                } catch (PDOException $e) {
+                    echo 'Can\'t add status to order<br>' . $e->getMEssage();
+                }
+            }
+        }
+
         unset($this->pdo);
-        unset($this->bookId);
-        unset($this->userId);
-        unset($this->orderId);
+        unset($order);
         unset($delivery);
         unset($deliveryController);
+    }
+
+    function read($id)
+    {
+        // TODO: Implement read() method.
+    }
+
+    function readAll()
+    {
+
+    }
+
+    function update($model)
+    {
+        // TODO: Implement update() method.
+    }
+
+    function delete($id)
+    {
+        // TODO: Implement delete() method.
     }
 
     /**
@@ -148,16 +203,64 @@ class Order
     /**
      * @return null
      */
-    public function getOrderMessage()
+    public function getUserMessage()
     {
-        return $this->orderMessage;
+        return $this->userMessage;
     }
 
     /**
      * @param null $orderMessage
      */
-    public function setOrderMessage($orderMessage): void
+    public function setUserMessage($userMessage): void
     {
-        $this->orderMessage = $orderMessage;
+        $this->userMessage = $userMessage;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDeliveryMethod()
+    {
+        return $this->deliveryMethod;
+    }
+
+    /**
+     * @param null $deliveryMethod
+     */
+    public function setDeliveryMethod($deliveryMethod): void
+    {
+        $this->deliveryMethod = $deliveryMethod;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDeliveryCost()
+    {
+        return $this->deliveryCost;
+    }
+
+    /**
+     * @param null $deliveryCost
+     */
+    public function setDeliveryCost($deliveryCost): void
+    {
+        $this->deliveryCost = $deliveryCost;
+    }
+
+    /**
+     * @return null
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param null $status
+     */
+    public function setStatus($status): void
+    {
+        $this->status = $status;
     }
 }

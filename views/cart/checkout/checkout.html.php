@@ -110,7 +110,7 @@
                 </div>
                 <div class="contact-form-wrap">
                   <div class="single-contact-form message">
-                    <textarea name="orderMessage" placeholder="Type your message here.."></textarea>
+                    <textarea name="userMessage" placeholder="Type your message here.."></textarea>
                   </div>
                 </div>
                 <div class="mt-4">

@@ -326,7 +326,7 @@ class FrontController extends Controller
         $email        = $_POST['email'];
 
         // address
-        echo $country      = $_POST['country'];
+        $country      = $_POST['country'];
         $district     = $_POST['district'];
         $city         = $_POST['city'];
         $street       = $_POST['street'];
@@ -335,7 +335,7 @@ class FrontController extends Controller
         $postcode     = $_POST['postcode'];
 
         // order message
-        $orderMessage = $_POST['orderMessage'];
+        $userMessage = $_POST['userMessage'];
 
         $userController = new UserController();
         $user = $userController->getUserByEmail($_SESSION['email']);
@@ -369,8 +369,13 @@ class FrontController extends Controller
             unset($book);
         }
 
+        $order = new Order();
+        $order->setBookIdsAndQty($bookIdsAndQty);
+        $order->setUserId($user->getId());
+        $order->setUserMessage($userMessage);
+
         $orderController = new OrderController();
-        $orderController->createOrder($bookIdsAndQty, $user->getId(), $orderMessage);
+        $orderController->create($order);
     }
 
     public function orders()

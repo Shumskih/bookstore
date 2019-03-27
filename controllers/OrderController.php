@@ -14,4 +14,9 @@ class OrderController
     {
         $this->order->createOrder($bookId, $userId, $orderMessage);
     }
+
+    public function create($model)
+    {
+        $this->order->create($model);
+    }
 }

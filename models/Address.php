@@ -196,19 +196,20 @@ class Address implements Model
         $address = (object)$address;
         try {
             $query = SqlQueries::UPDATE_ADDRESS;
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $address->getId(),
-              'country' => $address->getCountry(),
-              'district' => $address->getDistrict(),
-              'city' => $address->getCity(),
-              'street' => $address->getStreet(),
-              'building' => $address->getBuilding(),
-              'apartment' => $address->getApartment(),
-              'postcode'  => $address->getPostcode()
-            ]);
+            $this->pdo
+              ->prepare($query)
+              ->execute([
+                'id'        => $address->getId(),
+                'country'   => $address->getCountry(),
+                'district'  => $address->getDistrict(),
+                'city'      => $address->getCity(),
+                'street'    => $address->getStreet(),
+                'building'  => $address->getBuilding(),
+                'apartment' => $address->getApartment(),
+                'postcode'  => $address->getPostcode(),
+              ]);
         } catch (PDOException $e) {
-            echo 'Can\'t update address in database<br>' . $e->getMessage();
+            echo 'Can\'t update address in database<br>' . $e->getMessage() . '<br>';
         }
     }
 

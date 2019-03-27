@@ -28,6 +28,7 @@
                                                 <th class="product-remove"></th>
                                                 <th class="product-thumbnail">Order ID</th>
                                                 <th class="product-stock-stauts"><span class="nobr"> Status </span></th>
+                                              <th class="product-name"><span class="nobr">User Message</span></th>
                                                 <th class="product-add-to-cart">View Order</th>
                                             </tr>
                                         </thead>
@@ -36,6 +37,7 @@
                                                 <td class="product-remove"><a href="#">&#10003;</a></td>
                                                 <td class="product-name"><a href="#">5556644</a></td>
                                                 <td class="product-stock-status"><span class="wishlist-in-stock">Open</span></td>
+                                              <td class="product-name"><a href="#">Natoque penatibus</a></td>
                                                 <td class="product-add-to-cart"><a href="#"> View Order</a></td>
                                             </tr>
                                         </tbody>

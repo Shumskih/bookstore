@@ -35,7 +35,10 @@ $tables = [
               description varchar(250)                   not null',
 
   'orders' => 'id              int auto_increment primary key not null,
-               order_message   text',
+               user_message    text',
+
+  'statuses' => 'id              int auto_increment primary key not null,
+                 status          varchar(250)',
 
   'deliveries' => 'id              int auto_increment primary key not null,
                    delivery_method varchar(250),
@@ -53,9 +56,14 @@ $tables = [
                      foreign key (book_id) references books (id)',
 
   'orders_deliveries' => 'order_id     int not null,
-                        delivery_id  int not null,
+                          delivery_id  int not null,
+                          foreign key (order_id) references orders (id),
+                          foreign key (delivery_id) references deliveries (id)',
+
+  'orders_statuses' => 'order_id     int not null,
+                        status_id    int not null,
                         foreign key (order_id) references orders (id),
-                        foreign key (delivery_id) references deliveries (id)',
+                        foreign key (status_id) references statuses (id)',
 
   'categories_books' => 'category_id int not null,
                          book_id     int not null,
@@ -169,4 +177,19 @@ $delivery = [
     'deliveryMethod' => 'Flat Rate',
     'deliveryCost'   => 54,
   ],
+];
+
+$statuses = [
+  [
+    'status' => 'Open',
+  ],
+  [
+    'status' => 'Close',
+  ],
+  [
+    'status' => 'Completed'
+  ],
+  [
+    'status' => 'Canceled'
+  ]
 ];

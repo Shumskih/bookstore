@@ -59,7 +59,8 @@ class SqlQueries
                               city      = :city, 
                               street    = :street,
                               building  = :building,
-                              apartment = :apartment
+                              apartment = :apartment,
+                              postcode  = :postcode
                           WHERE id = :id';
 
     // Roles
@@ -69,7 +70,7 @@ class SqlQueries
                                    WHERE users_roles.user_id = :id';
 
     // Orders
-    const CREATE_ORDER = 'INSERT INTO orders(id, order_message) VALUES (null, :orderMessage)';
+    const CREATE_ORDER = 'INSERT INTO orders(id, user_message) VALUES (null, :userMessage)';
 
     const ADD_BOOK_TO_ORDER = 'INSERT INTO orders_books(order_id, book_id, quantity) VALUES (:orderId, :bookId, :quantity)';
 
@@ -77,10 +78,27 @@ class SqlQueries
 
     const ADD_DELIVERY_TO_ORDER = 'INSERT INTO orders_deliveries(order_id, delivery_id) VALUES (:orderId, :deliveryId)';
 
+    const GET_ALL_ORDERS_WITH_BOOKS = 'SELECT * FROM orders
+                                      INNER JOIN orders_books ON orders_books.order_id = orders.id
+                                      INNER JOIN books ON books.id = orders_books.book_id';
+
+    const GET_ALL_ORDERS_WITH_DELIVERIES = 'SELECT * FROM orders
+                                           INNER JOIN orders_deliveries ON orders_deliveries.order_id = orders.id
+                                            INNER JOIN deliveries ON deliveries.id = orders_deliveries.delivery_id';
+
+    const GET_ALL_ORDERS_WITH_USERS = 'SELECT * FROM orders
+                                   INNER JOIN orders_users ON orders_users.order_id = orders.id
+                                   INNER JOIN users ON users.id = orders_users.user_id';
+
     // Delivery
     const CREATE_DELIVERY = 'INSERT INTO deliveries (id, delivery_method, delivery_cost) VALUES (null, :deliveryMethod, :deliveryCost)';
 
     const GET_ALL_DELIVERIES = 'SELECT * FROM deliveries';
 
     const GET_DELIVERY_BY_METHOD = 'SELECT * FROM deliveries WHERE delivery_method = :deliveryMethod';
+
+    // order status
+    const GET_ALL_STATUSES = 'SELECT * FROM statuses';
+
+    const ADD_STATUS_TO_ORDER = 'INSERT INTO orders_statuses (order_id, status_id) VALUES (:orderId, :statusId)';
 }

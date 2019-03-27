@@ -17,58 +17,16 @@
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
-            <li class="drop"><a href="shop-grid.html">Something</a>
-              <div class="megamenu mega02">
-                <ul class="item item02">
-                  <li class="title">Top Collections</li>
-                  <li><a href="shop-grid.html">American Girl</a></li>
-                  <li><a href="shop-grid.html">Diary Wimpy Kid</a></li>
-                  <li><a href="shop-grid.html">Finding Dory</a></li>
-                  <li><a href="shop-grid.html">Harry Potter</a></li>
-                  <li><a href="shop-grid.html">Land of Stories</a></li>
-                </ul>
-                <ul class="item item02">
-                  <li class="title">More For Kids</li>
-                  <li><a href="shop-grid.html">B&N Educators</a></li>
-                  <li><a href="shop-grid.html">B&N Kids' Club</a></li>
-                  <li><a href="shop-grid.html">Kids' Music</a></li>
-                  <li><a href="shop-grid.html">Toys & Games</a></li>
-                  <li><a href="shop-grid.html">Hoodies</a></li>
-                </ul>
-              </div>
-            </li>
-            <li class="drop"><a href="#">Pages</a>
+            <li class="drop"><a>Administration</a>
               <div class="megamenu dropdown">
                 <ul class="item item01">
-                  <li><a href="about.html">About Page</a></li>
-                  <li class="label2"><a href="portfolio.html">Portfolio</a>
-                    <ul>
-                      <li><a href="portfolio.html">Portfolio</a></li>
-                      <li><a href="portfolio-three-column.html">Portfolio 3 Column</a></li>
-                      <li><a href="portfolio-details.html">Portfolio Details</a></li>
-                    </ul>
-                  </li>
-                  <li><a href="/account">My Account</a></li>
-                  <li><a href="cart.html">Cart Page</a></li>
-                  <li><a href="checkout.html">Checkout Page</a></li>
-                  <li><a href="wishlist.html">Wishlist Page</a></li>
-                  <li><a href="error404.html">404 Page</a></li>
-                  <li><a href="faq.html">Faq Page</a></li>
-                  <li><a href="team.html">Team Page</a></li>
+                  <li><a href="/administration/orders">Orders</a></li>
+                  <li><a href="/add-a-book">Add a book</a></li>
+                  <li><a href="/delivery">Delivery</a></li>
                 </ul>
               </div>
             </li>
-            <li class="drop"><a href="blog.html">Blog</a>
-              <div class="megamenu dropdown">
-                <ul class="item item01">
-                  <li><a href="blog.html">Blog Page</a></li>
-                  <li><a href="blog-left-sidebar.html">Blog Left Sidebar</a></li>
-                  <li><a href="blog-no-sidebar.html">Blog No Sidebar</a></li>
-                  <li><a href="blog-details.html">Blog Details</a></li>
-                </ul>
-              </div>
-            </li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="/contact">Contact</a></li>
           </ul>
         </nav>
       </div>
@@ -176,7 +134,8 @@
                           <?php endif; ?>
                         <span><a href="#">Compare Product</a></span>
                         <span><a href="/account">My Account</a></span>
-                        <span><a href="#">My Wishlist</a></span>
+                        <span><a href="/wishlist">My Wishlist</a></span>
+                        <span><a href="/my-orders">My Orders</a></span>
                           <?php if (!isset($_SESSION['login'])): ?>
                             <span><a href="/account">Sign In</a></span>
                             <span><a href="/account">Create An Account</a></span>

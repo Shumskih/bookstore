@@ -6,7 +6,14 @@
           <h2 class="bradcaump-title">
               <?php
               if (URI !== '/books' && URI !== '/account' && URI !== '/account/info' && URI !== '/cart'
-                  && URI !== '/cart/' && URI !== '/cart/checkout') {
+                  && URI !== '/cart/'
+                  && URI !== '/cart/checkout'
+                  && URI !== '/cart/checkout/'
+                  && URI !== '/contact'
+                  && URI !== '/contact/'
+                  && URI !== '/administration/orders'
+                  && URI !== '/administration/orders/'
+              ) {
                   foreach ($var as $k => $v) {
                       if (isset($v['book'])) {
                           $book = (object)$v['book'];
@@ -39,6 +46,12 @@
                   echo '<a class="breadcrumb_item" href="/cart">Shopping Cart</a>
                         <span class="brd-separetor">/</span>';
                   echo 'Checkout';
+              } elseif (URI == '/contact' || URI == '/contact/') {
+                  echo 'Contact';
+              } elseif (URI == '/administration/orders' || URI == '/administration/orders/') {
+                  echo '<span class="breadcrumb_item active">Administration</span>
+                        <span class="brd-separetor">/</span>';
+                  echo 'Orders';
               }
               ?>
             </span>

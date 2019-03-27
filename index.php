@@ -9,7 +9,6 @@ require_once ROOT . '/controllers/UserController.php';
 require_once ROOT . '/helpers/FillTables.php';
 require_once ROOT . '/helpers/Countries.php';
 require_once ROOT . '/sql/tablesData.php';
-require_once ROOT . '/helpers/Delivery.php';
 
 session_start();
 
@@ -57,7 +56,7 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 
     // /fake-it
 } elseif (URI == '/fake-it' || URI == '/fake-it/') {
-    FillTables::faker($tables, $relations, $users, $addresses, $roles);
+    FillTables::faker($tables, $relations, $users, $addresses, $roles, $delivery);
 
     // /book?id=?
 } elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']
@@ -106,10 +105,20 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     if(isset($_POST['updateCheckout'])) {
         $shippingMethod = $_POST['shippingMethod'];
         $frontController->checkout($shippingMethod);
+    } elseif (isset($_POST['submitCheckout'])) {
+        $frontController->submitCheckout();
+        header('Location: /books');
     } else {
         $frontController->checkout();
     }
 
+    // /administration/orders
+} elseif (URI == '/administration/orders' || URI == '/administration/orders/') {
+    $frontController->orders();
+
+    // /contact
+} elseif (URI == '/contact' || URI == '/contacts/') {
+    $frontController->contact();
 } else {
     $controller = new UserController();
     $controller->renderError(404);

@@ -106,7 +106,7 @@ class User implements Model
             $this->address = new Address();
             $this->address->setId($result['id']);
             $this->address->setCountry($result['country']);
-            $this->address->setRegion($result['region']);
+            $this->address->setDistrict($result['district']);
             $this->address->setCity($result['city']);
             $this->address->setStreet($result['street']);
             $this->address->setBuilding($result['building']);

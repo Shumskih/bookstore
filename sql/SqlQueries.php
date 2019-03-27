@@ -54,17 +54,33 @@ class SqlQueries
                                    WHERE users_addresses.user_id = :id';
 
     const UPDATE_ADDRESS = 'UPDATE addresses 
-                          SET country = :country, 
-                              region = :region, 
-                              city = :city, 
-                              street = :street,
-                              building = :building,
+                          SET country   = :country, 
+                              district  = :district, 
+                              city      = :city, 
+                              street    = :street,
+                              building  = :building,
                               apartment = :apartment
                           WHERE id = :id';
 
     // Roles
-    const GET_USER_ROLES = 'SELECT * FROM roles
+    const GET_USER_ROLES = 'SELECT roles.id, roles.name, roles.description FROM roles
                                    INNER JOIN users_roles ON users_roles.role_id = roles.id
                                    INNER JOIN users ON users.id = users_roles.role_id
                                    WHERE users_roles.user_id = :id';
+
+    // Orders
+    const CREATE_ORDER = 'INSERT INTO orders(id, order_message) VALUES (null, :orderMessage)';
+
+    const ADD_BOOK_TO_ORDER = 'INSERT INTO orders_books(order_id, book_id, quantity) VALUES (:orderId, :bookId, :quantity)';
+
+    const ADD_USER_TO_ORDER = 'INSERT INTO orders_users(order_id, user_id) VALUES (:orderId, :userId)';
+
+    const ADD_DELIVERY_TO_ORDER = 'INSERT INTO orders_deliveries(order_id, delivery_id) VALUES (:orderId, :deliveryId)';
+
+    // Delivery
+    const CREATE_DELIVERY = 'INSERT INTO deliveries (id, delivery_method, delivery_cost) VALUES (null, :deliveryMethod, :deliveryCost)';
+
+    const GET_ALL_DELIVERIES = 'SELECT * FROM deliveries';
+
+    const GET_DELIVERY_BY_METHOD = 'SELECT * FROM deliveries WHERE delivery_method = :deliveryMethod';
 }

@@ -21,7 +21,7 @@ class FillTables
      * @param array $relations
      *
      */
-    public static function faker(array $tables, array $relations, array $users, array $addresses, array $roles)
+    public static function faker(array $tables, array $relations, array $users, array $addresses, array $roles, array $delivery)
     {
         echo 'In faker<br>';
         echo '------------<br>';
@@ -65,6 +65,10 @@ class FillTables
 
             if ($table == 'roles') {
                 self::populateRoles($roles);
+            }
+
+            if ($table == 'deliveries') {
+                self::populateDelivery($delivery);
             }
 
             if ($table == 'categories_books') {
@@ -205,7 +209,7 @@ class FillTables
         echo '------------<br>';
         foreach ($addresses as $address) {
             $country   = $address['country'];
-            $region    = $address['region'];
+            $district  = $address['district'];
             $city      = $address['city'];
             $street    = $address['street'];
             $building  = $address['building'];
@@ -214,16 +218,16 @@ class FillTables
 
             try {
                 $query
-                          = 'INSERT INTO addresses VALUES (null, :country, :region, :city, :street, :building, :apartment, :postcode)';
+                          = 'INSERT INTO addresses VALUES (null, :country, :district, :city, :street, :building, :apartment, :postcode)';
                 $category = self::$pdo->prepare($query);
                 $category->execute([
                   'country'   => $country,
-                  'region'    => $region,
+                  'district'  => $district,
                   'city'      => $city,
                   'street'    => $street,
                   'building'  => $building,
                   'apartment' => $apartment,
-                  'postcode'  => $postcode
+                  'postcode'  => $postcode,
                 ]);
             } catch (PDOException $e) {
                 $e->getMessage();
@@ -272,6 +276,27 @@ class FillTables
             foreach ($relations as $r) {
                 $query = "INSERT INTO users_roles VALUES ($user, $r)";
                 self::$pdo->query($query);
+            }
+        }
+    }
+
+    public static function populateDelivery(array $delivery)
+    {
+        echo 'Populate Delivery<br>';
+        echo '------------<br>';
+        foreach ($delivery as $d) {
+            $deliveryMethod = $d['deliveryMethod'];
+            $deliveryCost   = $d['deliveryCost'];
+
+            try {
+                $query = 'INSERT INTO deliveries VALUES (null, :deliveryMethod, :deliveryCost)';
+                $stmt  = self::$pdo->prepare($query);
+                $stmt->execute([
+                  'deliveryMethod' => $deliveryMethod,
+                  'deliveryCost'   => $deliveryCost,
+                ]);
+            } catch (PDOException $e) {
+                echo 'Can\'t create delivery<br>' . $e->getMessage();
             }
         }
     }

@@ -11,7 +11,7 @@ class Address implements Model
 
     private $country = null;
 
-    private $region = null;
+    private $district = null;
 
     private $city = null;
 
@@ -67,17 +67,17 @@ class Address implements Model
     /**
      * @return mixed
      */
-    public function getRegion()
+    public function getDistrict()
     {
-        return $this->region;
+        return $this->district;
     }
 
     /**
      * @param mixed $region
      */
-    public function setRegion($region): void
+    public function setDistrict($district): void
     {
-        $this->region = $region;
+        $this->district = $district;
     }
 
     /**
@@ -200,7 +200,7 @@ class Address implements Model
             $stmt->execute([
               'id' => $address->getId(),
               'country' => $address->getCountry(),
-              'region' => $address->getRegion(),
+              'district' => $address->getDistrict(),
               'city' => $address->getCity(),
               'street' => $address->getStreet(),
               'building' => $address->getBuilding(),

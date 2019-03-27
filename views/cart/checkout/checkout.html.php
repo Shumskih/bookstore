@@ -21,34 +21,6 @@
           <div class="col-lg-12">
             <div class="wn_checkout_wrap">
               <div class="checkout_info">
-                <span>Returning customer ?</span>
-                <a class="showlogin" href="#">Click here to login</a>
-              </div>
-              <div class="checkout_login">
-                <form class="wn__checkout__form" action="#">
-                  <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
-                    customer please proceed to the Billing & Shipping section.</p>
-
-                  <div class="input__box">
-                    <label>Username or email <span>*</span></label>
-                    <input type="text">
-                  </div>
-
-                  <div class="input__box">
-                    <label>password <span>*</span></label>
-                    <input type="password">
-                  </div>
-                  <div class="form__btn">
-                    <button>Login</button>
-                    <label class="label-for-checkbox">
-                      <input id="rememberme" name="rememberme" value="forever" type="checkbox">
-                      <span>Remember me</span>
-                    </label>
-                    <a href="#">Lost your password?</a>
-                  </div>
-                </form>
-              </div>
-              <div class="checkout_info">
                 <span>Have a coupon? </span>
                 <a class="showcoupon" href="#">Click here to enter your code</a>
               </div>
@@ -73,148 +45,78 @@
                     }
                 } ?>
               <h3>Billing details</h3>
-              <div class="customar__field">
-                <div class="margin_between">
-                  <div class="input_box space_between">
-                    <label>First name <span>*</span></label>
-                    <input type="text" name="userName" value="<?php echo $user->getName(); ?>">
+              <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+                <div class="customar__field">
+                  <div class="margin_between">
+                    <div class="input_box space_between">
+                      <label>First name <span>*</span></label>
+                      <input type="text" name="userName" value="<?php echo $user->getName(); ?>">
+                    </div>
+                    <div class="input_box space_between">
+                      <label>Last name <span>*</span></label>
+                      <input type="text" name="surname" value="<?php echo $user->getSurname(); ?>">
+                    </div>
                   </div>
-                  <div class="input_box space_between">
-                    <label>last name <span>*</span></label>
-                    <input type="text" name="Surname" value="<?php echo $user->getSurname(); ?>">
+                  <div class="input_box">
+                    <label>Country<span>*</span></label>
+                    <select class="select__option" name="country">
+                        <?php foreach (Countries::$countries as $code => $name): ?>
+                          <option name="<?php echo $name ?>" <?php if ($name == $address->getCountry()) {
+                              echo 'selected';
+                          } ?>><?php echo $name; ?></option>
+                        <?php endforeach; ?>
+                    </select>
                   </div>
-                </div>
-                <div class="input_box">
-                  <label>Country<span>*</span></label>
-                  <select class="select__option">
-                      <?php foreach (Countries::$countries as $code => $name): ?>
-                        <option name="<?php echo $name; ?>" <?php if ($name == $address->getCountry()) {
-                            echo 'selected';
-                        } ?>><?php echo $name; ?></option>
-                      <?php endforeach; ?>
-                  </select>
-                </div>
-                <div class="input_box">
-                  <label>City <span>*</span></label>
-                  <input type="text" name="street" placeholder="Street address"
-                         value="<?php echo $address->getCity(); ?>">
-                </div>
-                <div class="input_box">
-                  <label>Street <span>*</span></label>
-                  <input type="text" name="street" placeholder="Street address"
-                         value="<?php echo $address->getStreet() . ', ' . $address->getBuilding(); ?>">
-                </div>
-                <div class="input_box">
-                  <input type="text" placeholder="Apartment, suite, unit etc. (optional)"
-                         value="<?php echo $address->getApartment(); ?>">
-                </div>
-                <div class="input_box">
-                  <label>District<span>*</span></label>
-                  <select class="select__option">
-                    <option>Select a country…</option>
-                    <option>Afghanistan</option>
-                    <option>American Samoa</option>
-                    <option>Anguilla</option>
-                    <option>American Samoa</option>
-                    <option>Antarctica</option>
-                    <option>Antigua and Barbuda</option>
-                  </select>
-                </div>
-                <div class="input_box">
-                  <label>Postcode / ZIP <span>*</span></label>
-                  <input type="text" name="postcode" value="<?php echo $address->getPostcode(); ?>">
-                </div>
-                <div class="margin_between">
-                  <div class="input_box space_between">
-                    <label>Phone <span>*</span></label>
-                    <input type="tel" name="phone" value="<?php echo $user->getMobilePhone(); ?>">
+                  <div class="input_box">
+                    <label>District <span>*</span></label>
+                    <input type="text" name="district" placeholder="District"
+                           value="<?php echo $address->getDistrict(); ?>">
                   </div>
+                  <div class="input_box">
+                    <label>City <span>*</span></label>
+                    <input type="text" name="city" placeholder="Street address"
+                           value="<?php echo $address->getCity(); ?>">
+                  </div>
+                  <div class="input_box">
+                    <label>Street <span>*</span></label>
+                    <input type="text" name="street" placeholder="Street address"
+                           value="<?php echo $address->getStreet(); ?>">
+                  </div>
+                  <div class="input_box">
+                    <label>Building <span>*</span></label>
+                    <input type="text" name="building" placeholder="Street address"
+                           value="<?php echo $address->getBuilding(); ?>">
+                  </div>
+                  <div class="input_box">
+                    <label>Apartment, suite, unit etc. (optional) </label>
+                    <input type="text" name="apartment" placeholder="Apartment, suite, unit etc. (optional)"
+                           value="<?php echo $address->getApartment(); ?>">
+                  </div>
+                  <div class="input_box">
+                    <label>Postcode / ZIP <span>*</span></label>
+                    <input type="text" name="postcode" value="<?php echo $address->getPostcode(); ?>">
+                  </div>
+                  <div class="margin_between">
+                    <div class="input_box space_between">
+                      <label>Phone <span>*</span></label>
+                      <input type="tel" name="phone" value="<?php echo $user->getMobilePhone(); ?>">
+                    </div>
 
-                  <div class="input_box space_between">
-                    <label>Email address <span>*</span></label>
-                    <input type="email" name="email" value="<?php echo $user->getEmail(); ?>">
+                    <div class="input_box space_between">
+                      <label>Email address <span>*</span></label>
+                      <input type="email" name="email" value="<?php echo $user->getEmail(); ?>">
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="create__account">
-                <div class="wn__accountbox">
-                  <input class="input-checkbox" name="createaccount" value="1" type="checkbox">
-                  <span>Create an account ?</span>
-                </div>
-                <div class="account__field">
-                  <form action="#">
-                    <label>Account password <span>*</span></label>
-                    <input type="text" placeholder="password">
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div class="customer_details mt--20">
-              <div class="differt__address">
-                <input name="ship_to_different_address" value="1" type="checkbox">
-                <span>Ship to a different address ?</span>
-              </div>
-              <div class="customar__field differt__form mt--40">
-                <div class="margin_between">
-                  <div class="input_box space_between">
-                    <label>First name <span>*</span></label>
-                    <input type="text">
-                  </div>
-                  <div class="input_box space_between">
-                    <label>last name <span>*</span></label>
-                    <input type="text">
+                <div class="contact-form-wrap">
+                  <div class="single-contact-form message">
+                    <textarea name="orderMessage" placeholder="Type your message here.."></textarea>
                   </div>
                 </div>
-                <div class="input_box">
-                  <label>Company name <span>*</span></label>
-                  <input type="text">
+                <div class="mt-4">
+                  <button type="submit" name="submitCheckout" class="checkout-button">Submit</button>
                 </div>
-                <div class="input_box">
-                  <label>Country<span>*</span></label>
-                  <select class="select__option">
-                    <option>Select a country…</option>
-                    <option>Afghanistan</option>
-                    <option>American Samoa</option>
-                    <option>Anguilla</option>
-                    <option>American Samoa</option>
-                    <option>Antarctica</option>
-                    <option>Antigua and Barbuda</option>
-                  </select>
-                </div>
-                <div class="input_box">
-                  <label>Address <span>*</span></label>
-                  <input type="text" placeholder="Street address">
-                </div>
-                <div class="input_box">
-                  <input type="text" placeholder="Apartment, suite, unit etc. (optional)">
-                </div>
-                <div class="input_box">
-                  <label>District<span>*</span></label>
-                  <select class="select__option">
-                    <option>Select a country…</option>
-                    <option>Afghanistan</option>
-                    <option>American Samoa</option>
-                    <option>Anguilla</option>
-                    <option>American Samoa</option>
-                    <option>Antarctica</option>
-                    <option>Antigua and Barbuda</option>
-                  </select>
-                </div>
-                <div class="input_box">
-                  <label>Postcode / ZIP <span>*</span></label>
-                  <input type="text">
-                </div>
-                <div class="margin_between">
-                  <div class="input_box space_between">
-                    <label>Phone <span>*</span></label>
-                    <input type="text">
-                  </div>
-                  <div class="input_box space_between">
-                    <label>Email address <span>*</span></label>
-                    <input type="email">
-                  </div>
-                </div>
-              </div>
+              </form>
             </div>
           </div>
           <div class="col-lg-6 col-12 md-mt-40 sm-mt-40">
@@ -246,21 +148,31 @@
 
                   <li>Shipping
                     <ul>
-                        <?php foreach (Delivery::$delivery as $name => $cost): ?>
-                          <li>
-                            <input name="shippingMethod" data-index="0" value="<?php echo $name ?>"
-                              <?php if ($_SESSION['shippingMethod'] == $name)
-                                  echo 'checked="checked"' ?>
-                                   type="radio">
-                            <label><?php echo $name; ?>: $<?php echo $cost; ?></label>
-                          </li>
+                        <?php foreach ($var as $k => $v): ?>
+                            <?php foreach ($v as $key => $value): ?>
+                                <?php if ($key == 'deliveries'): ?>
+                                    <?php foreach ($value as $delivery): ?>
+                                    <?php
+                                        $deliveryMethod = $delivery['delivery_method'];
+                                        $deliveryCost = $delivery['delivery_cost'];
+                                        ?>
+                                <li>
+                                  <input name="shippingMethod" data-index="0" value="<?php echo $deliveryMethod ?>"
+                                    <?php if ($_SESSION['shippingMethod'] == $deliveryMethod)
+                                        echo 'checked="checked"' ?>
+                                         type="radio">
+                                  <label><?php echo $deliveryMethod; ?>: $<?php echo $deliveryCost; ?></label>
+                                </li>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
                         <?php endforeach; ?>
                     </ul>
                   </li>
                 </ul>
                 <ul class="total__amount">
                   <li>Order Total
-                    <button type="submit" name="updateCheckout">Update</button>
+                    <button type="submit" name="updateCheckout" class="checkout-button ml-1">Update</button>
                     <span>$<?php echo $_SESSION['grandTotal'] + $_SESSION['shippingCost']; ?></span></li>
                 </ul>
               </div>

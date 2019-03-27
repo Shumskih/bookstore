@@ -47,4 +47,9 @@ class UserController extends Controller
     {
         $this->user->logout();
     }
+
+    public function getAddress($userId)
+    {
+        return $this->user->getAddress($userId);
+    }
 }

@@ -23,29 +23,52 @@ $tables = [
 
   'addresses' => 'id        int auto_increment primary key not null,
                   country   varchar (200),
-                  region    varchar(200),
+                  district  varchar(200),
                   city      varchar(200),
                   street    varchar(200),
                   building  varchar(200),
                   apartment varchar(100),
                   postcode  varchar(100)',
 
-  'roles' => 'id   int auto_increment primary key not null,
-              name varchar(150)                   not null,
-              description varchar(250)            not null',
+  'roles' => 'id          int auto_increment primary key not null,
+              name        varchar(150)                   not null,
+              description varchar(250)                   not null',
 
-  'categories_books' => 'category_id int,
-                         book_id     int,
+  'orders' => 'id              int auto_increment primary key not null,
+               order_message   text',
+
+  'deliveries' => 'id              int auto_increment primary key not null,
+                   delivery_method varchar(250),
+                   delivery_cost   int',
+
+  'orders_users' => 'order_id int not null,
+                     user_id  int not null,
+                     foreign key (order_id) references orders (id),
+                     foreign key (user_id) references users (id)',
+
+  'orders_books' => 'order_id int not null,
+                     book_id  int not null,
+                     quantity int not null,
+                     foreign key (order_id) references orders (id),
+                     foreign key (book_id) references books (id)',
+
+  'orders_deliveries' => 'order_id     int not null,
+                        delivery_id  int not null,
+                        foreign key (order_id) references orders (id),
+                        foreign key (delivery_id) references deliveries (id)',
+
+  'categories_books' => 'category_id int not null,
+                         book_id     int not null,
                          foreign key (category_id) references categories (id),
                          foreign key (book_id) references books (id)',
 
-  'users_roles' => 'user_id int,
-                    role_id int,
+  'users_roles' => 'user_id int not null,
+                    role_id int not null,
                     foreign key (user_id) references users (id),
                     foreign key (role_id) references roles (id)',
 
-  'users_addresses' => 'user_id    int,
-                        address_id int,
+  'users_addresses' => 'user_id    int not null,
+                        address_id int not null,
                         foreign key (user_id) references users (id),
                         foreign key (address_id) references addresses (id)',
 
@@ -67,7 +90,7 @@ $relations = [
   'usersAddressesRelations'  => [
     1 => [1],
     2 => [2],
-    3 => [3]
+    3 => [3],
   ],
 ];
 
@@ -95,31 +118,31 @@ $users = [
 $addresses = [
   [
     'country'   => 'Russian Federation',
-    'region'    => 'Краснодарский край',
+    'district'  => 'Краснодарский край',
     'city'      => 'Краснодар',
     'street'    => 'Таганрогская',
     'building'  => '1',
     'apartment' => '57',
-    'postcode'  => '350059'
+    'postcode'  => '350059',
   ],
   [
     'country'   => 'Russian Federation',
-    'region'    => 'Краснодарский край',
+    'district'  => 'Краснодарский край',
     'city'      => 'Краснодар',
     'street'    => 'Таганрогская',
     'building'  => '110',
     'apartment' => '576',
-    'postcode'  => '350061'
+    'postcode'  => '350061',
   ],
   [
     'country'   => 'Russian Federation',
-    'region'    => 'Краснодарский край',
+    'district'  => 'Краснодарский край',
     'city'      => 'Краснодар',
     'street'    => 'Таганрогская',
     'building'  => '111',
     'apartment' => '577',
-    'postcode'  => '350060'
-  ]
+    'postcode'  => '350060',
+  ],
 ];
 
 $roles = [
@@ -134,5 +157,16 @@ $roles = [
   [
     'name'        => 'Super User',
     'description' => 'Edit and delete roles of particular user',
+  ],
+];
+
+$delivery = [
+  [
+    'deliveryMethod' => 'Courier',
+    'deliveryCost'   => 28,
+  ],
+  [
+    'deliveryMethod' => 'Flat Rate',
+    'deliveryCost'   => 54,
   ],
 ];

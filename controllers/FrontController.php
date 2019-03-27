@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/controllers/Controller.php';
 require_once ROOT . '/controllers/BookController.php';
 require_once ROOT . '/controllers/CartController.php';
+require_once ROOT . '/controllers/OrderController.php';
 
 class FrontController extends Controller
 {
@@ -109,7 +110,7 @@ class FrontController extends Controller
         // Address
         $addressId = null;
         $country   = null;
-        $region     = null;
+        $district  = null;
         $city      = null;
         $street    = null;
         $building  = null;
@@ -228,7 +229,7 @@ class FrontController extends Controller
             $address = new Address();
             $address->setId($addressId);
             $address->setCountry($country);
-            $address->setRegion($region);
+            $address->setDistrict($district);
             $address->setCity($city);
             $address->setStreet($street);
             $address->setBuilding($building);
@@ -297,7 +298,7 @@ class FrontController extends Controller
     public function cart()
     {
         $cartController = new CartController();
-        $books = $cartController->getCart();
+        $books          = $cartController->getCart();
 
         $this->render(
           '/views/cart/cart.html.php',
@@ -308,11 +309,99 @@ class FrontController extends Controller
     public function checkout($shippingMethod = 'Courier')
     {
         $cartController = new CartController();
-        $user = $cartController->checkout($shippingMethod);
+        $vars           = $cartController->checkout($shippingMethod);
 
         $this->render(
           '/views/cart/checkout/checkout.html.php',
-          $user
+          $vars
+        );
+    }
+
+    public function submitCheckout()
+    {
+        // user
+        $userName     = $_POST['userName'];
+        $userSurname  = $_POST['surname'];
+        $phone        = $_POST['phone'];
+        $email        = $_POST['email'];
+
+        // address
+        echo $country      = $_POST['country'];
+        $district     = $_POST['district'];
+        $city         = $_POST['city'];
+        $street       = $_POST['street'];
+        $building     = $_POST['building'];
+        $apartment    = $_POST['apartment'];
+        $postcode     = $_POST['postcode'];
+
+        // order message
+        $orderMessage = $_POST['orderMessage'];
+
+        $userController = new UserController();
+        $user = $userController->getUserByEmail($_SESSION['email']);
+        $user->setName($userName);
+        $user->setSurname($userSurname);
+        $user->setMobilePhone($phone);
+        $userController->update($user);
+
+        $address = $userController->getAddress($user->getId());
+        $address->setCountry($country);
+        $address->setDistrict($district);
+        $address->setCity($city);
+        $address->setStreet($street);
+        $address->setBuilding($building);
+        $address->setApartment($apartment);
+        $address->setPostcode($postcode);
+
+        $address->update($address);
+
+        if ($email != $_SESSION['email'])
+            $_SESSION['email'] = $email;
+
+        $bookIdsAndQty = [];
+
+        // get books
+        $count = count($_SESSION['cart']);
+        for ($i = 0; $i < $count; $i++) {
+            $book = (object) unserialize($_SESSION['cart'][$i]['book']);
+            $qty = $_SESSION['cart'][$i]['qty'];
+            array_push($bookIdsAndQty, ['book' => $book, 'qty' => $qty]);
+            unset($book);
+        }
+
+        $orderController = new OrderController();
+        $orderController->createOrder($bookIdsAndQty, $user->getId(), $orderMessage);
+    }
+
+    public function orders()
+    {
+        $userController = new UserController();
+        $user           = $userController->getUserByEmail($_SESSION['email']);
+        $roles          = $user->getRoles($user->getId());
+        $permission     = false;
+        foreach ($roles as $role) {
+            $role = (object)$role;
+            $name = $role->getName();
+            if ($name == 'Content Manager' || $name == 'Super User') {
+                $permission = true;
+            }
+            unset($role);
+            unset($userController);
+            unset($user);
+        }
+        if ($permission) {
+            $this->render(
+              '/views/administration/orders/orders.html.php'
+            );
+        } else {
+            header('Location: /account');
+        }
+    }
+
+    public function contact()
+    {
+        $this->render(
+          '/views/contacts/contact.html.php'
         );
     }
 }

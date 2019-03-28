@@ -38,15 +38,15 @@ class Order implements Model
     function create($order)
     {
 
-        $order = (object) $order;
+        $order = (object)$order;
         // add order
         try {
             $query = SqlQueries::CREATE_ORDER;
             $this->pdo
               ->prepare($query)
               ->execute([
-              'userMessage' => $order->getUserMessage(),
-            ]);
+                'userMessage' => $order->getUserMessage(),
+              ]);
         } catch (PDOException $e) {
             echo 'Can\'t create order<br>' . $e->getMessage();
         }
@@ -62,10 +62,10 @@ class Order implements Model
                 $this->pdo
                   ->prepare($query)
                   ->execute([
-                  'orderId'  => $order->getOrderId(),
-                  'bookId'   => $book->getId(),
-                  'quantity' => $quantity,
-                ]);
+                    'orderId'  => $order->getOrderId(),
+                    'bookId'   => $book->getId(),
+                    'quantity' => $quantity,
+                  ]);
             } catch (PDOException $e) {
                 echo 'Can\'t add book to order<br>' . $e->getMessage();
             }
@@ -77,11 +77,11 @@ class Order implements Model
             $this->pdo
               ->prepare($query)
               ->execute([
-              'orderId' => $order->getOrderId(),
-              'userId'  => $order->getUserId(),
-            ]);
+                'orderId' => $order->getOrderId(),
+                'userId'  => $order->getUserId(),
+              ]);
         } catch (PDOException $e) {
-            echo 'Can\'t add user to order in ' . $e->getFile() . ': line ' . $e->getLine() .  '<br>' . $e->getMessage();
+            echo 'Can\'t add user to order in ' . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
 
         $deliveryController = new DeliveryController();
@@ -121,7 +121,8 @@ class Order implements Model
                         'statusId' => $status['id'],
                       ]);
                 } catch (PDOException $e) {
-                    echo 'Can\'t add status to order<br>' . $e->getMEssage();
+                    echo 'Can\'t add status to order<br>' .
+                         $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
                 }
             }
         }
@@ -137,9 +138,18 @@ class Order implements Model
         // TODO: Implement read() method.
     }
 
-    function readAll()
+    function readAll(): array
     {
-
+        try {
+            $query = SqlQueries::GET_ALL_ORDERS;
+            $orders = $this->pdo
+              ->query($query)
+              ->fetchAll();
+        } catch (PDOException $e) {
+            echo 'Can\'t get all orders from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $orders;
     }
 
     function update($model)

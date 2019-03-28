@@ -33,12 +33,12 @@ class UserController extends Controller
         $this->user->update($user);
     }
 
-    public function login($email, $password) : bool
+    public function login($email, $password): bool
     {
         return $this->user->login($email, $password);
     }
 
-    public function register($email, $password) : bool
+    public function register($email, $password): bool
     {
         return $this->user->register($email, $password);
     }
@@ -51,5 +51,10 @@ class UserController extends Controller
     public function getAddress($userId)
     {
         return $this->user->getAddress($userId);
+    }
+
+    public function checkPermissions(): bool
+    {
+        return $this->user->checkPermissions();
     }
 }

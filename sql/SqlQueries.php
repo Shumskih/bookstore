@@ -90,6 +90,32 @@ class SqlQueries
                                    INNER JOIN orders_users ON orders_users.order_id = orders.id
                                    INNER JOIN users ON users.id = orders_users.user_id';
 
+    const GET_ORDER = '
+SELECT 
+       orders.id as orderId, orders.user_message as userMessage,
+       books.id as bookId, books.title as bookTitle,
+       deliveries.delivery_method as deliveryMethod,
+       statuses.status as status,
+       users.surname as userSurname, users.name as userName
+FROM orders, books, deliveries, statuses, users
+  INNER JOIN orders_users ou on users.id = ou.user_id
+  INNER JOIN orders o on ou.order_id = o.id
+  INNER JOIN orders_books ob on o.id = ob.order_id
+  INNER JOIN books b on ob.book_id = b.id
+  INNER JOIN orders_deliveries od on o.id = od.order_id
+  INNER JOIN deliveries d on od.delivery_id = d.id
+  INNER JOIN orders_statuses os on o.id = os.order_id
+  INNER JOIN statuses s on os.status_id = s.id
+WHERE books.id = ob.book_id
+  AND deliveries.id = d.id
+  AND statuses.id = s.id
+  AND orders.id = :id
+';
+
+    const GET_ALL_ORDERS = 'SELECT orders.id, orders.user_message as userMessage, statuses.status FROM orders, statuses
+INNER JOIN orders_statuses os on statuses.id = os.status_id
+INNER JOIN orders o on os.order_id = o.id';
+
     // Delivery
     const CREATE_DELIVERY = 'INSERT INTO deliveries (id, delivery_method, delivery_cost) VALUES (null, :deliveryMethod, :deliveryCost)';
 

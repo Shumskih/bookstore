@@ -19,4 +19,9 @@ class OrderController
     {
         $this->order->create($model);
     }
+
+    public function readAll()
+    {
+        return $this->order->readAll();
+    }
 }

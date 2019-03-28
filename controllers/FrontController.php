@@ -381,22 +381,15 @@ class FrontController extends Controller
     public function orders()
     {
         $userController = new UserController();
-        $user           = $userController->getUserByEmail($_SESSION['email']);
-        $roles          = $user->getRoles($user->getId());
-        $permission     = false;
-        foreach ($roles as $role) {
-            $role = (object)$role;
-            $name = $role->getName();
-            if ($name == 'Content Manager' || $name == 'Super User') {
-                $permission = true;
-            }
-            unset($role);
-            unset($userController);
-            unset($user);
-        }
-        if ($permission) {
+        $permissions = $userController->checkPermissions();
+
+        $orderController = new OrderController();
+        $orders = $orderController->readAll();
+
+        if ($permissions) {
             $this->render(
-              '/views/administration/orders/orders.html.php'
+              '/views/administration/orders/orders.html.php',
+              $orders
             );
         } else {
             header('Location: /account');

@@ -9,7 +9,9 @@ $tables = [
               pages         int                            not null,
               img           text,
               price         decimal                        not null,
-              added         datetime                       not null',
+              added         datetime                       not null,
+              inStock       boolean                        not null,
+              quantity      int                            not null',
 
   'users' => 'id           int auto_increment primary key not null,
               name         varchar(100)                   not null,

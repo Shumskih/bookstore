@@ -116,6 +116,9 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 } elseif (URI == '/administration/orders' || URI == '/administration/orders/') {
     $frontController->orders();
 
+} elseif (isset($_GET['id']) && (URI == '/administration/orders/order?id=' . $_GET['id'] || URI == '/administration/orders/order?id=' . $_GET['id'] . '/')) {
+    $frontController->order();
+
     // /contact
 } elseif (URI == '/contact' || URI == '/contacts/') {
     $frontController->contact();

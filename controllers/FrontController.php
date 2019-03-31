@@ -396,6 +396,13 @@ class FrontController extends Controller
         }
     }
 
+    public function order()
+    {
+        $this->render(
+          '/views/administration/orders/order.html.php'
+        );
+    }
+
     public function contact()
     {
         $this->render(

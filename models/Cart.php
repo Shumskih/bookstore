@@ -6,10 +6,13 @@ require_once ROOT . '/controllers/DeliveryController.php';
 class Cart
 {
 
-    private $bookId = null;
+    // Cart id
+    private $id = null;
 
+    // Quantity of books
     private $qty = null;
 
+    // Book object
     private $book = null;
 
     private $total = null;
@@ -22,8 +25,10 @@ class Cart
 
     private $shippingMethod = null;
 
+    // Array of Delivery objects
     private $deliveries = [];
 
+    // Array of Book objects
     private $books = [];
 
     public function addToCart()
@@ -103,7 +108,7 @@ class Cart
         }
 
         $deliveryController = new DeliveryController();
-        $this->deliveries = $deliveryController->readAll();
+        $this->deliveries   = $deliveryController->readAll();
 
         foreach ($this->deliveries as $delivery) {
             if ($delivery['delivery_method'] == $shippingMethod) {
@@ -115,7 +120,6 @@ class Cart
         array_push($vars, ['user' => $user]);
         array_push($vars, ['books' => $this->books]);
         array_push($vars, ['deliveries' => $this->deliveries]);
-
 
 
         unset($userController);
@@ -130,17 +134,17 @@ class Cart
     /**
      * @return null
      */
-    public function getBookId()
+    public function getId()
     {
-        return $this->bookId;
+        return $this->id;
     }
 
     /**
-     * @param null $bookId
+     * @param null $id
      */
-    public function setBookId($bookId): void
+    public function setId($id): void
     {
-        $this->bookId = $bookId;
+        $this->id = $id;
     }
 
     /**
@@ -240,6 +244,38 @@ class Cart
     }
 
     /**
+     * @return null
+     */
+    public function getShippingMethod()
+    {
+        return $this->shippingMethod;
+    }
+
+    /**
+     * @param null $shippingMethod
+     */
+    public function setShippingMethod($shippingMethod): void
+    {
+        $this->shippingMethod = $shippingMethod;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDeliveries(): array
+    {
+        return $this->deliveries;
+    }
+
+    /**
+     * @param array $deliveries
+     */
+    public function setDeliveries(array $deliveries): void
+    {
+        $this->deliveries = $deliveries;
+    }
+
+    /**
      * @return array
      */
     public function getBooks(): array
@@ -254,4 +290,5 @@ class Cart
     {
         $this->books = $books;
     }
+
 }

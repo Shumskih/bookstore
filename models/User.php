@@ -23,10 +23,10 @@ class User implements Model
 
     private $mobilePhone;
 
-    // Object
+    // Object Address
     private $address;
 
-    // Array of Roles Objects
+    // Array of Role Objects
     private $roles = [];
 
     private $pdo;

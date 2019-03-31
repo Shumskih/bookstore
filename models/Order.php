@@ -5,18 +5,20 @@ require_once ROOT . '/controllers/DeliveryController.php';
 class Order implements Model
 {
 
-    private $orderId = null;
-
-    private $bookIdsAndQty = [];
-
-    private $userId = null;
+    private $id = null;
 
     private $userMessage = null;
 
-    private $deliveryMethod = null;
+    // Array of Book Objects
+    private $books = [];
 
-    private $deliveryCost = null;
+    // User Object
+    private $user = null;
 
+    // Delivery Object
+    private $delivery = null;
+
+    // Status Object
     private $status = null;
 
     private $pdo = null;
@@ -28,11 +30,6 @@ class Order implements Model
     public function __construct()
     {
         $this->pdo = ConnectionUtil::getConnection();
-    }
-
-    public function createOrder(array $bookIdsAndQty, $userId, $userMessage)
-    {
-
     }
 
     function create($order)
@@ -141,7 +138,7 @@ class Order implements Model
     function readAll(): array
     {
         try {
-            $query = SqlQueries::GET_ALL_ORDERS;
+            $query  = SqlQueries::GET_ALL_ORDERS_WITH_STATUS;
             $orders = $this->pdo
               ->query($query)
               ->fetchAll();
@@ -165,49 +162,49 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getOrderId()
+    public function getId()
     {
-        return $this->orderId;
+        return $this->id;
     }
 
     /**
-     * @param null $orderId
+     * @param null $id
      */
-    public function setOrderId($orderId): void
+    public function setId($id): void
     {
-        $this->orderId = $orderId;
+        $this->id = $id;
     }
 
     /**
      * @return array
      */
-    public function getBookIdsAndQty(): array
+    public function getBooks(): array
     {
-        return $this->bookIdsAndQty;
+        return $this->books;
     }
 
     /**
-     * @param array $bookIdsAndQty
+     * @param array $books
      */
-    public function setBookIdsAndQty(array $bookIdsAndQty): void
+    public function setBooks(array $books): void
     {
-        $this->bookIdsAndQty = $bookIdsAndQty;
+        $this->books = $books;
     }
 
     /**
      * @return null
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->userId;
+        return $this->user;
     }
 
     /**
-     * @param null $userId
+     * @param null $user
      */
-    public function setUserId($userId): void
+    public function setUser($user): void
     {
-        $this->userId = $userId;
+        $this->user = $user;
     }
 
     /**
@@ -219,7 +216,7 @@ class Order implements Model
     }
 
     /**
-     * @param null $orderMessage
+     * @param null $userMessage
      */
     public function setUserMessage($userMessage): void
     {
@@ -229,33 +226,17 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getDeliveryMethod()
+    public function getDelivery()
     {
-        return $this->deliveryMethod;
+        return $this->delivery;
     }
 
     /**
-     * @param null $deliveryMethod
+     * @param null $delivery
      */
-    public function setDeliveryMethod($deliveryMethod): void
+    public function setDelivery($delivery): void
     {
-        $this->deliveryMethod = $deliveryMethod;
-    }
-
-    /**
-     * @return null
-     */
-    public function getDeliveryCost()
-    {
-        return $this->deliveryCost;
-    }
-
-    /**
-     * @param null $deliveryCost
-     */
-    public function setDeliveryCost($deliveryCost): void
-    {
-        $this->deliveryCost = $deliveryCost;
+        $this->delivery = $delivery;
     }
 
     /**

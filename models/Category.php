@@ -8,6 +8,7 @@ class Category implements Model
 
     private $name;
 
+    // Array of Book objects
     private $books = [];
 
     private $pdo;

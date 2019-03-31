@@ -30,6 +30,10 @@ class Book implements Model
 
     private $added = null;
 
+    private $inStock = false;
+
+    private $quantity = 0;
+
     /**
      * @var array of Category objects
      */
@@ -53,7 +57,6 @@ class Book implements Model
     {
         // TODO: Implement create() method.
     }
-
 
     /**
      * @param int $id
@@ -125,87 +128,7 @@ class Book implements Model
     }
 
     /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     */
-    public function setTitle($title): void
-    {
-        $this->title = $title;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPages()
-    {
-        return $this->pages;
-    }
-
-    /**
-     * @param int $pages
-     */
-    public function setPages(int $pages)
-    {
-        $this->pages = $pages;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAuthorName()
-    {
-        return $this->authorName;
-    }
-
-    /**
-     * @param string $authorName
-     */
-    public function setAuthorName($authorName): void
-    {
-        $this->authorName = $authorName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAuthorSurname()
-    {
-        return $this->authorSurname;
-    }
-
-    /**
-     * @param string $authorSurname
-     */
-    public function setAuthorSurname($authorSurname): void
-    {
-        $this->authorSurname = $authorSurname;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription($description): void
-    {
-        $this->description = $description;
-    }
-
-    /**
-     * @return mixed
+     * @return null
      */
     public function getId()
     {
@@ -213,7 +136,7 @@ class Book implements Model
     }
 
     /**
-     * @param mixed $id
+     * @param null $id
      */
     public function setId($id): void
     {
@@ -221,7 +144,87 @@ class Book implements Model
     }
 
     /**
-     * @return mixed
+     * @return null
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param null $title
+     */
+    public function setTitle($title): void
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return null
+     */
+    public function getAuthorName()
+    {
+        return $this->authorName;
+    }
+
+    /**
+     * @param null $authorName
+     */
+    public function setAuthorName($authorName): void
+    {
+        $this->authorName = $authorName;
+    }
+
+    /**
+     * @return null
+     */
+    public function getAuthorSurname()
+    {
+        return $this->authorSurname;
+    }
+
+    /**
+     * @param null $authorSurname
+     */
+    public function setAuthorSurname($authorSurname): void
+    {
+        $this->authorSurname = $authorSurname;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPages()
+    {
+        return $this->pages;
+    }
+
+    /**
+     * @param null $pages
+     */
+    public function setPages($pages): void
+    {
+        $this->pages = $pages;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param null $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return null
      */
     public function getImg()
     {
@@ -229,16 +232,15 @@ class Book implements Model
     }
 
     /**
-     * @param mixed $img
+     * @param null $img
      */
     public function setImg($img): void
     {
         $this->img = $img;
     }
 
-
     /**
-     * @return mixed
+     * @return null
      */
     public function getPrice()
     {
@@ -246,7 +248,7 @@ class Book implements Model
     }
 
     /**
-     * @param mixed $price
+     * @param null $price
      */
     public function setPrice($price): void
     {
@@ -254,7 +256,7 @@ class Book implements Model
     }
 
     /**
-     * @return mixed
+     * @return null
      */
     public function getAdded()
     {
@@ -262,13 +264,36 @@ class Book implements Model
     }
 
     /**
-     * @param mixed $added
+     * @param null $added
      */
     public function setAdded($added): void
     {
         $this->added = $added;
     }
 
+    /**
+     * @return bool
+     */
+    public function isInStock(): bool
+    {
+        return $this->inStock;
+    }
+
+    /**
+     * @param bool $inStock
+     */
+    public function setInStock(bool $inStock): void
+    {
+        $this->inStock = $inStock;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
 
     /**
      * @return array
@@ -319,7 +344,7 @@ class Book implements Model
           'img',
           'price',
           'added',
-          'categories'
+          'categories',
         ];
     }
 }

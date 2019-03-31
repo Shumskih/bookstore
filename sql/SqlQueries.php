@@ -112,7 +112,7 @@ WHERE books.id = ob.book_id
   AND orders.id = :id
 ';
 
-    const GET_ALL_ORDERS = 'SELECT orders.id, orders.user_message as userMessage, statuses.status FROM orders, statuses
+    const GET_ALL_ORDERS_WITH_STATUS = 'SELECT orders.id, orders.user_message as userMessage, statuses.status FROM orders, statuses
 INNER JOIN orders_statuses os on statuses.id = os.status_id
 INNER JOIN orders o on os.order_id = o.id';
 

@@ -21,8 +21,15 @@ class FillTables
      * @param array $relations
      *
      */
-    public static function faker(array $tables, array $relations, array $users, array $addresses, array $roles, array $delivery, array $statuses)
-    {
+    public static function faker(
+      array $tables,
+      array $relations,
+      array $users,
+      array $addresses,
+      array $roles,
+      array $delivery,
+      array $statuses
+    ) {
         echo 'In faker<br>';
         echo '------------<br>';
 
@@ -127,9 +134,11 @@ class FillTables
             $authorName    = $faker->sentence($nbWords = 1, $variableNbWords = true);
             $authorSurname = $faker->sentence($nbWords = 1, $variableNbWords = true);
             $description   = '';
-            $pages         = rand(150, 1200);
-            $img           = '';
-            $price         = rand(10, 400);
+            $pages   = rand(150, 1200);
+            $img     = '';
+            $price   = rand(10, 400);
+            $inStock = true;
+            $quantity = rand(1, 10);
 
             $desc = $faker->paragraphs($nb = 5, $asText = false);
             foreach ($desc as $d) {
@@ -137,7 +146,7 @@ class FillTables
             }
 
             $query
-                     = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price, now())';
+                     = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price, now(), :inStock, :quantity)';
             $article = self::$pdo->prepare($query);
             $article->execute([
               'title'         => $bookTitle,
@@ -147,6 +156,8 @@ class FillTables
               'img'           => $img,
               'pages'         => $pages,
               'price'         => $price,
+              'inStock'       => $inStock,
+              'quantity'      => $quantity
             ]);
         }
     }

@@ -35,11 +35,11 @@
                     <tbody>
                     <?php foreach ($var as $order): ?>
                       <tr>
-                        <td class="product-remove"><a href="#">&#10003;</a></td>
-                        <td class="product-name"><a href="/orders?id=<?php echo $order['id']; ?>"><?php echo $order['id']; ?></a></td>
+                        <td class="product-remove"><a href="/administration/orders/order?id=<?php echo $order['id']; ?>">&#10003;</a></td>
+                        <td class="product-name"><a href="/administration/orders/order?id=<?php echo $order['id']; ?>"><?php echo $order['id']; ?></a></td>
                         <td class="product-stock-status"><span class="wishlist-in-stock"><?php echo $order['status'] ?></span></td>
-                        <td class="product-name"><a href="/orders?id=<?php echo $order['id']; ?>"><?php echo $order['userMessage'] ?></a></td>
-                        <td class="product-add-to-cart"><a href="/orders?id=<?php echo $order['id']; ?>"> View Order</a></td>
+                        <td class="product-name"><a href="/administration/orders/order?id=<?php echo $order['id']; ?>"><?php echo $order['userMessage'] ?></a></td>
+                        <td class="product-add-to-cart"><a href="/administration/orders/order?id=<?php echo $order['id']; ?>"> View Order</a></td>
                       </tr>
                     <?php endforeach; ?>
                     </tbody>

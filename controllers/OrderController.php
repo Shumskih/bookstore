@@ -10,11 +10,6 @@ class OrderController
         $this->order = new Order();
     }
 
-    public function createOrder(array $bookId, $userId, $orderMessage)
-    {
-        $this->order->createOrder($bookId, $userId, $orderMessage);
-    }
-
     public function create($model)
     {
         $this->order->create($model);

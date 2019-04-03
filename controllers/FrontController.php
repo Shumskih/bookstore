@@ -42,7 +42,7 @@ class FrontController extends Controller
         $vars = [];
 
         $controller = new BookController();
-        $book       = $controller->getBook($bookId);
+        $book       = (object)$controller->getBook($bookId);
 
         $categoryController = new Category();
         $categories         = $categoryController->readAll();
@@ -369,13 +369,11 @@ class FrontController extends Controller
             unset($book);
         }
 
-        $order = new Order();
+        $order = new OrderController();
         $order->setBookIdsAndQty($bookIdsAndQty);
         $order->setUserId($user->getId());
         $order->setUserMessage($userMessage);
-
-        $orderController = new OrderController();
-        $orderController->create($order);
+        $order->create($order);
     }
 
     public function orders()

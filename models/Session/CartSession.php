@@ -1,5 +1,5 @@
 <?php
-require_once ROOT . '/models/Session.php';
+require_once ROOT . '/models/Session/Session.php';
 
 class CartSession implements Session
 {
@@ -19,7 +19,7 @@ class CartSession implements Session
 
         if (!isset($_SESSION[self::CART])) {
             $_SESSION[self::CART] = [];
-            array_push($_SESSION[self::CART], ['book' => serialize($this->cart->getBook()), 'qty' => $this->cart->getBooksQty()]);
+            array_push($_SESSION[self::CART], ['book' => serialize($this->cart->getBook()), 'qty' => $this->cart->getBookQty()]);
         }
 
         unset($cart);
@@ -42,6 +42,6 @@ class CartSession implements Session
 
     function delete()
     {
-        // TODO: Implement delete() method.
+        unset($_SESSION[self::CART]);
     }
 }

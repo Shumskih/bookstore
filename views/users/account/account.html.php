@@ -79,8 +79,8 @@
                   </select>
                 </div>
                 <div class="input__box">
-                  <label for="state">State <span>*</span></label>
-                  <input type="text" name="state" id="state" value="<?php echo $address->getRegion(); ?>">
+                  <label for="state">District <span>*</span></label>
+                  <input type="text" name="state" id="state" value="<?php echo $address->getDistrict(); ?>">
                 </div>
                 <div class="input__box">
                   <label for="city">City <span>*</span></label>

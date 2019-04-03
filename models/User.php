@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/models/Address.php';
 require_once ROOT . '/models/Role.php';
-require_once ROOT . '/models/UserSession.php';
+require_once ROOT . '/controllers/SessionController/UserSessionController.php';
 require_once ROOT . '/controllers/AddressController.php';
 require_once ROOT . '/sql/SqlQueries.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
@@ -302,7 +302,7 @@ class User implements Model
         if ($user = CheckUser::isUserExists($email, $password)) {
             $roles = $user->getRoles($user->getId());
 
-            $session = new UserSession();
+            $session = new UserSessionController();
 
             foreach ($roles as $role) {
                 $role = (object)$role;
@@ -319,7 +319,7 @@ class User implements Model
                     $session->setRoleSuperUser();
                 }
             }
-            $session->createSessionUser($user);
+            $session->create($user);
 
             unset($role);
             unset($user);
@@ -354,8 +354,8 @@ class User implements Model
 
     public function logout()
     {
-        $session = new UserSession();
-        $session->deleteSessionUser();
+        $session = new UserSessionController();
+        $session->delete();
         unset($session);
     }
 

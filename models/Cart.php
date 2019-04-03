@@ -3,7 +3,7 @@ require_once ROOT . '/models/Model.php';
 require_once ROOT . '/controllers/UserController.php';
 require_once ROOT . '/controllers/DeliveryController.php';
 require_once ROOT . '/controllers/CartController.php';
-require_once ROOT . '/controllers/CartSessionController.php';
+require_once ROOT . '/controllers/SessionController/CartSessionController.php';
 
 class Cart
 {

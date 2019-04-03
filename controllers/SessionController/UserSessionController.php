@@ -1,5 +1,5 @@
 <?php
-require_once ROOT . '/models/UserSession.php';
+require_once ROOT . '/models/Session/UserSession.php';
 
 class UserSessionController
 {
@@ -28,5 +28,20 @@ class UserSessionController
     function delete()
     {
         $this->userSession->delete();
+    }
+
+    public function setRoleUser()
+    {
+        $this->userSession->setRoleUser();
+    }
+
+    public function setRoleContentManager()
+    {
+        $this->userSession->setRoleContentManager();
+    }
+
+    public function setRoleSuperUser()
+    {
+        $this->userSession->setRoleSuperUser();
     }
 }

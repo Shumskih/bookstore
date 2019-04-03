@@ -17,6 +17,7 @@
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
+            <?php if ($_SESSION['super user']): ?>
             <li class="drop"><a>Administration</a>
               <div class="megamenu dropdown">
                 <ul class="item item01">
@@ -26,6 +27,7 @@
                 </ul>
               </div>
             </li>
+            <?php endif; ?>
             <li><a href="/contact">Contact</a></li>
           </ul>
         </nav>

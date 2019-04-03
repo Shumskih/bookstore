@@ -22,13 +22,31 @@ class CheckUser
             echo 'Can\'t get user from database<br>' . $e->getMessage();
         }
 
-        $user = $stmt->fetch();
+        $result = $stmt->fetch();
 
-        if (empty($user)) {
+        if (empty($result)) {
             return false;
+        } else {
+            $user = self::userFactory($result['id'],
+              $result['name'],
+              $result['surname'],
+              $result['mobile_phone'],
+              $result['email']);
         }
 
-        return true;
+        return $user;
+    }
+
+    public static function userFactory($id, $name, $surname, $mobilePhone, $email) : \User
+    {
+        $user = new User();
+        $user->setId($id);
+        $user->setName($name);
+        $user->setSurname($surname);
+        $user->setMobilePhone($mobilePhone);
+        $user->setEmail($email);
+
+        return $user;
     }
 
     public static function isEmailExists($email)

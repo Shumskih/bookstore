@@ -23,6 +23,7 @@ class Address implements Model
 
     private $postcode = null;
 
+    // User object
     private $user = null;
 
     private $pdo = null;

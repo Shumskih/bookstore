@@ -345,6 +345,8 @@ class Book implements Model
           'price',
           'added',
           'categories',
+          'inStock',
+          'quantity'
         ];
     }
 }

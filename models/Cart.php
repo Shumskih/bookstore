@@ -2,6 +2,8 @@
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/controllers/UserController.php';
 require_once ROOT . '/controllers/DeliveryController.php';
+require_once ROOT . '/controllers/CartController.php';
+require_once ROOT . '/controllers/CartSessionController.php';
 
 class Cart
 {
@@ -10,7 +12,7 @@ class Cart
     private $id = null;
 
     // Quantity of books
-    private $qty = null;
+    private $bookQty = null;
 
     // Book object
     private $book = null;
@@ -35,13 +37,16 @@ class Cart
     {
         $bookController = new BookController();
 
-        $this->book = $bookController->getBook($_POST['id']);
-        $this->qty  = $_POST['qty'];
+        $this->book    = $bookController->getBook($_POST['id']);
+        $this->bookQty = $_POST['qty'];
 
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
-        }
-        array_push($_SESSION['cart'], ['book' => serialize($this->book), 'qty' => $this->qty]);
+        $sessionCart = new CartSessionController();
+        $sessionCart->create($this);
+
+        unset($this->book);
+        unset($this->bookQty);
+        unset($bookController);
+        unset($sessionCart);
     }
 
     public function getCart()
@@ -150,17 +155,17 @@ class Cart
     /**
      * @return null
      */
-    public function getQty()
+    public function getBookQty()
     {
-        return $this->qty;
+        return $this->bookQty;
     }
 
     /**
-     * @param null $qty
+     * @param null $bookQty
      */
-    public function setQty($qty): void
+    public function setBookQty($bookQty): void
     {
-        $this->qty = $qty;
+        $this->bookQty = $bookQty;
     }
 
     /**

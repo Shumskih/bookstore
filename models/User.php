@@ -3,6 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/models/Address.php';
 require_once ROOT . '/models/Role.php';
+require_once ROOT . '/models/UserSession.php';
 require_once ROOT . '/controllers/AddressController.php';
 require_once ROOT . '/sql/SqlQueries.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
@@ -34,6 +35,20 @@ class User implements Model
     public function __construct()
     {
         $this->pdo = ConnectionUtil::getConnection();
+    }
+
+    public function __sleep()
+    {
+        return [
+          'id',
+          'name',
+          'surname',
+          'email',
+          'password',
+          'mobilePhone',
+          'address',
+          'roles'
+        ];
     }
 
     /**
@@ -284,28 +299,27 @@ class User implements Model
 
     public function login($email, $password)
     {
-        if (CheckUser::isUserExists($email, $password)) {
-            $user  = $this->readUserByEmail($email);
+        if ($user = CheckUser::isUserExists($email, $password)) {
             $roles = $user->getRoles($user->getId());
+
+            $session = new UserSession();
+
             foreach ($roles as $role) {
                 $role = (object)$role;
 
                 if ($role->getName() == 'User') {
-                    $_SESSION['user'] = true;
+                    $session->setRoleUser();
                 }
 
                 if ($role->getName() == 'Content Manager') {
-                    $_SESSION['content manager'] = true;
+                    $session->setRoleContentManager();
                 }
 
                 if ($role->getName() == 'Super User') {
-                    $_SESSION['super user'] = true;
+                    $session->setRoleSuperUser();
                 }
             }
-            $_SESSION['userName']    = $user->getName();
-            $_SESSION['userSurname'] = $user->getSurname();
-            $_SESSION['login']       = true;
-            $_SESSION['email']       = $email;
+            $session->createSessionUser($user);
 
             unset($role);
             unset($user);
@@ -340,9 +354,9 @@ class User implements Model
 
     public function logout()
     {
-        unset($_SESSION['login']);
-        unset($_SESSION['email']);
-        unset($_SESSION['password']);
+        $session = new UserSession();
+        $session->deleteSessionUser();
+        unset($session);
     }
 
     public function checkPermissions() : bool

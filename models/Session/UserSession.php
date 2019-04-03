@@ -28,9 +28,8 @@ class UserSession implements Session
 
     function create($user)
     {
-        $this->user            = $user;
         $_SESSION[self::LOGIN] = true;
-        $_SESSION[self::USER]  = serialize($this->user);
+        $_SESSION[self::USER]  = serialize($user);
 
         array_push($this->sessionUser, $_SESSION[self::LOGIN]);
         array_push($this->sessionUser, $_SESSION[self::USER]);
@@ -38,12 +37,13 @@ class UserSession implements Session
 
     function read() : \User
     {
-        // TODO: Implement read() method.
+        return $_SESSION[self::USER];
     }
 
     function update($user)
     {
-        // TODO: Implement update() method.
+        unset($_SESSION[self::USER]);
+        $_SESSION[self::USER] = serialize($user);
     }
 
     function delete()

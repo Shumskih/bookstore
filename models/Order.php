@@ -10,7 +10,7 @@ class Order implements Model
     private $userMessage = null;
 
     // Array of Book Objects
-    private $books = [];
+    private $booksAndQty = [];
 
     // User Object
     private $user = null;
@@ -48,10 +48,10 @@ class Order implements Model
             echo 'Can\'t create order<br>' . $e->getMessage();
         }
 
-        $order->setOrderId($this->pdo->lastInsertId());
+        $order->setId($this->pdo->lastInsertId());
 
         // add book
-        foreach ($order->bookIdsAndQty as $key => $value) {
+        foreach ($order->getBooksAndQty() as $key => $value) {
             $book     = (object)$value['book'];
             $quantity = $value['qty'];
             try {
@@ -59,7 +59,7 @@ class Order implements Model
                 $this->pdo
                   ->prepare($query)
                   ->execute([
-                    'orderId'  => $order->getOrderId(),
+                    'orderId'  => $order->getId(),
                     'bookId'   => $book->getId(),
                     'quantity' => $quantity,
                   ]);
@@ -74,8 +74,8 @@ class Order implements Model
             $this->pdo
               ->prepare($query)
               ->execute([
-                'orderId' => $order->getOrderId(),
-                'userId'  => $order->getUserId(),
+                'orderId' => $order->getId(),
+                'userId'  => $order->getUser()->getId(),
               ]);
         } catch (PDOException $e) {
             echo 'Can\'t add user to order in ' . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
@@ -89,7 +89,7 @@ class Order implements Model
             $this->pdo
               ->prepare($query)
               ->execute([
-                'orderId'    => $order->getOrderId(),
+                'orderId'    => $order->getId(),
                 'deliveryId' => $delivery->getId(),
               ]);
         } catch (PDOException $e) {
@@ -114,7 +114,7 @@ class Order implements Model
                     $this->pdo
                       ->prepare($query)
                       ->execute([
-                        'orderId'  => $order->getOrderId(),
+                        'orderId'  => $order->getId(),
                         'statusId' => $status['id'],
                       ]);
                 } catch (PDOException $e) {
@@ -176,19 +176,35 @@ class Order implements Model
     }
 
     /**
-     * @return array
+     * @return null
      */
-    public function getBooks(): array
+    public function getUserMessage(): string
     {
-        return $this->books;
+        return $this->userMessage;
     }
 
     /**
-     * @param array $books
+     * @param null $userMessage
      */
-    public function setBooks(array $books): void
+    public function setUserMessage($userMessage): void
     {
-        $this->books = $books;
+        $this->userMessage = $userMessage;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBooksAndQty(): array
+    {
+        return $this->booksAndQty;
+    }
+
+    /**
+     * @param array $booksAndQty
+     */
+    public function setBooksAndQty(array $booksAndQty): void
+    {
+        $this->booksAndQty = $booksAndQty;
     }
 
     /**
@@ -205,22 +221,6 @@ class Order implements Model
     public function setUser($user): void
     {
         $this->user = $user;
-    }
-
-    /**
-     * @return null
-     */
-    public function getUserMessage()
-    {
-        return $this->userMessage;
-    }
-
-    /**
-     * @param null $userMessage
-     */
-    public function setUserMessage($userMessage): void
-    {
-        $this->userMessage = $userMessage;
     }
 
     /**

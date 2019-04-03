@@ -358,20 +358,20 @@ class FrontController extends Controller
         if ($email != $_SESSION['email'])
             $_SESSION['email'] = $email;
 
-        $bookIdsAndQty = [];
+        $booksAndQty = [];
 
         // get books
         $count = count($_SESSION['cart']);
         for ($i = 0; $i < $count; $i++) {
             $book = (object) unserialize($_SESSION['cart'][$i]['book']);
             $qty = $_SESSION['cart'][$i]['qty'];
-            array_push($bookIdsAndQty, ['book' => $book, 'qty' => $qty]);
+            array_push($booksAndQty, ['book' => $book, 'qty' => $qty]);
             unset($book);
         }
 
         $order = new OrderController();
-        $order->setBookIdsAndQty($bookIdsAndQty);
-        $order->setUserId($user->getId());
+        $order->setBooksAndQty($booksAndQty);
+        $order->setUser($user);
         $order->setUserMessage($userMessage);
         $order->create($order);
     }

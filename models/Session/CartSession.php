@@ -26,9 +26,9 @@ class CartSession implements Session
         unset($this->cart);
     }
 
-    function read() : \Cart
+    function read() : array
     {
-        // TODO: Implement read() method.
+        return $_SESSION[self::CART];
     }
 
     function update($cart)

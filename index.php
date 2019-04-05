@@ -119,6 +119,11 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 } elseif (isset($_GET['id']) && (URI == '/administration/orders/order?id=' . $_GET['id'] || URI == '/administration/orders/order?id=' . $_GET['id'] . '/')) {
     $frontController->order();
 
+} elseif (isset($_GET['id']) && (URI == '/administration/orders/delete-order?id=' . $_GET['id'] || URI == '/administration/orders/delete-order?id=' . $_GET['id'] . '/')) {
+    $frontController->deleteOrder($_GET['id']);
+
+    header('Location: /administration/orders');
+
     // /contact
 } elseif (URI == '/contact' || URI == '/contacts/') {
     $frontController->contact();

@@ -32,7 +32,7 @@ class SqlQueries
                                    WHERE categories_books.category_id = :id';
 
     // Users
-    const GET_USER = 'SELECT * FROM users WHERE email = :email and password = :password';
+    const GET_USER = 'SELECT * FROM users WHERE email = :email';
 
     const GET_BY_EMAIL = 'SELECT * FROM users WHERE email = :email';
 
@@ -127,4 +127,14 @@ INNER JOIN orders o on os.order_id = o.id';
     const GET_ALL_STATUSES = 'SELECT * FROM statuses';
 
     const ADD_STATUS_TO_ORDER = 'INSERT INTO orders_statuses (order_id, status_id) VALUES (:orderId, :statusId)';
+
+    const DELETE_ORDER = 'DELETE FROM orders WHERE id = :id';
+
+    const DELETE_BOOKS_FROM_ORDER = 'DELETE FROM orders_books WHERE order_id = :orderId';
+
+    const DELETE_DELIVERY_FROM_ORDER = 'DELETE FROM orders_deliveries WHERE order_id = :orderId';
+
+    const DELETE_STATUS_FROM_ORDER = 'DELETE FROM orders_statuses WHERE order_id = :orderId';
+
+    const DELETE_USER_FROM_ORDER = 'DELETE FROM orders_users WHERE order_id = :orderId';
 }

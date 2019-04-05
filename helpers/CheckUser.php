@@ -15,8 +15,7 @@ class CheckUser
             self::$pdo = ConnectionUtil::getConnection();
             $stmt      = self::$pdo->prepare($query);
             $stmt->execute([
-              'email'    => $email,
-              'password' => $password
+              'email'    => $email
             ]);
         } catch (PDOException $e) {
             echo 'Can\'t get user from database<br>' . $e->getMessage();
@@ -24,7 +23,7 @@ class CheckUser
 
         $result = $stmt->fetch();
 
-        if (empty($result)) {
+        if (empty($result) || !password_verify($password, $result['password'])) {
             return false;
         } else {
             $user = self::userFactory($result['id'],
@@ -49,7 +48,7 @@ class CheckUser
         return $user;
     }
 
-    public static function isEmailExists($email)
+    public static function isEmailExists($email) : bool
     {
         try {
             $query     = SqlQueries::GET_EMAIL;

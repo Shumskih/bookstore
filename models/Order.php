@@ -1,6 +1,7 @@
 <?php
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/controllers/DeliveryController.php';
+require_once ROOT . '/dao/pdo/OrderDaoImpl.php';
 
 class Order implements Model
 {
@@ -21,132 +22,21 @@ class Order implements Model
     // Status Object
     private $status = null;
 
-    private $pdo = null;
-
-    /**
-     * Order constructor.
-     * Get instance of PDO object and assign it to $pdo variable
-     */
-    public function __construct()
-    {
-        $this->pdo = ConnectionUtil::getConnection();
-    }
 
     function create($order)
     {
-
-        $order = (object)$order;
-        // add order
-        try {
-            $query = SqlQueries::CREATE_ORDER;
-            $this->pdo
-              ->prepare($query)
-              ->execute([
-                'userMessage' => $order->getUserMessage(),
-              ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t create order<br>' . $e->getMessage();
-        }
-
-        $order->setId($this->pdo->lastInsertId());
-
-        // add book
-        foreach ($order->getBooksAndQty() as $key => $value) {
-            $book     = (object)$value['book'];
-            $quantity = $value['qty'];
-            try {
-                $query = SqlQueries::ADD_BOOK_TO_ORDER;
-                $this->pdo
-                  ->prepare($query)
-                  ->execute([
-                    'orderId'  => $order->getId(),
-                    'bookId'   => $book->getId(),
-                    'quantity' => $quantity,
-                  ]);
-            } catch (PDOException $e) {
-                echo 'Can\'t add book to order<br>' . $e->getMessage();
-            }
-        }
-
-        // add user
-        try {
-            $query = SqlQueries::ADD_USER_TO_ORDER;
-            $this->pdo
-              ->prepare($query)
-              ->execute([
-                'orderId' => $order->getId(),
-                'userId'  => $order->getUser()->getId(),
-              ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t add user to order in ' . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
-        }
-
-        $deliveryController = new DeliveryController();
-        $delivery           = $deliveryController->getDeliveryByMethod($_SESSION['shippingMethod']);
-
-        try {
-            $query = SqlQueries::ADD_DELIVERY_TO_ORDER;
-            $this->pdo
-              ->prepare($query)
-              ->execute([
-                'orderId'    => $order->getId(),
-                'deliveryId' => $delivery->getId(),
-              ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t add delivery to order<br>' . $e->getMessage();
-        }
-
-        // get all statuses
-        try {
-            $query    = SqlQueries::GET_ALL_STATUSES;
-            $statuses = $this->pdo
-              ->query($query)
-              ->fetchAll();
-        } catch (PDOException $e) {
-            echo 'Can\'t add status to order<br>' . $e->getMessage();
-        }
-
-        // add status 'Open' to order
-        foreach ($statuses as $status) {
-            if ($status['status'] == 'Open') {
-                try {
-                    $query = SqlQueries::ADD_STATUS_TO_ORDER;
-                    $this->pdo
-                      ->prepare($query)
-                      ->execute([
-                        'orderId'  => $order->getId(),
-                        'statusId' => $status['id'],
-                      ]);
-                } catch (PDOException $e) {
-                    echo 'Can\'t add status to order<br>' .
-                         $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
-                }
-            }
-        }
-
-        unset($this->pdo);
+        OrderDaoImpl::create($order);
         unset($order);
-        unset($delivery);
-        unset($deliveryController);
     }
 
-    function read($id)
+    function read($id) : Order
     {
         // TODO: Implement read() method.
     }
 
     function readAll(): array
     {
-        try {
-            $query  = SqlQueries::GET_ALL_ORDERS_WITH_STATUS;
-            $orders = $this->pdo
-              ->query($query)
-              ->fetchAll();
-        } catch (PDOException $e) {
-            echo 'Can\'t get all orders from database<br>'
-                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
-        }
-        return $orders;
+        return OrderDaoImpl::readAll();
     }
 
     function update($model)
@@ -156,7 +46,7 @@ class Order implements Model
 
     function delete($id)
     {
-        // TODO: Implement delete() method.
+        OrderDaoImpl::delete($id);
     }
 
     /**
@@ -170,7 +60,7 @@ class Order implements Model
     /**
      * @param null $id
      */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -186,7 +76,7 @@ class Order implements Model
     /**
      * @param null $userMessage
      */
-    public function setUserMessage($userMessage): void
+    public function setUserMessage(string $userMessage): void
     {
         $this->userMessage = $userMessage;
     }
@@ -218,7 +108,7 @@ class Order implements Model
     /**
      * @param null $user
      */
-    public function setUser($user): void
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
@@ -234,7 +124,7 @@ class Order implements Model
     /**
      * @param null $delivery
      */
-    public function setDelivery($delivery): void
+    public function setDelivery(Delivery $delivery): void
     {
         $this->delivery = $delivery;
     }
@@ -250,7 +140,7 @@ class Order implements Model
     /**
      * @param null $status
      */
-    public function setStatus($status): void
+    public function setStatus(Status $status): void
     {
         $this->status = $status;
     }

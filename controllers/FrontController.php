@@ -273,7 +273,7 @@ class FrontController extends Controller
         $user = new UserController();
 
         $email    = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
-        $password = md5(htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8') . 'bookstore');
+        $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
 
         if ($user->login($email, $password)) {
             header('Location: /books');
@@ -399,6 +399,12 @@ class FrontController extends Controller
         $this->render(
           '/views/administration/orders/order.html.php'
         );
+    }
+
+    public function deleteOrder($id)
+    {
+        $orderController = new OrderController();
+        $orderController->delete($id);
     }
 
     public function contact()

@@ -30,6 +30,7 @@
                       <th class="product-stock-stauts"><span class="nobr"> Status </span></th>
                       <th class="product-name"><span class="nobr">User Message</span></th>
                       <th class="product-add-to-cart">View Order</th>
+                      <th class="product-add-to-cart">Delete Order</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,7 @@
                         <td class="product-stock-status"><span class="wishlist-in-stock"><?php echo $order['status'] ?></span></td>
                         <td class="product-name"><a href="/administration/orders/order?id=<?php echo $order['id']; ?>"><?php echo $order['userMessage'] ?></a></td>
                         <td class="product-add-to-cart"><a href="/administration/orders/order?id=<?php echo $order['id']; ?>"> View Order</a></td>
+                        <td class="product-add-to-cart"><a href="/administration/orders/delete-order?id=<?php echo $order['id']; ?>" class="btn btn-danger"> Delete Order</a></td>
                       </tr>
                     <?php endforeach; ?>
                     </tbody>

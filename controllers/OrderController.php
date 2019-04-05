@@ -16,9 +16,19 @@ class OrderController
         $this->order->create($model);
     }
 
+    public function read($id)
+    {
+        return $this->order->read($id);
+    }
+
     public function readAll()
     {
         return $this->order->readAll();
+    }
+
+    public function delete($id)
+    {
+        $this->order->delete($id);
     }
 
     public function setId($id)

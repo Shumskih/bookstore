@@ -128,37 +128,45 @@ class FillTables
         echo '------------<br>';
         $faker = Faker\Factory::create();
 
-        for ($i = 0; $i < 10; $i++) {
-
-            $bookTitle     = $faker->sentence($nbWords = 6, $variableNbWords = true);
-            $authorName    = $faker->sentence($nbWords = 1, $variableNbWords = true);
-            $authorSurname = $faker->sentence($nbWords = 1, $variableNbWords = true);
-            $description   = '';
-            $pages   = rand(150, 1200);
-            $img     = '';
-            $price   = rand(10, 400);
-            $inStock = true;
-            $quantity = rand(1, 10);
-
-            $desc = $faker->paragraphs($nb = 5, $asText = false);
-            foreach ($desc as $d) {
-                $description .= $d . "<br>";
-            }
+        try {
+            self::$pdo->beginTransaction();
 
             $query
                      = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price, now(), :inStock, :quantity)';
             $article = self::$pdo->prepare($query);
-            $article->execute([
-              'title'         => $bookTitle,
-              'authorName'    => $authorName,
-              'authorSurname' => $authorSurname,
-              'description'   => $description,
-              'img'           => $img,
-              'pages'         => $pages,
-              'price'         => $price,
-              'inStock'       => $inStock,
-              'quantity'      => $quantity
-            ]);
+            for ($i = 0; $i < 10; $i++) {
+
+                $bookTitle     = $faker->sentence($nbWords = 6, $variableNbWords = true);
+                $authorName    = $faker->sentence($nbWords = 1, $variableNbWords = true);
+                $authorSurname = $faker->sentence($nbWords = 1, $variableNbWords = true);
+                $description   = '';
+                $pages         = rand(150, 1200);
+                $img           = '';
+                $price         = rand(10, 400);
+                $inStock       = true;
+                $quantity      = rand(1, 10);
+
+                $desc = $faker->paragraphs($nb = 5, $asText = false);
+                foreach ($desc as $d) {
+                    $description .= $d . "<br>";
+                }
+
+                $article->execute([
+                  'title'         => $bookTitle,
+                  'authorName'    => $authorName,
+                  'authorSurname' => $authorSurname,
+                  'description'   => $description,
+                  'img'           => $img,
+                  'pages'         => $pages,
+                  'price'         => $price,
+                  'inStock'       => $inStock,
+                  'quantity'      => $quantity,
+                ]);
+            }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate books<br>' . $e->getMessage();
         }
     }
 
@@ -168,27 +176,41 @@ class FillTables
         echo '------------<br>';
         $faker = Faker\Factory::create();
 
-        for ($i = 0; $i < 5; $i++) {
-
-            $categoryName = $faker->sentence($nbWords = 1, $variableNbWords = true);
-
+        try {
+            self::$pdo->beginTransaction();
             $query    = 'INSERT INTO categories VALUES (null, :name)';
             $category = self::$pdo->prepare($query);
-            $category->execute([
-              'name' => $categoryName,
-            ]);
+            for ($i = 0; $i < 5; $i++) {
+                $categoryName = $faker->sentence($nbWords = 1, $variableNbWords = true);
+                $category->execute([
+                  'name' => $categoryName,
+                ]);
+            }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate categories<br>' . $e->getMessage();
         }
+
     }
 
     public static function populateCategoriesBooks(array $relations)
     {
         echo 'Populate Categories_Books<br>';
         echo '------------<br>';
-        foreach ($relations['categoriesBooksRelations'] as $category => $relations) {
-            foreach ($relations as $r) {
-                $query = "INSERT INTO categories_books VALUES ($category, $r)";
-                self::$pdo->query($query);
+        try {
+            self::$pdo->beginTransaction();
+
+            foreach ($relations['categoriesBooksRelations'] as $category => $relations) {
+                foreach ($relations as $r) {
+                    $query = "INSERT INTO categories_books VALUES ($category, $r)";
+                    self::$pdo->query($query);
+                }
             }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate categories_books<br>' . $e->getMessage();
         }
     }
 
@@ -196,25 +218,29 @@ class FillTables
     {
         echo 'Populate Users<br>';
         echo '------------<br>';
-        foreach ($users as $user) {
-            $name     = $user['name'];
-            $surname  = $user['surname'];
-            $email    = $user['email'];
-            $password = md5($user['password'] . 'bookstore');
 
-            try {
-                $query
-                          = 'INSERT INTO users VALUES (null, :name, :surname, null, :email, :password)';
-                $category = self::$pdo->prepare($query);
+        try {
+            self::$pdo->beginTransaction();
+            $query    = 'INSERT INTO users VALUES (null, :name, :surname, null, :email, :password)';
+            $category = self::$pdo->prepare($query);
+
+            foreach ($users as $user) {
+                $name     = $user['name'];
+                $surname  = $user['surname'];
+                $email    = $user['email'];
+                $password = password_hash($user['password'], PASSWORD_DEFAULT);
+
                 $category->execute([
                   'name'     => $name,
                   'surname'  => $surname,
                   'email'    => $email,
                   'password' => $password,
                 ]);
-            } catch (PDOException $e) {
-                $e->getMessage();
             }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate users<br>' . $e->getMessage();
         }
     }
 
@@ -222,19 +248,22 @@ class FillTables
     {
         echo 'Populate addresses<br>';
         echo '------------<br>';
-        foreach ($addresses as $address) {
-            $country   = $address['country'];
-            $district  = $address['district'];
-            $city      = $address['city'];
-            $street    = $address['street'];
-            $building  = $address['building'];
-            $apartment = $address['apartment'];
-            $postcode  = $address['postcode'];
 
-            try {
-                $query
-                          = 'INSERT INTO addresses VALUES (null, :country, :district, :city, :street, :building, :apartment, :postcode)';
-                $category = self::$pdo->prepare($query);
+        try {
+            self::$pdo->beginTransaction();
+            $query
+                      = 'INSERT INTO addresses VALUES (null, :country, :district, :city, :street, :building, :apartment, :postcode)';
+            $category = self::$pdo->prepare($query);
+
+            foreach ($addresses as $address) {
+                $country   = $address['country'];
+                $district  = $address['district'];
+                $city      = $address['city'];
+                $street    = $address['street'];
+                $building  = $address['building'];
+                $apartment = $address['apartment'];
+                $postcode  = $address['postcode'];
+
                 $category->execute([
                   'country'   => $country,
                   'district'  => $district,
@@ -244,9 +273,11 @@ class FillTables
                   'apartment' => $apartment,
                   'postcode'  => $postcode,
                 ]);
-            } catch (PDOException $e) {
-                $e->getMessage();
             }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate addresses<br>' . $e->getMessage();
         }
     }
 
@@ -254,32 +285,47 @@ class FillTables
     {
         echo 'Populate Users_Addresses<br>';
         echo '------------<br>';
-        foreach ($relations['usersAddressesRelations'] as $user => $relations) {
-            foreach ($relations as $r) {
-                $query = "INSERT INTO users_addresses VALUES ($user, $r)";
-                self::$pdo->query($query);
+
+        try {
+            self::$pdo->beginTransaction();
+            foreach ($relations['usersAddressesRelations'] as $user => $relations) {
+                foreach ($relations as $r) {
+                    $query = "INSERT INTO users_addresses VALUES ($user, $r)";
+                    self::$pdo->query($query);
+                }
             }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate users_addresses<br>' . $e->getMessage();
         }
+
     }
 
     public static function populateRoles(array $roles)
     {
         echo 'Populate Roles<br>';
         echo '------------<br>';
-        foreach ($roles as $role) {
-            $name        = $role['name'];
-            $description = $role['description'];
 
-            try {
-                $query    = 'INSERT INTO roles VALUES (null, :name, :description)';
-                $category = self::$pdo->prepare($query);
+        try {
+            self::$pdo->beginTransaction();
+            $query    = 'INSERT INTO roles VALUES (null, :name, :description)';
+            $category = self::$pdo->prepare($query);
+
+            foreach ($roles as $role) {
+                $name        = $role['name'];
+                $description = $role['description'];
+
                 $category->execute([
                   'name'        => $name,
                   'description' => $description,
                 ]);
-            } catch (PDOException $e) {
-                $e->getMessage();
             }
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate roles<br>' . $e->getMessage();
         }
     }
 
@@ -287,11 +333,21 @@ class FillTables
     {
         echo 'Populate Users_Roles<br>';
         echo '------------<br>';
-        foreach ($relations['usersRolesRelations'] as $user => $relations) {
-            foreach ($relations as $r) {
-                $query = "INSERT INTO users_roles VALUES ($user, $r)";
-                self::$pdo->query($query);
+
+        try {
+            self::$pdo->beginTransaction();
+
+            foreach ($relations['usersRolesRelations'] as $user => $relations) {
+                foreach ($relations as $r) {
+                    $query = "INSERT INTO users_roles VALUES ($user, $r)";
+                    self::$pdo->query($query);
+                }
             }
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate users_roles<br>' . $e->getMessage();
         }
     }
 
@@ -299,20 +355,24 @@ class FillTables
     {
         echo 'Populate Delivery<br>';
         echo '------------<br>';
-        foreach ($delivery as $d) {
-            $deliveryMethod = $d['deliveryMethod'];
-            $deliveryCost   = $d['deliveryCost'];
 
-            try {
-                $query = 'INSERT INTO deliveries VALUES (null, :deliveryMethod, :deliveryCost)';
-                $stmt  = self::$pdo->prepare($query);
+        try {
+            self::$pdo->beginTransaction();
+            $query = 'INSERT INTO deliveries VALUES (null, :deliveryMethod, :deliveryCost)';
+            $stmt  = self::$pdo->prepare($query);
+            foreach ($delivery as $d) {
+                $deliveryMethod = $d['deliveryMethod'];
+                $deliveryCost   = $d['deliveryCost'];
+
                 $stmt->execute([
                   'deliveryMethod' => $deliveryMethod,
                   'deliveryCost'   => $deliveryCost,
                 ]);
-            } catch (PDOException $e) {
-                echo 'Can\'t create delivery<br>' . $e->getMessage();
             }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate delivery<br>' . $e->getMessage();
         }
     }
 
@@ -320,18 +380,23 @@ class FillTables
     {
         echo 'Populate Status<br>';
         echo '------------<br>';
-        foreach ($statuses as $status) {
-            $status = $status['status'];
 
-            try {
-                $query = 'INSERT INTO statuses VALUES (null, :status)';
-                $stmt  = self::$pdo->prepare($query);
+        try {
+            self::$pdo->beginTransaction();
+            $query = 'INSERT INTO statuses VALUES (null, :status)';
+            $stmt  = self::$pdo->prepare($query);
+
+            foreach ($statuses as $status) {
+                $status = $status['status'];
+
                 $stmt->execute([
                   'status' => $status,
                 ]);
-            } catch (PDOException $e) {
-                echo 'Can\'t create status<br>' . $e->getMessage();
             }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate status<br>' . $e->getMessage();
         }
     }
 }

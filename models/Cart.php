@@ -116,9 +116,9 @@ class Cart
         $this->deliveries   = $deliveryController->readAll();
 
         foreach ($this->deliveries as $delivery) {
-            if ($delivery['delivery_method'] == $shippingMethod) {
-                $_SESSION['shippingMethod'] = $delivery['delivery_method'];
-                $_SESSION['shippingCost']   = $delivery['delivery_cost'];
+            if ($delivery['deliveryMethod'] == $shippingMethod) {
+                $_SESSION['shippingMethod'] = $delivery['deliveryMethod'];
+                $_SESSION['shippingCost']   = $delivery['deliveryCost'];
             }
         }
 

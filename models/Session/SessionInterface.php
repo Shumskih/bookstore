@@ -1,7 +1,7 @@
 <?php
 
 
-interface Session
+interface SessionInterface
 {
 
     function create($model);

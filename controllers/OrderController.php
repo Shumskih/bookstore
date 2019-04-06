@@ -1,7 +1,8 @@
 <?php
 require_once ROOT . '/models/Order.php';
+require_once ROOT . '/controllers/Controller.php';
 
-class OrderController
+class OrderController extends Controller
 {
 
     private $order = null;
@@ -16,7 +17,7 @@ class OrderController
         $this->order->create($model);
     }
 
-    public function read($id)
+    public function read($id) : Order
     {
         return $this->order->read($id);
     }

@@ -11,6 +11,7 @@ require_once ROOT . '/helpers/Countries.php';
 require_once ROOT . '/sql/tablesData.php';
 
 session_start();
+ob_start("ob_gzhandler");
 
 $frontController = new FrontController();
 
@@ -88,7 +89,7 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
     }
     $frontController->cart();
 
-// /cart/delete-from-cart
+    // /cart/delete-from-cart
 } elseif (isset($_GET['id']) && URI == '/cart/delete-from-cart?id=' . $_GET['id']
           || isset($_GET['id']) && URI == '/cart/delete-from-cart?id=' . $_GET['id'] . '/') {
     $cartController = new CartController();
@@ -102,7 +103,7 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 
     // /cart/checkout
 } elseif (URI == '/cart/checkout' || URI == '/cart/checkout/') {
-    if(isset($_POST['updateCheckout'])) {
+    if (isset($_POST['updateCheckout'])) {
         $shippingMethod = $_POST['shippingMethod'];
         $frontController->checkout($shippingMethod);
     } elseif (isset($_POST['submitCheckout'])) {
@@ -116,12 +117,15 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 } elseif (URI == '/administration/orders' || URI == '/administration/orders/') {
     $frontController->orders();
 
-} elseif (isset($_GET['id']) && (URI == '/administration/orders/order?id=' . $_GET['id'] || URI == '/administration/orders/order?id=' . $_GET['id'] . '/')) {
+} elseif (isset($_GET['id'])
+          && (URI == '/administration/orders/order?id=' . $_GET['id']
+              || URI == '/administration/orders/order?id=' . $_GET['id'] . '/')) {
     $frontController->order();
 
-} elseif (isset($_GET['id']) && (URI == '/administration/orders/delete-order?id=' . $_GET['id'] || URI == '/administration/orders/delete-order?id=' . $_GET['id'] . '/')) {
+} elseif (isset($_GET['id'])
+          && (URI == '/administration/orders/delete-order?id=' . $_GET['id']
+              || URI == '/administration/orders/delete-order?id=' . $_GET['id'] . '/')) {
     $frontController->deleteOrder($_GET['id']);
-
     header('Location: /administration/orders');
 
     // /contact

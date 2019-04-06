@@ -381,10 +381,10 @@ class FrontController extends Controller
         $userController = new UserController();
         $permissions = $userController->checkPermissions();
 
-        $orderController = new OrderController();
-        $orders = $orderController->readAll();
-
         if ($permissions) {
+            $orderController = new OrderController();
+            $orders = $orderController->readAll();
+
             $this->render(
               '/views/administration/orders/orders.html.php',
               $orders
@@ -396,8 +396,14 @@ class FrontController extends Controller
 
     public function order()
     {
+        if (isset($_GET['id']))
+            $id = $_GET['id'];
+
+        $orderController = new OrderController();
+        $order = $orderController->read($id);
         $this->render(
-          '/views/administration/orders/order.html.php'
+          '/views/administration/orders/order.html.php',
+          $order
         );
     }
 

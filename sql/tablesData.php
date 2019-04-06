@@ -16,7 +16,7 @@ $tables = [
   'users' => 'id           int auto_increment primary key not null,
               name         varchar(255)                   not null,
               surname      varchar(255),
-              mobile_phone varchar(255),
+              mobilePhone  varchar(255),
               email        varchar(255)                   not null,
               password     varchar(255)                   not null',
 
@@ -37,14 +37,14 @@ $tables = [
               description varchar(250)                   not null',
 
   'orders' => 'id              int auto_increment primary key not null,
-               user_message    text',
+               userMessage     text',
 
   'statuses' => 'id              int auto_increment primary key not null,
                  status          varchar(250)',
 
   'deliveries' => 'id              int auto_increment primary key not null,
-                   delivery_method varchar(250),
-                   delivery_cost   int',
+                   deliveryMethod  varchar(250),
+                   deliveryCost    int',
 
   'orders_users' => 'order_id int not null,
                      user_id  int not null,

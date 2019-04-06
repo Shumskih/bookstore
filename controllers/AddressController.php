@@ -1,8 +1,9 @@
 <?php
 require_once ROOT . '/models/Address.php';
+require_once ROOT . '/controllers/Controller.php';
 
 
-class AddressController
+class AddressController extends Controller
 {
     private $address;
 

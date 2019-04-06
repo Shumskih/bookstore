@@ -1,7 +1,7 @@
 <?php
-require_once ROOT . '/models/Session/Session.php';
+require_once ROOT . '/models/Session/SessionInterface.php';
 
-class CartSession implements Session
+class CartSession implements SessionInterface
 {
 
     // SESSION[self::ITEM]

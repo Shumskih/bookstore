@@ -1,7 +1,8 @@
 <?php
 require_once ROOT . '/models/Delivery.php';
+require_once ROOT . '/controllers/Controller.php';
 
-class DeliveryController
+class DeliveryController extends Controller
 {
     private $delivery = null;
 

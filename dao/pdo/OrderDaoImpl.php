@@ -60,7 +60,7 @@ class OrderDaoImpl implements DaoInterface
 
             $deliveryController = new DeliveryController();
             $delivery
-                                = $deliveryController->getDeliveryByMethod($_SESSION['shippingMethod']); // TODO: Session
+                                = $deliveryController->getDeliveryByMethod($_SESSION['shippingMethod']); // TODO: SessionInterface
 
             $query = SqlQueries::ADD_DELIVERY_TO_ORDER;
             self::$pdo
@@ -96,21 +96,41 @@ class OrderDaoImpl implements DaoInterface
         unset($order);
     }
 
-    static function read($id)
+    static function read($id): Order
     {
-        // TODO: Implement read() method.
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_ORDER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'id' => $id,
+            ]);
+            $order = $stmt->fetchObject(\Order::class);
+            self::$pdo->commit();
+
+            return $order;
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t read order<br>' .
+                 $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
     }
 
     static function readAll()
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
 
             $query  = SqlQueries::GET_ALL_ORDERS_WITH_STATUS;
             $orders = self::$pdo
               ->query($query)
               ->fetchAll();
+            self::$pdo->commit();
         } catch (PDOException $e) {
+            self::$pdo->rollBack();
             echo 'Can\'t get all orders from database<br>'
                  . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
@@ -173,5 +193,71 @@ class OrderDaoImpl implements DaoInterface
             echo 'Can\'t delete order<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
+    }
+
+    public static function getBooksAndQty($orderId): array
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_BOOKS_BY_ORDER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'id' => $orderId,
+            ]);
+            $result = $stmt->fetchAll();
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t get books by order from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $result;
+    }
+
+    public static function getDelivery($orderId): \Delivery
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_DELIVERY_BY_ORDER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'id' => $orderId,
+            ]);
+            $delivery = $stmt->fetchObject(\Delivery::class);
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t get delivery by order from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $delivery;
+    }
+
+    public static function getUser($orderId): \User
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_USER_BY_ORDER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'id' => $orderId,
+            ]);
+            $user = $stmt->fetchObject(\User::class);
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t get user by order from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $user;
     }
 }

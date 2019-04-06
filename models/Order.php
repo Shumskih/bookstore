@@ -29,9 +29,9 @@ class Order implements Model
         unset($order);
     }
 
-    function read($id) : Order
+    function read($id): Order
     {
-        // TODO: Implement read() method.
+        return OrderDaoImpl::read($id);
     }
 
     function readAll(): array
@@ -84,9 +84,13 @@ class Order implements Model
     /**
      * @return array
      */
-    public function getBooksAndQty(): array
+    public function getBooksAndQty($orderId = null): array
     {
-        return $this->booksAndQty;
+        if (!empty($this->booksAndQty)) {
+            return $this->booksAndQty;
+        } else {
+            return OrderDaoImpl::getBooksAndQty($orderId);
+        }
     }
 
     /**
@@ -100,9 +104,13 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getUser()
+    public function getUser($orderId = null): \User
     {
-        return $this->user;
+        if (!empty($this->user)) {
+            return $this->user;
+        } else {
+            return OrderDaoImpl::getUser($orderId);
+        }
     }
 
     /**
@@ -116,9 +124,13 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getDelivery()
+    public function getDelivery($orderId): \Delivery
     {
-        return $this->delivery;
+        if (!empty($this->delivery)) {
+            return $this->delivery;
+        } else {
+            return OrderDaoImpl::getDelivery($orderId);
+        }
     }
 
     /**

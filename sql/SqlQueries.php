@@ -70,7 +70,7 @@ class SqlQueries
                                    WHERE users_roles.user_id = :id';
 
     // Orders
-    const CREATE_ORDER = 'INSERT INTO orders(id, user_message) VALUES (null, :userMessage)';
+    const CREATE_ORDER = 'INSERT INTO orders(id, userMessage) VALUES (null, :userMessage)';
 
     const ADD_BOOK_TO_ORDER = 'INSERT INTO orders_books(order_id, book_id, quantity) VALUES (:orderId, :bookId, :quantity)';
 
@@ -90,38 +90,52 @@ class SqlQueries
                                    INNER JOIN orders_users ON orders_users.order_id = orders.id
                                    INNER JOIN users ON users.id = orders_users.user_id';
 
-    const GET_ORDER = '
-SELECT 
-       orders.id as orderId, orders.user_message as userMessage,
-       books.id as bookId, books.title as bookTitle,
-       deliveries.delivery_method as deliveryMethod,
-       statuses.status as status,
-       users.surname as userSurname, users.name as userName
-FROM orders, books, deliveries, statuses, users
-  INNER JOIN orders_users ou on users.id = ou.user_id
-  INNER JOIN orders o on ou.order_id = o.id
-  INNER JOIN orders_books ob on o.id = ob.order_id
-  INNER JOIN books b on ob.book_id = b.id
-  INNER JOIN orders_deliveries od on o.id = od.order_id
-  INNER JOIN deliveries d on od.delivery_id = d.id
-  INNER JOIN orders_statuses os on o.id = os.order_id
-  INNER JOIN statuses s on os.status_id = s.id
-WHERE books.id = ob.book_id
-  AND deliveries.id = d.id
-  AND statuses.id = s.id
-  AND orders.id = :id
-';
+    //    const GET_ORDER = '
+    //SELECT
+    //       orders.id as orderId, orders.user_message as userMessage,
+    //       books.id as bookId, books.title as bookTitle,
+    //       deliveries.delivery_method as deliveryMethod,
+    //       statuses.status as status,
+    //       users.surname as userSurname, users.name as userName
+    //FROM orders, books, deliveries, statuses, users
+    //  INNER JOIN orders_users ou on users.id = ou.user_id
+    //  INNER JOIN orders o on ou.order_id = o.id
+    //  INNER JOIN orders_books ob on o.id = ob.order_id
+    //  INNER JOIN books b on ob.book_id = b.id
+    //  INNER JOIN orders_deliveries od on o.id = od.order_id
+    //  INNER JOIN deliveries d on od.delivery_id = d.id
+    //  INNER JOIN orders_statuses os on o.id = os.order_id
+    //  INNER JOIN statuses s on os.status_id = s.id
+    //WHERE books.id = ob.book_id
+    //  AND deliveries.id = d.id
+    //  AND statuses.id = s.id
+    //  AND orders.id = :id
+    //';
 
-    const GET_ALL_ORDERS_WITH_STATUS = 'SELECT orders.id, orders.user_message as userMessage, statuses.status FROM orders, statuses
+    const GET_ORDER = 'SELECT * FROM orders WHERE id = :id';
+
+    const GET_ALL_ORDERS_WITH_STATUS = 'SELECT orders.id, orders.userMessage as userMessage, statuses.status FROM orders, statuses
 INNER JOIN orders_statuses os on statuses.id = os.status_id
 INNER JOIN orders o on os.order_id = o.id';
 
+    const GET_BOOKS_BY_ORDER = 'SELECT books.id, books.title, books.authorName, books.authorSurname, orders_books.quantity  FROM books
+    INNER JOIN orders_books on books.id = orders_books.book_id
+WHERE order_id = :id';
+
+    const GET_DELIVERY_BY_ORDER = 'SELECT * FROM deliveries
+    INNER JOIN orders_deliveries on deliveries.id = orders_deliveries.delivery_id
+WHERE order_id = :id';
+
+    const GET_USER_BY_ORDER = 'SELECT * FROM users
+    INNER JOIN orders_users on users.id = orders_users.user_id
+WHERE order_id = :id';
+
     // Delivery
-    const CREATE_DELIVERY = 'INSERT INTO deliveries (id, delivery_method, delivery_cost) VALUES (null, :deliveryMethod, :deliveryCost)';
+    const CREATE_DELIVERY = 'INSERT INTO deliveries (id, deliveryMethod, deliveryCost) VALUES (null, :deliveryMethod, :deliveryCost)';
 
     const GET_ALL_DELIVERIES = 'SELECT * FROM deliveries';
 
-    const GET_DELIVERY_BY_METHOD = 'SELECT * FROM deliveries WHERE delivery_method = :deliveryMethod';
+    const GET_DELIVERY_BY_METHOD = 'SELECT * FROM deliveries WHERE deliveryMethod = :deliveryMethod';
 
     // order status
     const GET_ALL_STATUSES = 'SELECT * FROM statuses';

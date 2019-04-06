@@ -64,8 +64,8 @@ class Delivery implements Model
         $result = $stmt->fetch();
 
         $this->id = $result['id'];
-        $this->deliveryMethod = $result['delivery_method'];
-        $this->deliveryCost = $result['delivery_cost'];
+        $this->deliveryMethod = $result['deliveryMethod'];
+        $this->deliveryCost = $result['deliveryCost'];
 
         unset($result);
 

@@ -153,8 +153,8 @@
                                 <?php if ($key == 'deliveries'): ?>
                                     <?php foreach ($value as $delivery): ?>
                                     <?php
-                                        $deliveryMethod = $delivery['delivery_method'];
-                                        $deliveryCost = $delivery['delivery_cost'];
+                                        $deliveryMethod = $delivery['deliveryMethod'];
+                                        $deliveryCost = $delivery['deliveryCost'];
                                         ?>
                                 <li>
                                   <input name="shippingMethod" data-index="0" value="<?php echo $deliveryMethod ?>"

@@ -117,9 +117,30 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 } elseif (URI == '/administration/orders' || URI == '/administration/orders/') {
     $frontController->orders();
 
+// /administration/orders/order?id=?
 } elseif (isset($_GET['id'])
           && (URI == '/administration/orders/order?id=' . $_GET['id']
               || URI == '/administration/orders/order?id=' . $_GET['id'] . '/')) {
+    if (isset($_POST['orderId']) && isset($_POST['orderInProcess'])) {
+        $status = 'In process';
+        $frontController->updateOrderStatus($status);
+    }
+
+    if (isset($_POST['orderId']) && isset($_POST['orderSent'])) {
+        $status = 'Sent';
+        $frontController->updateOrderStatus($status);
+    }
+
+    if (isset($_POST['orderId']) && isset($_POST['orderDelivered'])) {
+        $status = 'Delivered';
+        $frontController->updateOrderStatus($status);
+    }
+
+    if (isset($_POST['orderId']) && isset($_POST['orderCanceled'])) {
+        $status = 'Canceled';
+        $frontController->updateOrderStatus($status);
+    }
+
     $frontController->order();
 
 } elseif (isset($_GET['id'])

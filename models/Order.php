@@ -89,7 +89,7 @@ class Order implements Model
         if (!empty($this->booksAndQty)) {
             return $this->booksAndQty;
         } else {
-            return OrderDaoImpl::getBooksAndQty($orderId);
+            return OrderDaoImpl::getBooksAndQty($this->id);
         }
     }
 
@@ -104,12 +104,12 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getUser($orderId = null): \User
+    public function getUser(): \User
     {
         if (!empty($this->user)) {
             return $this->user;
         } else {
-            return OrderDaoImpl::getUser($orderId);
+            return OrderDaoImpl::getUser($this->id);
         }
     }
 
@@ -124,12 +124,12 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getDelivery($orderId): \Delivery
+    public function getDelivery(): \Delivery
     {
         if (!empty($this->delivery)) {
             return $this->delivery;
         } else {
-            return OrderDaoImpl::getDelivery($orderId);
+            return OrderDaoImpl::getDelivery($this->id);
         }
     }
 
@@ -144,9 +144,13 @@ class Order implements Model
     /**
      * @return null
      */
-    public function getStatus()
+    public function getStatus(): \Status
     {
-        return $this->status;
+        if (!empty($this->status)) {
+            return $this->status;
+        } else {
+            return OrderDaoImpl::getStatus($this->id);
+        }
     }
 
     /**
@@ -154,6 +158,10 @@ class Order implements Model
      */
     public function setStatus(Status $status): void
     {
-        $this->status = $status;
+        if (!empty($this->status)) {
+            $this->status = $status;
+        } else {
+            OrderDaoImpl::setStatus($status, $this->id);
+        }
     }
 }

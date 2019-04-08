@@ -38,4 +38,9 @@ class CartController extends Controller
     {
         return $this->cart->checkout($shippingMethod);
     }
+
+    public function deleteCart()
+    {
+        $this->cart->deleteCart();
+    }
 }

@@ -49,6 +49,12 @@ class Cart
         unset($sessionCart);
     }
 
+    public function deleteCart()
+    {
+        $sessionCart = new CartSessionController();
+        $sessionCart->delete();
+    }
+
     public function getCart()
     {
         if (isset($_SESSION['cart'])) {

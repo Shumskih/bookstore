@@ -1,22 +1,26 @@
 <?php
-
+require_once ROOT . '/models/Model.php';
 
 class Status implements Model
 {
+
+    private $id = null;
+
+    private $status = null;
 
     function create($model)
     {
         // TODO: Implement create() method.
     }
 
-    function read($id)
+    function read($id): \Status
     {
-        // TODO: Implement read() method.
+        return StatusDaoImpl::read($id);
     }
 
-    function readAll()
+    function readAll(): array
     {
-        // TODO: Implement readAll() method.
+        return StatusDaoImpl::readAll();
     }
 
     function update($model)
@@ -29,4 +33,35 @@ class Status implements Model
         // TODO: Implement delete() method.
     }
 
+    /**
+     * @return null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param null $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return null
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param null $status
+     */
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
 }

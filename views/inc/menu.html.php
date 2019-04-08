@@ -21,7 +21,7 @@
             <li class="drop"><a>Administration</a>
               <div class="megamenu dropdown">
                 <ul class="item item01">
-                  <li><a href="/administration/orders">Orders</a></li>
+                  <li><a href="/administration/orders">Orders (New: <?php echo OrderDaoImpl::getNewOrders(); ?>)</a></li>
                   <li><a href="/add-a-book">Add a book</a></li>
                   <li><a href="/delivery">Delivery</a></li>
                 </ul>
@@ -29,6 +29,7 @@
             </li>
             <?php endif; ?>
             <li><a href="/contact">Contact</a></li>
+            <li><a href="/fake-it">Fake-it</a></li>
           </ul>
         </nav>
       </div>

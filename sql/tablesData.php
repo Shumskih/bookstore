@@ -183,13 +183,16 @@ $delivery = [
 
 $statuses = [
   [
-    'status' => 'Open',
+    'status' => 'New',
   ],
   [
-    'status' => 'Close',
+    'status' => 'In process',
   ],
   [
-    'status' => 'Completed'
+    'status' => 'Sent'
+  ],
+  [
+    'status' => 'Delivered'
   ],
   [
     'status' => 'Canceled'

@@ -130,6 +130,15 @@ WHERE order_id = :id';
     INNER JOIN orders_users on users.id = orders_users.user_id
 WHERE order_id = :id';
 
+    const GET_STATUS_BY_ORDER = 'SELECT * FROM statuses
+    INNER JOIN orders_statuses on statuses.id = orders_statuses.status_id
+WHERE order_id = :id';
+
+    const GET_COUNT_NEW_ORDERS = 'SELECT COUNT(*) FROM orders
+INNER JOIN orders_statuses on orders.id = orders_statuses.order_id
+INNER JOIN statuses on orders_statuses.status_id = statuses.id
+WHERE statuses.status = \'New\'';
+
     // Delivery
     const CREATE_DELIVERY = 'INSERT INTO deliveries (id, deliveryMethod, deliveryCost) VALUES (null, :deliveryMethod, :deliveryCost)';
 
@@ -138,6 +147,8 @@ WHERE order_id = :id';
     const GET_DELIVERY_BY_METHOD = 'SELECT * FROM deliveries WHERE deliveryMethod = :deliveryMethod';
 
     // order status
+    const GET_STATUS = 'SELECT * FROM statuses WHERE id = :id';
+
     const GET_ALL_STATUSES = 'SELECT * FROM statuses';
 
     const ADD_STATUS_TO_ORDER = 'INSERT INTO orders_statuses (order_id, status_id) VALUES (:orderId, :statusId)';
@@ -151,4 +162,6 @@ WHERE order_id = :id';
     const DELETE_STATUS_FROM_ORDER = 'DELETE FROM orders_statuses WHERE order_id = :orderId';
 
     const DELETE_USER_FROM_ORDER = 'DELETE FROM orders_users WHERE order_id = :orderId';
+
+    const ADD_NEW_STATUS_TO_ORDER = 'UPDATE orders_statuses SET status_id = :statusId WHERE order_id = :orderId';
 }

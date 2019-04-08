@@ -374,6 +374,15 @@ class FrontController extends Controller
         $order->setUser($user);
         $order->setUserMessage($userMessage);
         $order->create($order);
+
+        $cart = new CartController();
+        $cart->deleteCart();
+
+        unset($cart);
+        unset($order);
+        unset($booksAndQty);
+        unset($address);
+        unset($user);
     }
 
     public function orders()
@@ -405,6 +414,30 @@ class FrontController extends Controller
           '/views/administration/orders/order.html.php',
           $order
         );
+    }
+
+    public function updateOrderStatus($status)
+    {
+        if (isset($_GET['id']))
+            $id = $_GET['id'];
+
+        $newStatusId = null;
+
+        $statusController = new StatusController();
+        $statuses = $statusController->readAll();
+
+        foreach ($statuses as $s) {
+            if ($s['status'] === $status) {
+                $newStatusId = $s['id'];
+            }
+        }
+
+        $statusController = new StatusController();
+        $status = $statusController->read($newStatusId);
+
+        $orderController = new OrderController();
+        $order = $orderController->read($id);
+        $order->setStatus($status);
     }
 
     public function deleteOrder($id)

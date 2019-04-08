@@ -29,7 +29,7 @@
               <div class="checkout_info">
                 <span>
                   <?php if (empty($order->getUserMessage())) {
-                      echo 'User do not leave a message';
+                      echo 'User did not leave a message';
                   } else {
                       echo $order->getUserMessage();
                   }
@@ -45,8 +45,8 @@
               <h3>Billing details</h3>
               <div class="customar__field">
                   <?php
-                  $user    = (object)$order->getUser($order->getId());
-                  $address = (object)$user->getAddress($user->getId());
+                  $user    = (object)$order->getUser();
+                  $address = (object)$user->getAddress();
                   ?>
                 <p><strong>User:</strong></p>
                 <hr>
@@ -70,10 +70,10 @@
             <div class="wn__order__box">
               <h3 class="onder__title">Books List</h3>
               <ul class="order__total">
-                <li>Product</li>
+                <li>Products</li>
                 <li>Quantity</li>
               </ul>
-                <?php $booksAndQty = $order->getBooksAndQty($order->getId()); ?>
+                <?php $booksAndQty = $order->getBooksAndQty(); ?>
               <ul class="order_product">
                   <?php foreach ($booksAndQty as $book): ?>
                     <li><?php echo $book['title']; ?><span><?php echo $book['quantity']; ?></span></li>
@@ -83,7 +83,7 @@
                 <li>Shipping
                   <span>
                       <?php
-                      $delivery = (object)$order->getDelivery($order->getId());
+                      $delivery = (object)$order->getDelivery();
                       echo $delivery->getDeliveryMethod();
                       ?>
                   </span>
@@ -92,9 +92,17 @@
             </div>
           </div>
         </div>
+        <hr>
+          <?php $status = (object)$order->getStatus(); ?>
+        <p><strong>Status: </strong> <?php echo $status->getStatus(); ?></p>
         <div class="mt-5">
-          <button type="button" class="btn btn-outline-success">Complete </button>
-          <button type="button" class="btn btn-outline-danger ml-2">Cancel </button>
+          <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+            <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">
+            <button type="submit" class="btn btn-outline-info" name="orderInProcess">In Process </button>
+            <button type="submit" class="btn btn-outline-secondary ml-1" name="orderSent">Sent </button>
+            <button type="submit" class="btn btn-outline-success ml-1" name="orderDelivered">Delivered </button>
+            <button type="submit" class="btn btn-outline-danger ml-1" name="orderCanceled">Cancel </button>
+          </form>
         </div>
       </div>
     </section>

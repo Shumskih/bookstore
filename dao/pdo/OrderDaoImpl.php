@@ -1,6 +1,7 @@
 <?php
 require_once ROOT . '/dao/DaoInterface.php';
 require_once ROOT . '/models/Order.php';
+require_once ROOT . '/models/Status.php';
 
 class OrderDaoImpl implements DaoInterface
 {
@@ -80,7 +81,7 @@ class OrderDaoImpl implements DaoInterface
             $query = SqlQueries::ADD_STATUS_TO_ORDER;
             $stmt  = self::$pdo->prepare($query);
             foreach ($statuses as $status) {
-                if ($status['status'] == 'Open') {
+                if ($status['status'] == 'New') {
                     $stmt->execute([
                       'orderId'  => $order->getId(),
                       'statusId' => $status['id'],
@@ -109,13 +110,12 @@ class OrderDaoImpl implements DaoInterface
             ]);
             $order = $stmt->fetchObject(\Order::class);
             self::$pdo->commit();
-
-            return $order;
         } catch (PDOException $e) {
             self::$pdo->rollBack();
             echo 'Can\'t read order<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
+        return $order;
     }
 
     static function readAll()
@@ -259,5 +259,67 @@ class OrderDaoImpl implements DaoInterface
                  . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
         return $user;
+    }
+
+    public static function getStatus($orderId): \Status
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_STATUS_BY_ORDER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'id' => $orderId,
+            ]);
+            $status = $stmt->fetchObject(\Status::class);
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t get status by order from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $status;
+    }
+
+    public static function setStatus(Status $status, $orderId)
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::ADD_NEW_STATUS_TO_ORDER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'statusId' => $status->getId(),
+              'orderId' => $orderId
+            ]);
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t set status by order from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+    }
+
+    public static function getNewOrders(): int
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_COUNT_NEW_ORDERS;
+            $stmt  = self::$pdo->query($query);
+            $result = $stmt->fetch();
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t get new orders from database<br>'
+                 . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $result['COUNT(*)'];
     }
 }

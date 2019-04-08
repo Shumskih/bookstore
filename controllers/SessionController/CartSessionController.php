@@ -8,7 +8,7 @@ class CartSessionController
 
     public function __construct()
     {
-        $this->cartSession = new CartSessionInterface();
+        $this->cartSession = new CartSession();
     }
 
     public function create($cart)

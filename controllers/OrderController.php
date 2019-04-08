@@ -27,6 +27,11 @@ class OrderController extends Controller
         return $this->order->readAll();
     }
 
+    public function update($order)
+    {
+        $this->order->update($order);
+    }
+
     public function delete($id)
     {
         $this->order->delete($id);

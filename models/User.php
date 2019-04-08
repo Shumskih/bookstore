@@ -102,7 +102,7 @@ class User implements Model
     /**
      * @return \Address
      */
-    public function getAddress($userId): \Address
+    public function getAddress(): \Address
     {
         if (!empty($this->address)) {
             return $this->address;
@@ -111,7 +111,7 @@ class User implements Model
                 $query = SqlQueries::GET_USER_ADDRESS;
                 $stmt  = $this->pdo->prepare($query);
                 $stmt->execute([
-                  'id' => $userId,
+                  'id' => $this->id,
                 ]);
             } catch (PDOException $e) {
                 echo 'Can\'t get user\'s address from database<br>' . $e->getMessage();
@@ -143,7 +143,7 @@ class User implements Model
     /**
      * @return mixed
      */
-    public function getRoles($userId): array
+    public function getRoles(): array
     {
         if (!empty($this->roles)) {
             return $this->roles;
@@ -152,7 +152,7 @@ class User implements Model
                 $query = SqlQueries::GET_USER_ROLES;
                 $stmt  = $this->pdo->prepare($query);
                 $stmt->execute([
-                  'id' => $userId,
+                  'id' => $this->id,
                 ]);
             } catch (PDOException $e) {
                 echo 'Can\'t get user\'s roles from database<br>' . $e->getMessage();
@@ -258,7 +258,7 @@ class User implements Model
         $this->setId($user['id']);
         $this->setName($user['name']);
         $this->setSurname($user['surname']);
-        $this->setMobilePhone($user['mobile_phone']);
+        $this->setMobilePhone($user['mobilePhone']);
         $this->setEmail($user['email']);
 
         return $this;
@@ -300,7 +300,7 @@ class User implements Model
     public function login($email, $password)
     {
         if ($user = CheckUser::isUserExists($email, $password)) {
-            $roles = $user->getRoles($user->getId());
+            $roles = $user->getRoles();
 
             $session = new UserSessionController();
 
@@ -366,7 +366,7 @@ class User implements Model
         else {
             $userController = new UserController();
             $user           = $userController->getUserByEmail($_SESSION['email']);
-            $roles          = $user->getRoles($user->getId());
+            $roles          = $user->getRoles();
             $permission     = false;
             foreach ($roles as $role) {
                 $role = (object)$role;

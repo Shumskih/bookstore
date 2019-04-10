@@ -1,5 +1,5 @@
 <?php
-require_once ROOT . '/models/Session/CartSession.php';
+require_once ROOT . '/models/session/CartSession.php';
 
 class CartSessionController
 {

@@ -1,10 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
-require_once ROOT . '/models/Model.php';
-require_once ROOT . '/models/Category.php';
-require_once ROOT . '/helpers/ConnectionUtil.php';
-require_once ROOT . '/helpers/FiveLastViewedBooks.php';
-require_once ROOT . '/sql/SqlQueries.php';
 
 /**
  * Class Book
@@ -39,20 +33,6 @@ class Book implements Model
      */
     private $categories = [];
 
-    /**
-     * @var \PDO|null
-     */
-    private $pdo;
-
-    /**
-     * Book constructor.
-     * Get instance of PDO object and assign it to $pdo variable
-     */
-    public function __construct()
-    {
-        $this->pdo = ConnectionUtil::getConnection();
-    }
-
     function create($book)
     {
         // TODO: Implement create() method.
@@ -65,40 +45,14 @@ class Book implements Model
      */
     function read($id)
     {
-        try {
-            $query = SqlQueries::GET_BOOK;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $id,
-            ]);
-
-            $book = $stmt->fetch();
-        } catch (PDOException $e) {
-            echo 'Can\'t get book from database<br>' . $e->getMessage();
-        }
-        $this->id            = $book['id'];
-        $this->title         = $book['title'];
-        $this->authorName    = $book['authorName'];
-        $this->authorSurname = $book['authorSurname'];
-        $this->description   = $book['description'];
-        $this->pages         = $book['pages'];
-        $this->img           = $book['img'];
-        $this->price         = $book['price'];
-
+        $book = BookDaoImpl::read($this->id);
         FiveLastViewedBooks::lastViewedBooks($book);
-
-        return $this;
+        return $book;
     }
 
     function readAll(): array
     {
-        try {
-            $query = SqlQueries::GET_ALL_BOOKS;
-            $stmt  = $this->pdo->query($query);
-        } catch (PDOException $e) {
-            echo 'Can\'t get all books<br>' . $e->getMessage();
-        }
-        return $stmt->fetchAll();
+        return BookDaoImpl::readAll();
     }
 
 
@@ -114,17 +68,7 @@ class Book implements Model
 
     public function getNewBooks(int $quantity = 6): array
     {
-        try {
-            $query = SqlQueries::GET_NEW_BOOKS;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->bindParam(
-              ':quantity', $quantity, PDO::PARAM_INT
-            );
-            $stmt->execute();
-        } catch (PDOException $e) {
-            echo 'Can\'t get new books<br>' . $e->getMessage();
-        }
-        return $stmt->fetchAll();
+        return BookDaoImpl::getNewBooks($quantity);
     }
 
     /**
@@ -298,18 +242,9 @@ class Book implements Model
     /**
      * @return array
      */
-    public function getCategories()
+    public function getCategories(): array
     {
-        try {
-            $query = SqlQueries::GET_CATEGORIES_OF_BOOK;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $this->getId(),
-            ]);
-            $categories = $stmt->fetchAll();
-        } catch (PDOException $e) {
-            echo 'Can\'t get categories of book<br>' . $e->getMessage();
-        }
+        $categories = BookDaoImpl::getCategories($this->id);
 
         foreach ($categories as $c) {
             $category = new Category();

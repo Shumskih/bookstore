@@ -14,7 +14,7 @@ class OrderDaoImpl implements DaoInterface
      */
     public function __construct()
     {
-        $this->pdo = ConnectionUtil::getConnection();
+        self::$pdo = ConnectionUtil::getConnection();
     }
 
     static function create($order)
@@ -108,7 +108,7 @@ class OrderDaoImpl implements DaoInterface
             $stmt->execute([
               'id' => $id,
             ]);
-            $order = $stmt->fetchObject(\Order::class);
+            $order = $stmt->fetchObject(Order::class);
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
@@ -293,7 +293,7 @@ class OrderDaoImpl implements DaoInterface
             $stmt  = self::$pdo->prepare($query);
             $stmt->execute([
               'statusId' => $status->getId(),
-              'orderId' => $orderId
+              'orderId'  => $orderId,
             ]);
 
             self::$pdo->commit();
@@ -310,8 +310,8 @@ class OrderDaoImpl implements DaoInterface
             self::$pdo = ConnectionUtil::getConnection();
             self::$pdo->beginTransaction();
 
-            $query = SqlQueries::GET_COUNT_NEW_ORDERS;
-            $stmt  = self::$pdo->query($query);
+            $query  = SqlQueries::GET_COUNT_NEW_ORDERS;
+            $stmt   = self::$pdo->query($query);
             $result = $stmt->fetch();
 
             self::$pdo->commit();

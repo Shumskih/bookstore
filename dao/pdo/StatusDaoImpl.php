@@ -11,7 +11,7 @@ class StatusDaoImpl
      */
     public function __construct()
     {
-        $this->pdo = ConnectionUtil::getConnection();
+        self::$pdo = ConnectionUtil::getConnection();
     }
 
     public static function create($status)
@@ -19,7 +19,7 @@ class StatusDaoImpl
 
     }
 
-    public static function read($id)
+    public static function read($id): \Status
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
@@ -30,14 +30,14 @@ class StatusDaoImpl
             $stmt->execute([
               'id' => $id,
             ]);
-            $order = $stmt->fetchObject(\Order::class);
+            $status = $stmt->fetchObject(Status::class);
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
             echo 'Can\'t read order<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
-        return $order;
+        return $status;
     }
 
     public static function readAll()

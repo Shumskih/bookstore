@@ -4,6 +4,7 @@ require_once ROOT . '/controllers/Controller.php';
 require_once ROOT . '/controllers/BookController.php';
 require_once ROOT . '/controllers/CartController.php';
 require_once ROOT . '/controllers/OrderController.php';
+require_once ROOT . '/controllers/StatusController.php';
 
 class FrontController extends Controller
 {
@@ -99,6 +100,7 @@ class FrontController extends Controller
     public function accountInfo()
     {
         $userController = new UserController();
+        $session = new UserSession();
 
         // User
         $userId      = null;
@@ -116,7 +118,7 @@ class FrontController extends Controller
         $building  = null;
         $apartment = null;
 
-        $user = (object)$userController->getUserByEmail($_SESSION['email']);
+        $user = $session->read();
 
         $errors         = [];
         $incorrectField = false;

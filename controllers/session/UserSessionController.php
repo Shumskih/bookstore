@@ -1,5 +1,5 @@
 <?php
-require_once ROOT . '/models/Session/UserSession.php';
+require_once ROOT . '/models/session/UserSession.php';
 
 class UserSessionController
 {

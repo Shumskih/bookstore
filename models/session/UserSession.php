@@ -1,5 +1,5 @@
 <?php
-require_once ROOT . '/models/Session/SessionInterface.php';
+require_once ROOT . '/models/session/SessionInterface.php';
 
 class UserSession implements SessionInterface
 {
@@ -35,9 +35,9 @@ class UserSession implements SessionInterface
         array_push($this->sessionUser, $_SESSION[self::USER]);
     }
 
-    function read() : \User
+    function read() : User
     {
-        return $_SESSION[self::USER];
+        return unserialize($_SESSION[self::USER]);
     }
 
     function update($user)

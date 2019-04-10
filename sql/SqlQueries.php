@@ -44,7 +44,7 @@ class SqlQueries
                           SET name = :name, 
                               surname = :surname,  
                               email = :email, 
-                              mobile_phone = :mobilePhone
+                              mobilePhone = :mobilePhone
                           WHERE id = :id';
 
     // Address

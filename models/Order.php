@@ -1,7 +1,4 @@
 <?php
-require_once ROOT . '/models/Model.php';
-require_once ROOT . '/controllers/DeliveryController.php';
-require_once ROOT . '/dao/pdo/OrderDaoImpl.php';
 
 class Order implements Model
 {
@@ -50,15 +47,15 @@ class Order implements Model
     }
 
     /**
-     * @return null
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param null $id
+     * @param int $id
      */
     public function setId(int $id): void
     {
@@ -66,7 +63,7 @@ class Order implements Model
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getUserMessage(): string
     {
@@ -74,7 +71,7 @@ class Order implements Model
     }
 
     /**
-     * @param null $userMessage
+     * @param string $userMessage
      */
     public function setUserMessage(string $userMessage): void
     {
@@ -84,7 +81,7 @@ class Order implements Model
     /**
      * @return array
      */
-    public function getBooksAndQty($orderId = null): array
+    public function getBooksAndQty(): array
     {
         if (!empty($this->booksAndQty)) {
             return $this->booksAndQty;
@@ -102,9 +99,9 @@ class Order implements Model
     }
 
     /**
-     * @return null
+     * @return User
      */
-    public function getUser(): \User
+    public function getUser(): User
     {
         if (!empty($this->user)) {
             return $this->user;
@@ -114,7 +111,7 @@ class Order implements Model
     }
 
     /**
-     * @param null $user
+     * @param User $user
      */
     public function setUser(User $user): void
     {
@@ -122,9 +119,9 @@ class Order implements Model
     }
 
     /**
-     * @return null
+     * @return Delivery
      */
-    public function getDelivery(): \Delivery
+    public function getDelivery(): Delivery
     {
         if (!empty($this->delivery)) {
             return $this->delivery;
@@ -134,7 +131,7 @@ class Order implements Model
     }
 
     /**
-     * @param null $delivery
+     * @param Delivery $delivery
      */
     public function setDelivery(Delivery $delivery): void
     {
@@ -142,9 +139,9 @@ class Order implements Model
     }
 
     /**
-     * @return null
+     * @return Status.class
      */
-    public function getStatus(): \Status
+    public function getStatus(): Status
     {
         if (!empty($this->status)) {
             return $this->status;
@@ -154,7 +151,7 @@ class Order implements Model
     }
 
     /**
-     * @param null $status
+     * @param Status $status
      */
     public function setStatus(Status $status): void
     {

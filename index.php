@@ -1,14 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
-require_once ROOT . '/controllers/FrontController.php';
-require_once ROOT . '/controllers/IndexPageController.php';
-require_once ROOT . '/controllers/BookController.php';
-require_once ROOT . '/controllers/CategoryController.php';
-require_once ROOT . '/controllers/CartController.php';
-require_once ROOT . '/controllers/UserController.php';
-require_once ROOT . '/helpers/FillTables.php';
-require_once ROOT . '/helpers/Countries.php';
-require_once ROOT . '/sql/tablesData.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/vendor/autoload.php';
 
 session_start();
 ob_start("ob_gzhandler");

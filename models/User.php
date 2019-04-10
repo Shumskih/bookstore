@@ -3,11 +3,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
 require_once ROOT . '/models/Model.php';
 require_once ROOT . '/models/Address.php';
 require_once ROOT . '/models/Role.php';
-require_once ROOT . '/controllers/SessionController/UserSessionController.php';
+require_once ROOT . '/controllers/session/UserSessionController.php';
 require_once ROOT . '/controllers/AddressController.php';
 require_once ROOT . '/sql/SqlQueries.php';
 require_once ROOT . '/helpers/ConnectionUtil.php';
 require_once ROOT . '/helpers/CheckUser.php';
+require_once ROOT . '/dao/pdo/UserDaoImpl.php';
 
 class User implements Model
 {
@@ -30,13 +31,6 @@ class User implements Model
     // Array of Role Objects
     private $roles = [];
 
-    private $pdo;
-
-    public function __construct()
-    {
-        $this->pdo = ConnectionUtil::getConnection();
-    }
-
     public function __sleep()
     {
         return [
@@ -44,7 +38,6 @@ class User implements Model
           'name',
           'surname',
           'email',
-          'password',
           'mobilePhone',
           'address',
           'roles'
@@ -100,35 +93,14 @@ class User implements Model
     }
 
     /**
-     * @return \Address
+     * @return Address
      */
-    public function getAddress(): \Address
+    public function getAddress(): Address
     {
         if (!empty($this->address)) {
             return $this->address;
         } else {
-            try {
-                $query = SqlQueries::GET_USER_ADDRESS;
-                $stmt  = $this->pdo->prepare($query);
-                $stmt->execute([
-                  'id' => $this->id,
-                ]);
-            } catch (PDOException $e) {
-                echo 'Can\'t get user\'s address from database<br>' . $e->getMessage();
-            }
-            $result = $stmt->fetch();
-
-            $this->address = new Address();
-            $this->address->setId($result['id']);
-            $this->address->setCountry($result['country']);
-            $this->address->setDistrict($result['district']);
-            $this->address->setCity($result['city']);
-            $this->address->setStreet($result['street']);
-            $this->address->setBuilding($result['building']);
-            $this->address->setApartment($result['apartment']);
-            $this->address->setPostcode($result['postcode']);
-
-            return $this->address;
+            return UserDaoImpl::getAddress($this->id);
         }
     }
 
@@ -143,34 +115,12 @@ class User implements Model
     /**
      * @return mixed
      */
-    public function getRoles(): array
+    public function getRoles(): Role
     {
         if (!empty($this->roles)) {
             return $this->roles;
         } else {
-            try {
-                $query = SqlQueries::GET_USER_ROLES;
-                $stmt  = $this->pdo->prepare($query);
-                $stmt->execute([
-                  'id' => $this->id,
-                ]);
-            } catch (PDOException $e) {
-                echo 'Can\'t get user\'s roles from database<br>' . $e->getMessage();
-            }
-            $result = $stmt->fetchAll();
-
-            foreach ($result as $r) {
-                $role = new Role();
-                $role->setId($r['id']);
-                $role->setName($r['name']);
-                $role->setDescription($r['description']);
-
-                array_unshift($this->roles, $role);
-
-                $role = null;
-            }
-
-            return $this->roles;
+            return UserDaoImpl::getRoles($this->id);
         }
     }
 
@@ -241,29 +191,6 @@ class User implements Model
         return $this;
     }
 
-    public function readUserByEmail($email): \User
-    {
-        try {
-            $query = SqlQueries::GET_BY_EMAIL;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'email' => $email,
-            ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t get user from database<br>' . $e->getMessage();
-        }
-
-        $user = $stmt->fetch();
-
-        $this->setId($user['id']);
-        $this->setName($user['name']);
-        $this->setSurname($user['surname']);
-        $this->setMobilePhone($user['mobilePhone']);
-        $this->setEmail($user['email']);
-
-        return $this;
-    }
-
     function readAll()
     {
         // TODO: Implement readAll() method.
@@ -272,22 +199,9 @@ class User implements Model
     function update($user)
     {
         $user = (object)$user;
-        try {
-            $query = SqlQueries::UPDATE_USER;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id'          => $user->getId(),
-              'name'        => $user->getName(),
-              'surname'     => $user->getSurname(),
-              'email'       => $user->getEmail(),
-              'mobilePhone' => $user->getMobilePhone(),
-            ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t update user!<br>' . $e->getMessage();
-        }
+        UserDaoImpl::update($user);
 
-        $address = (object)$user->getAddress($user->getId());
-        vardump($address);
+        $address = (object)$user->getAddress();
         $addressController = new AddressController();
         $addressController->update($address);
     }

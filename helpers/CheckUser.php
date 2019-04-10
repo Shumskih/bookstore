@@ -29,7 +29,7 @@ class CheckUser
             $user = self::userFactory($result['id'],
               $result['name'],
               $result['surname'],
-              $result['mobile_phone'],
+              $result['mobilePhone'],
               $result['email']);
         }
 

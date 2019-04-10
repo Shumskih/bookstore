@@ -1,5 +1,6 @@
 <?php
 require_once ROOT . '/models/Model.php';
+require_once ROOT . '/dao/pdo/StatusDaoImpl.php';
 
 class Status implements Model
 {

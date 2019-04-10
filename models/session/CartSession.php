@@ -1,5 +1,5 @@
 <?php
-require_once ROOT . '/models/Session/SessionInterface.php';
+require_once ROOT . '/models/session/SessionInterface.php';
 
 class CartSession implements SessionInterface
 {

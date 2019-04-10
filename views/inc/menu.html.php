@@ -17,7 +17,7 @@
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
-            <?php if ($_SESSION['super user']): ?>
+            <?php if (isset($_SESSION['super user'])): ?>
             <li class="drop"><a>Administration</a>
               <div class="megamenu dropdown">
                 <ul class="item item01">

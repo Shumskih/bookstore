@@ -1,21 +1,9 @@
 <?php
-require_once ROOT . '/dao/DaoInterface.php';
-require_once ROOT . '/models/Order.php';
-require_once ROOT . '/models/Status.php';
 
 class OrderDaoImpl implements DaoInterface
 {
 
     private static $pdo;
-
-    /**
-     * Constructor.
-     * Get instance of PDO object and assign it to a $pdo variable
-     */
-    public function __construct()
-    {
-        self::$pdo = ConnectionUtil::getConnection();
-    }
 
     static function create($order)
     {
@@ -109,6 +97,7 @@ class OrderDaoImpl implements DaoInterface
               'id' => $id,
             ]);
             $order = $stmt->fetchObject(Order::class);
+
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();

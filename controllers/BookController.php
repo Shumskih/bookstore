@@ -1,6 +1,4 @@
 <?php
-require_once ROOT . '/controllers/Controller.php';
-require_once ROOT . '/models/Book.php';
 
 
 class BookController extends Controller
@@ -16,7 +14,7 @@ class BookController extends Controller
         $this->book = new Book();
     }
 
-    public function getBook($id)
+    public function read($id): Book
     {
         return $this->book->read($id);
     }

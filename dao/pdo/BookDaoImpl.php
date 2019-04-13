@@ -2,14 +2,14 @@
 
 class BookDaoImpl implements DaoInterface
 {
-    private static $pdo;
+    private static $pdo = null;
 
     static function create($object)
     {
         // TODO: Implement create() method.
     }
 
-    static function read($id): Book
+    static function read($id)
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
@@ -20,7 +20,7 @@ class BookDaoImpl implements DaoInterface
             $stmt->execute([
               'id' => $id,
             ]);
-            $book = $stmt->fetchObject(Book::class);
+            $book = $stmt->fetch();
 
             self::$pdo->commit();
         } catch (PDOException $e) {
@@ -44,6 +44,7 @@ class BookDaoImpl implements DaoInterface
 
             self::$pdo->commit();
         } catch (PDOException $e) {
+            self::$pdo->rollBack();
             echo 'Can\'t get all books<br>' . $e->getMessage();
         }
         return $array;
@@ -62,8 +63,8 @@ class BookDaoImpl implements DaoInterface
     public static function getNewBooks(int $quantity): array
     {
         try {
-            $pdo = ConnectionUtil::getConnection();
-            $pdo->beginTransaction();
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
 
             $query = SqlQueries::GET_NEW_BOOKS;
             $stmt  = self::$pdo->prepare($query);
@@ -73,8 +74,9 @@ class BookDaoImpl implements DaoInterface
             $stmt->execute();
             $array = $stmt->fetchAll();
 
-            $pdo->commit();
+            self::$pdo->commit();
         } catch (PDOException $e) {
+            self::$pdo->rollBack();
             echo 'Can\'t get new books<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
@@ -96,6 +98,7 @@ class BookDaoImpl implements DaoInterface
 
             self::$pdo->commit();
         } catch (PDOException $e) {
+            self::$pdo->rollBack();
             echo 'Can\'t get categories of book<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }

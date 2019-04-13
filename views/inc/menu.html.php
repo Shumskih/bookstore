@@ -130,9 +130,14 @@
                   <div class="switcher-options">
                     <div class="switcher-currency-trigger">
                       <div class="setting__menu">
-                          <?php if (isset($_SESSION['login'])): ?>
+                          <?php
+                          if (isset($_SESSION['login'])): ?>
+                          <?php
+                              $userSessionController = new UserSessionController();
+                              $userSession = $userSessionController->read();
+                          ?>
                             <span><a href="">
-                              <?php echo 'Hello, ' . $_SESSION['userSurname'] . ' ' . $_SESSION['userName']; ?>
+                              <?php echo 'Hello, ' . $userSession->getSurname() . ' ' . $userSession->getName(); ?>
                         </a></span>
                           <?php endif; ?>
                         <span><a href="#">Compare Product</a></span>

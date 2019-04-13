@@ -1,5 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/Controller.php';
 
 class IndexPageController extends Controller
 {
@@ -16,7 +15,7 @@ class IndexPageController extends Controller
         return $this->bookController->getNewBooks($quantity);
     }
 
-    private function getBestsellers(int $quantity = 6)
+    private function getBestSellers(int $quantity = 6)
     {
 
     }

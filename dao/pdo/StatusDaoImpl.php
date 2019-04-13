@@ -1,6 +1,5 @@
 <?php
 
-
 class StatusDaoImpl
 {
     private static $pdo;

@@ -1,10 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
-require_once ROOT . '/controllers/Controller.php';
-require_once ROOT . '/controllers/BookController.php';
-require_once ROOT . '/controllers/CartController.php';
-require_once ROOT . '/controllers/OrderController.php';
-require_once ROOT . '/controllers/StatusController.php';
 
 class FrontController extends Controller
 {
@@ -43,7 +37,7 @@ class FrontController extends Controller
         $vars = [];
 
         $controller = new BookController();
-        $book       = (object)$controller->getBook($bookId);
+        $book       = (object)$controller->read($bookId);
 
         $categoryController = new Category();
         $categories         = $categoryController->readAll();
@@ -339,11 +333,13 @@ class FrontController extends Controller
         // order message
         $userMessage = $_POST['userMessage'];
 
-        $userController = new UserController();
-        $user = $userController->getUserByEmail($_SESSION['email']);
+        $userSession = new UserSessionController();
+        $user = $userSession->read();
         $user->setName($userName);
         $user->setSurname($userSurname);
         $user->setMobilePhone($phone);
+
+        $userController = new UserController();
         $userController->update($user);
 
         $address = $userController->getAddress($user->getId());

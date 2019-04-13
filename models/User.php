@@ -1,14 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/consts.php';
-require_once ROOT . '/models/Model.php';
-require_once ROOT . '/models/Address.php';
-require_once ROOT . '/models/Role.php';
-require_once ROOT . '/controllers/session/UserSessionController.php';
-require_once ROOT . '/controllers/AddressController.php';
-require_once ROOT . '/sql/SqlQueries.php';
-require_once ROOT . '/helpers/ConnectionUtil.php';
-require_once ROOT . '/helpers/CheckUser.php';
-require_once ROOT . '/dao/pdo/UserDaoImpl.php';
 
 class User implements Model
 {

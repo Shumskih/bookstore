@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class Book
  */
@@ -43,11 +42,26 @@ class Book implements Model
      *
      * @return $this object
      */
-    function read($id)
+    function read($id): Book
     {
-        $book = BookDaoImpl::read($this->id);
+        $book = BookDaoImpl::read($id);
+        $this->id = $book['id'];
+        $this->title = $book['title'];
+        $this->authorName = $book['authorName'];
+        $this->authorSurname = $book['authorSurname'];
+        $this->pages = $book['pages'];
+        $this->description = $book['description'];
+        $this->img = $book['img'];
+        $this->price = $book['price'];
+        $this->added = $book['added'];
+        $this->inStock = $book['inStock'];
+        $this->quantity = $book['quantity'];
+
         FiveLastViewedBooks::lastViewedBooks($book);
-        return $book;
+
+        unset($book);
+
+        return $this;
     }
 
     function readAll(): array

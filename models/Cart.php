@@ -37,7 +37,7 @@ class Cart
     {
         $bookController = new BookController();
 
-        $this->book    = $bookController->getBook($_POST['id']);
+        $this->book    = $bookController->read($_POST['id']);
         $this->bookQty = $_POST['qty'];
 
         $sessionCart = new CartSessionController();
@@ -107,8 +107,8 @@ class Cart
 
         $this->shippingMethod = $shippingMethod;
 
-        $userController = new UserController();
-        $user           = $userController->getUserByEmail($_SESSION['email']);
+        $userSession = new UserSessionController();
+        $user           = $userSession->read();
 
         $count = count($_SESSION['cart']);
         for ($i = 0; $i < $count; $i++) {

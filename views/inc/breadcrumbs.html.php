@@ -14,7 +14,7 @@
                   && URI !== '/administration/orders'
                   && URI !== '/administration/orders/'
                   && (URI !== '/my-orders' && URI !== '/my-orders/')
-                  && (URI !== '/my-order?id='.$_GET['id'] && URI !== '/my-order?id='.$_GET['id'].'/')
+                  && (URI !== '/my-order?id=' . $_GET['id'] && URI !== '/my-order?id=' . $_GET['id'] . '/')
               ) {
                   foreach ($var as $k => $v) {
                       if (isset($v['book'])) {
@@ -51,12 +51,20 @@
               } elseif (URI == '/contact' || URI == '/contact/') {
                   echo 'Contact';
               } elseif (URI == '/administration/orders' || URI == '/administration/orders/') {
-                  echo '<span class="breadcrumb_item active">Administration</span>
+                  echo '<a class="breadcrumb_item" href="/administration/orders">Administration</a>
                         <span class="brd-separetor">/</span>';
                   echo 'Orders';
-              } else if (URI == '/my-orders' || URI == '/my-orders/') {
-                echo 'My Orders';
-              } else if (URI == '/my-order?id='.$_GET['id'] || URI == '/my-order?id='.$_GET['id'].'/') {
+              } elseif (isset($_GET['id'])
+                        && (URI == '/administration/orders/order?id=' . $_GET['id']
+                            || URI == '/administration/orders/orders?id=' . $_GET['id'] . '/')) {
+                  echo '<a class="breadcrumb_item" href="/administration/orders">Administration</a>
+                        <span class="brd-separetor">/</span>';
+                  echo '<a class="breadcrumb_item" href="/administration/orders">Orders</a>
+                        <span class="brd-separetor">/</span>';
+                  echo 'Viewing Order';
+              } elseif (URI == '/my-orders' || URI == '/my-orders/') {
+                  echo 'My Orders';
+              } elseif (URI == '/my-order?id=' . $_GET['id'] || URI == '/my-order?id=' . $_GET['id'] . '/') {
                   echo '<a class="breadcrumb_item" href="/my-orders">My Orders</a>
                         <span class="brd-separetor">/</span>';
                   echo 'View Order';

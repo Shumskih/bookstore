@@ -15,7 +15,6 @@
     <!-- End Breadcrumbs area -->
     <!-- Start Shop Page -->
     <?php
-    vardump($_SESSION);
     ?>
     <section
             class="page-shop-sidebar left--sidebar bg--white section-padding--lg">

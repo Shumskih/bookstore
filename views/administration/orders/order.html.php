@@ -48,13 +48,14 @@
                   $user    = (object)$order->getUser();
                   $address = (object)$user->getAddress($user->getId());
                   ?>
-                <p><strong>User:</strong></p>
+                <h3><strong>User:</strong></h3>
                 <hr>
                 <p><strong>Name: </strong> <?php echo $user->getName(); ?></p>
                 <p><strong>Surname: </strong> <?php echo $user->getSurname(); ?></p>
                 <p><strong>Email: </strong> <?php echo $user->getEmail(); ?></p>
                 <p><strong>Phone: </strong> <?php echo $user->getMobilePhone(); ?></p>
-                <p><strong>Address: </strong></p>
+                <br>
+                <h3><strong>Address: </strong></h3>
                 <hr>
                 <p><strong>Country: </strong> <?php echo $address->getCountry(); ?></p>
                 <p><strong>District: </strong> <?php echo $address->getDistrict(); ?></p>
@@ -94,7 +95,8 @@
         </div>
         <hr>
           <?php $status = (object)$order->getStatus(); ?>
-        <p><strong>Status: </strong> <?php echo $status->getStatus(); ?></p>
+        <h4 class="mt-1">Status:</h4>
+        <p><strong><?php echo $status->getStatus(); ?></strong></p>
         <div class="mt-5">
           <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
             <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">

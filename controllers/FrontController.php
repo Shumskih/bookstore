@@ -63,8 +63,8 @@ class FrontController extends Controller
         $vars = [];
 
         $controller = new CategoryController();
-        $category   = $controller->getCategory($categoryId);
-        $categories = $controller->getAllCategories();
+        $category   = $controller->read($categoryId);
+        $categories = $controller->readAll();
 
         array_unshift($vars, ['category' => $category]);
         array_unshift($vars, ['categories' => $categories]);
@@ -495,5 +495,39 @@ class FrontController extends Controller
         $orderController = new OrderController();
         $order = $orderController->read($orderId);
         $order->setStatus($status);
+    }
+
+    public function addABook()
+    {
+        $userController = new UserController();
+
+        if ($userController->checkPermissions()) {
+            $this->render(
+              '/views/administration/books/add-new-book.html.php'
+            );
+        } else {
+            header('Location: /account');
+        }
+    }
+
+    public function publishBook()
+    {
+        $title = $_POST['title'];
+        $authorName = $_POST['authorName'];
+        $authorSurname = $_POST['authorSurname'];
+        $pages = $_POST['pages'];
+        $price = $_POST['price'];
+        $quantity = $_POST['quantity'];
+        $description = $_POST['description'];
+
+        $bookController = new BookController();
+        $bookController->setTitle($title);
+        $bookController->setAuthorName($authorName);
+        $bookController->setAuthorSurname($authorSurname);
+        $bookController->setPages($pages);
+        $bookController->setPrice($price);
+        $bookController->setQuantity($quantity);
+        $bookController->setDescription($description);
+        $bookController->create($bookController);
     }
 }

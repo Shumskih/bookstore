@@ -41,7 +41,7 @@ class Category implements Model
     /**
      * @return array
      */
-    public function getBooks() : array
+    public function getBooks(): array
     {
         return $this->books;
     }
@@ -49,7 +49,7 @@ class Category implements Model
     /**
      * @param mixed $books
      */
-    public function setBooks($books) : void
+    public function setBooks($books): void
     {
         $this->books = $books;
     }
@@ -71,7 +71,7 @@ class Category implements Model
         } catch (PDOException $e) {
             echo 'Can\'t get category<br>' . $e->getMessage();
         }
-        $this->id = $category['id'];
+        $this->id   = $category['id'];
         $this->name = $category['name'];
 
         $this->readBooksByCategory();
@@ -127,26 +127,20 @@ class Category implements Model
 
     function readAll(): array
     {
-        $categoriesObjectsArray = [];
+        $categoriesArray = [];
 
-        try {
-            $query      = SqlQueries::GET_ALL_CATEGORIES;
-            $stmt       = $this->pdo->query($query);
-            $categories = $stmt->fetchAll();
-        } catch (PDOException $e) {
-            echo 'Can\'t get all categories<br>' . $e->getMessage();
-        }
+        $categories = CategoryDaoImpl::readAll();
 
         foreach ($categories as $c) {
-            $category = new $this();
+            $category = new Category();
             $category->setId($c['id']);
             $category->setName($c['name']);
 
-            array_unshift($categoriesObjectsArray, $category);
+            array_unshift($categoriesArray, $category);
             unset($category);
         }
 
-        return $categoriesObjectsArray;
+        return $categoriesArray;
     }
 
     function update($category)
@@ -159,7 +153,8 @@ class Category implements Model
         // TODO: Implement delete() method.
     }
 
-    public function getCountBooks(): int
+    public
+    function getCountBooks(): int
     {
         try {
             $query = SqlQueries::COUNT_BOOKS_IN_CATEGORY;

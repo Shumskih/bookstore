@@ -97,15 +97,27 @@
           <?php $status = (object)$order->getStatus(); ?>
         <h4 class="mt-1">Status:</h4>
         <p><strong><?php echo $status->getStatus(); ?></strong></p>
-        <div class="mt-5">
-          <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-            <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">
-            <button type="submit" class="btn btn-outline-info" name="orderInProcess">In Process </button>
-            <button type="submit" class="btn btn-outline-secondary ml-1" name="orderSent">Sent </button>
-            <button type="submit" class="btn btn-outline-success ml-1" name="orderDelivered">Delivered </button>
-            <button type="submit" class="btn btn-outline-danger ml-1" name="orderCanceled">Cancel </button>
-          </form>
-        </div>
+          <?php if ($status->getStatus() !== 'Canceled'): ?>
+            <div class="mt-5">
+              <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+                <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">
+                <button type="submit" class="btn btn-outline-info" name="orderInProcess">In Process</button>
+                <button type="submit" class="btn btn-outline-secondary ml-1" name="orderSent">Sent</button>
+                <button type="submit" class="btn btn-outline-success ml-1" name="orderDelivered">Delivered</button>
+                <button type="submit" class="btn btn-outline-danger ml-1" name="orderCanceled">Cancel</button>
+              </form>
+            </div>
+          <?php else: ?>
+            <div class="mt-5">
+              <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+                <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">
+                <button type="submit" class="btn btn-outline-info" name="orderInProcess" disabled>In Process</button>
+                <button type="submit" class="btn btn-outline-secondary ml-1" name="orderSent" disabled>Sent</button>
+                <button type="submit" class="btn btn-outline-success ml-1" name="orderDelivered" disabled>Delivered</button>
+                <button type="submit" class="btn btn-outline-danger ml-1" name="orderCanceled" disabled>Cancel</button>
+              </form>
+            </div>
+          <?php endif; ?>
       </div>
     </section>
     <!-- End Checkout Area -->

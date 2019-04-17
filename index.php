@@ -152,11 +152,27 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 
     $frontController->order();
 
+    // /administration/orders/order?id=?
 } elseif (isset($_GET['id'])
           && (URI == '/administration/orders/delete-order?id=' . $_GET['id']
               || URI == '/administration/orders/delete-order?id=' . $_GET['id'] . '/')) {
     $frontController->deleteOrder($_GET['id']);
     header('Location: /administration/orders');
+
+    // /add-a-book
+} else if (URI === '/administration/add-new-book' || URI === '/administration/add-new-book/') {
+    if (!isset($_POST['publish']) || !isset($_POST['cancel']) || !isset($_POST['uploadImg'])) {
+        $frontController->addABook();
+    }
+    if (isset($_POST['uploadImg'])) {
+        echo 'Uploading Image';
+    }
+    if (isset($_POST['publish'])) {
+        $frontController->publishBook();
+    }
+    if (isset($_POST['cancel'])) {
+        header('Location: /books');
+    }
 
     // /contact
 } elseif (URI == '/contact' || URI == '/contacts/') {

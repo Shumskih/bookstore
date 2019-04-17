@@ -12,12 +12,12 @@ class CategoryController extends Controller
         $this->category = new Category();
     }
 
-    public function getCategory($id)
+    public function read($id)
     {
         return $this->category->read($id);
     }
 
-    public function getAllCategories()
+    public function readAll()
     {
         return $this->category->readAll();
     }

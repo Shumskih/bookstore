@@ -311,15 +311,17 @@ class User implements Model
     {
         $userSession = new UserSessionController();
         $user        = $userSession->read();
-        $roles       = $user->getRoles();
-        $permission  = false;
-        foreach ($roles as $role) {
-            if ($role['name'] === 'Content Manager' || $role['name'] === 'Super User') {
-                $permission = true;
+        if (!empty($user)) {
+            $roles       = $user->getRoles();
+            $permission  = false;
+            foreach ($roles as $role) {
+                if ($role['name'] === 'Content Manager' || $role['name'] === 'Super User') {
+                    $permission = true;
+                }
+                unset($role);
+                unset($userController);
+                unset($user);
             }
-            unset($role);
-            unset($userController);
-            unset($user);
         }
 
         if ($permission) {

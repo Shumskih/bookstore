@@ -1,6 +1,6 @@
 <?php
 $userSessionController = new UserSessionController();
-$userSession = $userSessionController->read();
+$userSession           = $userSessionController->read();
 ?>
 <header id="wn__header"
         class="<?php if (URI !== '/'): ?>oth-page <?php endif; ?>header__area header__absolute sticky__header">
@@ -21,17 +21,19 @@ $userSession = $userSessionController->read();
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
-            <?php if ($userSessionController->getRoleSuperUser()): ?>
-            <li class="drop"><a>Administration</a>
-              <div class="megamenu dropdown">
-                <ul class="item item01">
-                  <li><a href="/administration/orders">Orders (New: <?php echo OrderDaoImpl::getNewOrders(); ?>)</a></li>
-                  <li><a href="/add-a-book">Add a book</a></li>
-                  <li><a href="/delivery">Delivery</a></li>
-                </ul>
-              </div>
-            </li>
-            <?php endif; ?>
+              <?php if ($userSessionController->getRoleSuperUser()): ?>
+                <li class="drop"><a>Administration</a>
+                  <div class="megamenu dropdown">
+                    <ul class="item item01">
+                      <li><a href="/administration/orders">Orders <span
+                                  class="badge badge-info">New: <?php echo OrderDaoImpl::getNewOrders(); ?></span></a>
+                      </li>
+                      <li><a href="/administration/add-new-book">Add New Book</a></li>
+                      <li><a href="administration/delivery">Delivery</a></li>
+                    </ul>
+                  </div>
+                </li>
+              <?php endif; ?>
             <li><a href="/contact">Contact</a></li>
             <li><a href="/fake-it">Fake-it</a></li>
           </ul>
@@ -136,10 +138,10 @@ $userSession = $userSessionController->read();
                       <div class="setting__menu">
                           <?php
                           if (isset($_SESSION['login'])): ?>
-                          <?php
+                              <?php
                               $userSessionController = new UserSessionController();
-                              $userSession = $userSessionController->read();
-                          ?>
+                              $userSession           = $userSessionController->read();
+                              ?>
                             <span><a href="">
                               <?php echo 'Hello, ' . $userSession->getSurname() . ' ' . $userSession->getName(); ?>
                         </a></span>

@@ -253,6 +253,11 @@ class Book implements Model
         return $this->quantity;
     }
 
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+    }
+
     /**
      * @return array
      */

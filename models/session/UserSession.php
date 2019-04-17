@@ -18,26 +18,18 @@ class UserSession implements SessionInterface
     // User object
     private $user = null;
 
-    private $roleUser = null;
-
-    private $roleContentManager = null;
-
-    private $roleSuperUser = null;
-
     private $roles = [];
 
     function create($user)
     {
         $_SESSION[self::LOGIN] = true;
         $_SESSION[self::USER]  = serialize($user);
-
-        array_push($this->sessionUser, $_SESSION[self::LOGIN]);
-        array_push($this->sessionUser, $_SESSION[self::USER]);
     }
 
-    function read() : User
+    function read()
     {
-        return unserialize($_SESSION[self::USER]);
+        if (isset($_SESSION[self::USER]))
+            return unserialize($_SESSION[self::USER]);
     }
 
     function update($user)
@@ -51,6 +43,10 @@ class UserSession implements SessionInterface
         unset($_SESSION[self::USER]);
         unset($_SESSION[self::LOGIN]);
         unset($this->sessionUser);
+        if (isset($_SESSION[self::CONTENT_MANAGER]))
+            unset($_SESSION[self::CONTENT_MANAGER]);
+        if (isset($_SESSION[self::SUPER_USER]))
+            unset($_SESSION[self::SUPER_USER]);
         unset($this->roles);
     }
 
@@ -93,31 +89,10 @@ class UserSession implements SessionInterface
     /**
      * @return null
      */
-    public function getRoleUser()
-    {
-        if (isset($_SESSION[self::USER])) {
-            return $_SESSION[self::USER];
-        }
-        return false;
-    }
-
-    /**
-     * @param null $roleUser
-     */
-    public function setRoleUser(): void
-    {
-        $this->roleUser = self::USER;
-        array_push($roles, $this->roleUser);
-        $_SESSION[$this->roleUser] = true;
-    }
-
-    /**
-     * @return null
-     */
     public function getRoleContentManager()
     {
         if (isset($_SESSION[self::CONTENT_MANAGER])) {
-            return $_SESSION[self::CONTENT_MANAGER];
+            return true;
         }
         return false;
     }
@@ -127,9 +102,7 @@ class UserSession implements SessionInterface
      */
     public function setRoleContentManager(): void
     {
-        $this->roleContentManager = self::CONTENT_MANAGER;
-        array_push($roles, $this->roleContentManager);
-        $_SESSION[$this->roleContentManager] = true;
+        $_SESSION[self::CONTENT_MANAGER] = true;
     }
 
     /**
@@ -138,7 +111,7 @@ class UserSession implements SessionInterface
     public function getRoleSuperUser()
     {
         if (isset($_SESSION[self::SUPER_USER])) {
-            return $_SESSION[self::SUPER_USER];
+            return true;
         }
         return false;
     }
@@ -148,8 +121,6 @@ class UserSession implements SessionInterface
      */
     public function setRoleSuperUser(): void
     {
-        $this->roleSuperUser = self::SUPER_USER;
-        array_push($roles, $this->roleSuperUser);
-        $_SESSION[$this->roleSuperUser] = true;
+        $_SESSION[self::SUPER_USER] = true;
     }
 }

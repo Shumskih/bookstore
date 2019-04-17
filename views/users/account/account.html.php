@@ -20,7 +20,7 @@
               <?php if (is_object($var)): ?>
                   <?php
                   $user    = (object)$var;
-                  $address = (object)$user->getAddress();
+                  $address = (object)$user->getAddress($user->getId());
                   ?>
               <?php else: ?>?>
                   <?php foreach ($var as $item): ?>

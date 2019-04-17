@@ -13,6 +13,8 @@
                   && URI !== '/contact/'
                   && URI !== '/administration/orders'
                   && URI !== '/administration/orders/'
+                  && (URI !== '/my-orders' && URI !== '/my-orders/')
+                  && (URI !== '/my-order?id='.$_GET['id'] && URI !== '/my-order?id='.$_GET['id'].'/')
               ) {
                   foreach ($var as $k => $v) {
                       if (isset($v['book'])) {
@@ -52,6 +54,12 @@
                   echo '<span class="breadcrumb_item active">Administration</span>
                         <span class="brd-separetor">/</span>';
                   echo 'Orders';
+              } else if (URI == '/my-orders' || URI == '/my-orders/') {
+                echo 'My Orders';
+              } else if (URI == '/my-order?id='.$_GET['id'] || URI == '/my-order?id='.$_GET['id'].'/') {
+                  echo '<a class="breadcrumb_item" href="/my-orders">My Orders</a>
+                        <span class="brd-separetor">/</span>';
+                  echo 'View Order';
               }
               ?>
             </span>

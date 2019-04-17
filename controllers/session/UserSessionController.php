@@ -44,4 +44,9 @@ class UserSessionController
     {
         $this->userSession->setRoleSuperUser();
     }
+
+    public function getRoleSuperUser()
+    {
+        return $this->userSession->getRoleSuperUser();
+    }
 }

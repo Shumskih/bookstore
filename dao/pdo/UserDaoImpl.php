@@ -60,7 +60,7 @@ class UserDaoImpl implements DaoInterface
             $stmt->execute([
               'id' => $userId,
             ]);
-            $address = $stmt->fetchObject(Address::class);
+            $address = $stmt->fetchObject( 'Address');
 
             self::$pdo->commit();
         } catch (PDOException $e) {
@@ -71,7 +71,7 @@ class UserDaoImpl implements DaoInterface
         return $address;
     }
 
-    public static function getRoles($userId): Role
+    public static function getRoles($userId): array
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
@@ -82,7 +82,7 @@ class UserDaoImpl implements DaoInterface
             $stmt->execute([
               'id' => $userId,
             ]);
-            $roles = $stmt->fetchObject(Role::class);
+            $roles = $stmt->fetchAll();
 
             self::$pdo->commit();
         } catch (PDOException $e) {
@@ -90,5 +90,48 @@ class UserDaoImpl implements DaoInterface
         }
 
         return $roles;
+    }
+
+    public static function getOrders($userId)
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_ORDERS_OF_USER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'id' => $userId,
+            ]);
+            $orders = $stmt->fetchAll();
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            echo 'Can\'t get user\'s orders from database<br>' . $e->getMessage();
+        }
+
+        return $orders;
+    }
+
+    public static function getOrder($orderId, $userId): Order
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::GET_ORDER_OF_USER;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'orderId' => $orderId,
+              'userId' => $userId
+            ]);
+            $order = $stmt->fetchObject(Order::class);
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            echo 'Can\'t get user\'s order from database<br>' . $e->getMessage();
+        }
+
+        return $order;
     }
 }

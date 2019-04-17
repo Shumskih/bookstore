@@ -38,6 +38,24 @@ if (URI == '/') {
         $frontController->accountInfo();
     }
 
+    // my-orders
+} else if (URI == '/my-orders' || URI == '/my-orders/') {
+    if (isset($_SESSION['login'])) {
+        $frontController->myOrders();
+    } else {
+        header('Location: /account');
+    }
+
+    // my-order?id=?
+} else if (isset($_GET['id']) && (URI == '/my-order?id='.$_GET['id'] || URI == '/my-order?id='.$_GET['id'].'/')) {
+    if (isset($_POST['orderId']) && isset($_POST['cancelOrder'])) {
+        $frontController->cancelOrder($_POST['orderId']);
+    }
+    if (!isset($_SESSION['login'])) {
+        header('Location: /account');
+    }
+    $frontController->myOrder();
+
 } // /restore-password
 elseif (URI == '/restore-password' || URI == '/restore-password/') {
     echo 'Restore Password';

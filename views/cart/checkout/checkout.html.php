@@ -38,73 +38,126 @@
         <div class="row">
           <div class="col-lg-6 col-12">
             <div class="customer_details">
-                <?php foreach ($var as $k => $v) {
-                    if ($k == 'user') {
-                        $user    = (object)$v['user'];
-                        $address = (object)$user->getAddress($user->getId());
-                    }
-                } ?>
+                <?php
+                $userSession = new UserSessionController();
+                $user        = $userSession->read();
+                if (!empty($user)) {
+                    $address = $user->getAddress($user->getId());
+                }
+                ?>
               <h3>Billing details</h3>
               <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
                 <div class="customar__field">
                   <div class="margin_between">
                     <div class="input_box space_between">
-                      <label>First name <span>*</span></label>
-                      <input type="text" name="userName" value="<?php echo $user->getName(); ?>">
+                      <label for="firstName">First name <span>*</span></label>
+                      <input type="text" id="firstName" name="userName" value="
+                      <?php
+                      if (!empty($user)) {
+                          echo $user->getName();
+                      }
+                      ?>">
                     </div>
                     <div class="input_box space_between">
                       <label>Last name <span>*</span></label>
-                      <input type="text" name="surname" value="<?php echo $user->getSurname(); ?>">
+                      <input type="text" name="surname" value="
+                      <?php
+                      if (!empty($user)) {
+                          echo $user->getSurname();
+                      }
+                      ?>">
                     </div>
                   </div>
                   <div class="input_box">
                     <label>Country<span>*</span></label>
                     <select class="select__option" name="country">
                         <?php foreach (Countries::$countries as $code => $name): ?>
-                          <option name="<?php echo $name ?>" <?php if ($name == $address->getCountry()) {
-                              echo 'selected';
-                          } ?>><?php echo $name; ?></option>
+                          <option name="<?php echo $name ?>"
+                            <?php
+                            if (!empty($user) && $name == $address->getCountry()) {
+                                echo 'selected';
+                            } ?>><?php echo $name; ?></option>
                         <?php endforeach; ?>
                     </select>
                   </div>
                   <div class="input_box">
                     <label>District <span>*</span></label>
                     <input type="text" name="district" placeholder="District"
-                           value="<?php echo $address->getDistrict(); ?>">
+                           value="
+                           <?php
+                           if (!empty($user)) {
+                               echo $address->getDistrict();
+                           }
+                           ?>">
                   </div>
                   <div class="input_box">
                     <label>City <span>*</span></label>
                     <input type="text" name="city" placeholder="Street address"
-                           value="<?php echo $address->getCity(); ?>">
+                           value="
+                           <?php
+                           if (!empty($user)) {
+                               echo $address->getCity();
+                           }
+                           ?>">
                   </div>
                   <div class="input_box">
                     <label>Street <span>*</span></label>
                     <input type="text" name="street" placeholder="Street address"
-                           value="<?php echo $address->getStreet(); ?>">
+                           value="
+                           <?php
+                           if (!empty($user)) {
+                               echo $address->getStreet();
+                           }
+                           ?>">
                   </div>
                   <div class="input_box">
                     <label>Building <span>*</span></label>
                     <input type="text" name="building" placeholder="Street address"
-                           value="<?php echo $address->getBuilding(); ?>">
+                           value="
+                           <?php
+                           if (!empty($user)) {
+                               echo $address->getBuilding();
+                           }
+                           ?>">
                   </div>
                   <div class="input_box">
                     <label>Apartment, suite, unit etc. (optional) </label>
                     <input type="text" name="apartment" placeholder="Apartment, suite, unit etc. (optional)"
-                           value="<?php echo $address->getApartment(); ?>">
+                           value="
+                           <?php
+                           if (!empty($user)) {
+                               echo $address->getApartment();
+                           }
+                           ?>">
                   </div>
                   <div class="input_box">
                     <label>Postcode / ZIP <span>*</span></label>
-                    <input type="text" name="postcode" value="<?php echo $address->getPostcode(); ?>">
+                    <input type="text" name="postcode" value="
+                    <?php
+                    if (!empty($user)) {
+                        echo $address->getPostcode();
+                    }
+                    ?>">
                   </div>
                   <div class="margin_between">
                     <div class="input_box space_between">
                       <label>Phone <span>*</span></label>
-                      <input type="tel" name="phone" value="<?php echo $user->getMobilePhone(); ?>">
+                      <input type="tel" name="phone" value="
+                      <?php
+                      if (!empty($user)) {
+                          echo $user->getMobilePhone();
+                      }
+                      ?>">
                     </div>
 
                     <div class="input_box space_between">
                       <label>Email address <span>*</span></label>
-                      <input type="email" name="email" value="<?php echo $user->getEmail(); ?>">
+                      <input type="email" name="email" value="
+                      <?php
+                      if (!empty($user)) {
+                          echo $user->getEmail();
+                      }
+                      ?>">
                     </div>
                   </div>
                 </div>
@@ -152,9 +205,9 @@
                             <?php foreach ($v as $key => $value): ?>
                                 <?php if ($key == 'deliveries'): ?>
                                     <?php foreach ($value as $delivery): ?>
-                                    <?php
+                                        <?php
                                         $deliveryMethod = $delivery['deliveryMethod'];
-                                        $deliveryCost = $delivery['deliveryCost'];
+                                        $deliveryCost   = $delivery['deliveryCost'];
                                         ?>
                                 <li>
                                   <input name="shippingMethod" data-index="0" value="<?php echo $deliveryMethod ?>"

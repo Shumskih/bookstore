@@ -1,4 +1,4 @@
-﻿<?php include ROOT . '/views/inc/head.html.php'; ?>
+<?php include ROOT . '/views/inc/head.html.php'; ?>
   <body>
 <?php include ROOT . '/views/inc/outdatedBrowser.html.php'; ?>
 
@@ -95,15 +95,18 @@
         <hr>
           <?php $status = (object)$order->getStatus(); ?>
         <p><strong>Status: </strong> <?php echo $status->getStatus(); ?></p>
+          <?php if ($status->getStatus() !== 'Canceled'): ?>
+            <div class="mt-5">
+              <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+                <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">
+                <button type="submit" class="btn btn-outline-danger ml-1" name="cancelOrder" >Cancel Order</button>
+              </form>
+            </div>
+          <?php else: ?>
         <div class="mt-5">
-          <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
-            <input type="hidden" name="orderId" value="<?php echo $order->getId(); ?>">
-            <button type="submit" class="btn btn-outline-info" name="orderInProcess">In Process </button>
-            <button type="submit" class="btn btn-outline-secondary ml-1" name="orderSent">Sent </button>
-            <button type="submit" class="btn btn-outline-success ml-1" name="orderDelivered">Delivered </button>
-            <button type="submit" class="btn btn-outline-danger ml-1" name="orderCanceled">Cancel </button>
-          </form>
+            <button type="submit" class="btn btn-outline-danger ml-1" disabled>Order Canceled</button>
         </div>
+          <?php endif; ?>
       </div>
     </section>
     <!-- End Checkout Area -->

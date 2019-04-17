@@ -14,6 +14,9 @@
       <?php include ROOT . '/views/inc/breadcrumbs.html.php' ?>
     <!-- End Breadcrumbs area -->
     <!-- Start Shop Page -->
+    <?php
+    vardump($_SESSION);
+    ?>
     <section
             class="page-shop-sidebar left--sidebar bg--white section-padding--lg">
       <div class="container">

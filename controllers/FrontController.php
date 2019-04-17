@@ -271,9 +271,7 @@ class FrontController extends Controller
         $email    = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
 
-        if ($user->login($email, $password)) {
-            header('Location: /books');
-        } else {
+        if (!$user->login($email, $password)) {
             $error = 'Incorrect email or password';
             $user->render(
               '/views/users/loginOrRegister.html.php',
@@ -430,7 +428,6 @@ class FrontController extends Controller
             }
         }
 
-        $statusController = new StatusController();
         $status = $statusController->read($newStatusId);
 
         $orderController = new OrderController();
@@ -449,5 +446,54 @@ class FrontController extends Controller
         $this->render(
           '/views/contacts/contact.html.php'
         );
+    }
+
+    public function myOrders()
+    {
+        $userSession = new UserSessionController();
+        $user = (object)$userSession->read();
+        $orders = $user->getOrders();
+
+        $this->render(
+          '/views/users/orders/my-orders.html.php',
+          $orders
+        );
+    }
+
+    public function myOrder()
+    {
+        $orderController = new OrderController();
+        $userSession = new UserSessionController();
+
+        $orderId = $orderController
+          ->read($_GET['id'])
+          ->getId();
+        $user = (object)$userSession->read();
+        $order = (object)$user->getOrder($orderId);
+
+
+        $this->render(
+          '/views/users/orders/my-order.html.php',
+          $order
+        );
+    }
+
+    public function cancelOrder($orderId) {
+        $newStatusId = null;
+
+        $statusController = new StatusController();
+        $statuses = $statusController->readAll();
+
+        foreach ($statuses as $s) {
+            if ($s['status'] === 'Canceled') {
+                $newStatusId = $s['id'];
+            }
+        }
+
+        $status = $statusController->read($newStatusId);
+
+        $orderController = new OrderController();
+        $order = $orderController->read($orderId);
+        $order->setStatus($status);
     }
 }

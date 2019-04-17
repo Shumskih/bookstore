@@ -1,3 +1,7 @@
+<?php
+$userSessionController = new UserSessionController();
+$userSession = $userSessionController->read();
+?>
 <header id="wn__header"
         class="<?php if (URI !== '/'): ?>oth-page <?php endif; ?>header__area header__absolute sticky__header">
   <div class="container-fluid">
@@ -17,7 +21,7 @@
             </li>
             <li class="drop"><a href="/books">Books</a>
             </li>
-            <?php if (isset($_SESSION['super user'])): ?>
+            <?php if ($userSessionController->getRoleSuperUser()): ?>
             <li class="drop"><a>Administration</a>
               <div class="megamenu dropdown">
                 <ul class="item item01">

@@ -21,6 +21,10 @@ class User implements Model
     // Array of Role Objects
     private $roles = [];
 
+    private $orders = [];
+
+    private $order = null;
+
     public function __sleep()
     {
         return [
@@ -30,7 +34,7 @@ class User implements Model
           'email',
           'mobilePhone',
           'address',
-          'roles'
+          'roles',
         ];
     }
 
@@ -85,12 +89,12 @@ class User implements Model
     /**
      * @return Address
      */
-    public function getAddress(): Address
+    public function getAddress($id): Address
     {
         if (!empty($this->address)) {
             return $this->address;
         } else {
-            return UserDaoImpl::getAddress($this->id);
+            return UserDaoImpl::getAddress($id);
         }
     }
 
@@ -105,7 +109,7 @@ class User implements Model
     /**
      * @return mixed
      */
-    public function getRoles(): Role
+    public function getRoles(): array
     {
         if (!empty($this->roles)) {
             return $this->roles;
@@ -170,6 +174,50 @@ class User implements Model
         $this->mobilePhone = $mobilePhone;
     }
 
+    /**
+     * @return array
+     */
+    public function getOrders(): array
+    {
+        if (!empty($this->orders)) {
+            return $this->orders;
+        } else {
+            $ordersArray = [];
+            $orders = UserDaoImpl::getOrders($this->id);
+            foreach ($orders as $o) {
+                $order = new Order();
+                $order->setId($o['id']);
+                $order->setUserMessage($o['userMessage']);
+
+                array_push($ordersArray, $order);
+                unset($order);
+            }
+        }
+        return $ordersArray;
+    }
+
+    /**
+     * @param $orderId
+     *
+     * @return \Order
+     */
+    public function getOrder($orderId): Order
+    {
+        if (!empty($this->order)) {
+            return $this->order;
+        } else {
+            return UserDaoImpl::getOrder($orderId, $this->id);
+        }
+    }
+
+    /**
+     * @param array $orders
+     */
+    public function setOrders(array $orders): void
+    {
+        $this->orders = $orders;
+    }
+
     function create($user)
     {
         echo 'Creating user info.';
@@ -191,7 +239,7 @@ class User implements Model
         $user = (object)$user;
         UserDaoImpl::update($user);
 
-        $address = (object)$user->getAddress();
+        $address           = (object)$user->getAddress($user->getId());
         $addressController = new AddressController();
         $addressController->update($address);
     }
@@ -205,21 +253,17 @@ class User implements Model
     {
         if ($user = CheckUser::isUserExists($email, $password)) {
             $roles = $user->getRoles();
+            vardump($roles);
 
             $session = new UserSessionController();
 
             foreach ($roles as $role) {
-                $role = (object)$role;
 
-                if ($role->getName() == 'User') {
-                    $session->setRoleUser();
-                }
-
-                if ($role->getName() == 'Content Manager') {
+                if ($role['name'] === 'Content Manager') {
                     $session->setRoleContentManager();
                 }
 
-                if ($role->getName() == 'Super User') {
+                if ($role['name'] === 'Super User') {
                     $session->setRoleSuperUser();
                 }
             }
@@ -263,29 +307,24 @@ class User implements Model
         unset($session);
     }
 
-    public function checkPermissions() : bool
+    public function checkPermissions(): bool
     {
-        if (!isset($_SESSION['email']))
-            return false;
-        else {
-            $userController = new UserController();
-            $user           = $userController->getUserByEmail($_SESSION['email']);
-            $roles          = $user->getRoles();
-            $permission     = false;
-            foreach ($roles as $role) {
-                $role = (object)$role;
-                $name = $role->getName();
-                if ($name == 'Content Manager' || $name == 'Super User') {
-                    $permission = true;
-                }
-                unset($role);
-                unset($userController);
-                unset($user);
+        $userSession = new UserSessionController();
+        $user        = $userSession->read();
+        $roles       = $user->getRoles();
+        $permission  = false;
+        foreach ($roles as $role) {
+            if ($role['name'] === 'Content Manager' || $role['name'] === 'Super User') {
+                $permission = true;
             }
+            unset($role);
+            unset($userController);
+            unset($user);
         }
 
-        if ($permission)
+        if ($permission) {
             return true;
+        }
 
         return false;
     }

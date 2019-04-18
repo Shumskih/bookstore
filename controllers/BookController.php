@@ -16,7 +16,7 @@ class BookController extends Controller
 
     public function create($book)
     {
-        $this->book->create($book);
+        return $this->book->create($book);
     }
 
     public function read($id): Book
@@ -27,6 +27,16 @@ class BookController extends Controller
     public function readAll()
     {
         return $this->book->readAll();
+    }
+
+    public function update($book)
+    {
+        $this->book->update($book);
+    }
+
+    public function delete($id)
+    {
+        $this->book->delete($id);
     }
 
     public function getNewBooks(int $quantity = 6): array
@@ -130,20 +140,14 @@ class BookController extends Controller
         $this->book->setDescription($description);
     }
 
-    /**
-     * @return null
-     */
-    public function getImg()
+    public function getImages(): array
     {
-        return $this->book->getImg();
+        return $this->book->getImages();
     }
 
-    /**
-     * @param null $img
-     */
-    public function setImg($img): void
+    public function setImages(array $images)
     {
-        $this->book->setImg($img);
+        $this->book->setImages($images);
     }
 
     /**
@@ -167,7 +171,7 @@ class BookController extends Controller
      */
     public function getAdded()
     {
-        return $this->book->getAdded();
+        return $this->book->getAddedAt();
     }
 
     /**
@@ -175,7 +179,7 @@ class BookController extends Controller
      */
     public function setAdded($added): void
     {
-        $this->book->setAdded($added);
+        $this->book->setAddedAt($added);
     }
 
     /**

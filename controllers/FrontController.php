@@ -94,7 +94,7 @@ class FrontController extends Controller
     public function accountInfo()
     {
         $userController = new UserController();
-        $session = new UserSession();
+        $session        = new UserSession();
 
         // User
         $userId      = null;
@@ -314,25 +314,25 @@ class FrontController extends Controller
     public function submitCheckout()
     {
         // user
-        $userName     = $_POST['userName'];
-        $userSurname  = $_POST['surname'];
-        $phone        = $_POST['phone'];
-        $email        = $_POST['email'];
+        $userName    = $_POST['userName'];
+        $userSurname = $_POST['surname'];
+        $phone       = $_POST['phone'];
+        $email       = $_POST['email'];
 
         // address
-        $country      = $_POST['country'];
-        $district     = $_POST['district'];
-        $city         = $_POST['city'];
-        $street       = $_POST['street'];
-        $building     = $_POST['building'];
-        $apartment    = $_POST['apartment'];
-        $postcode     = $_POST['postcode'];
+        $country   = $_POST['country'];
+        $district  = $_POST['district'];
+        $city      = $_POST['city'];
+        $street    = $_POST['street'];
+        $building  = $_POST['building'];
+        $apartment = $_POST['apartment'];
+        $postcode  = $_POST['postcode'];
 
         // order message
         $userMessage = $_POST['userMessage'];
 
         $userSession = new UserSessionController();
-        $user = $userSession->read();
+        $user        = $userSession->read();
         $user->setName($userName);
         $user->setSurname($userSurname);
         $user->setMobilePhone($phone);
@@ -351,16 +351,17 @@ class FrontController extends Controller
 
         $address->update($address);
 
-        if ($email != $_SESSION['email'])
+        if ($email != $_SESSION['email']) {
             $_SESSION['email'] = $email;
+        }
 
         $booksAndQty = [];
 
         // get books
         $count = count($_SESSION['cart']);
         for ($i = 0; $i < $count; $i++) {
-            $book = (object) unserialize($_SESSION['cart'][$i]['book']);
-            $qty = $_SESSION['cart'][$i]['qty'];
+            $book = (object)unserialize($_SESSION['cart'][$i]['book']);
+            $qty  = $_SESSION['cart'][$i]['qty'];
             array_push($booksAndQty, ['book' => $book, 'qty' => $qty]);
             unset($book);
         }
@@ -384,11 +385,11 @@ class FrontController extends Controller
     public function orders()
     {
         $userController = new UserController();
-        $permissions = $userController->checkPermissions();
+        $permissions    = $userController->checkPermissions();
 
         if ($permissions) {
             $orderController = new OrderController();
-            $orders = $orderController->readAll();
+            $orders          = $orderController->readAll();
 
             $this->render(
               '/views/administration/orders/orders.html.php',
@@ -401,11 +402,12 @@ class FrontController extends Controller
 
     public function order()
     {
-        if (isset($_GET['id']))
+        if (isset($_GET['id'])) {
             $id = $_GET['id'];
+        }
 
         $orderController = new OrderController();
-        $order = $orderController->read($id);
+        $order           = $orderController->read($id);
         $this->render(
           '/views/administration/orders/order.html.php',
           $order
@@ -414,13 +416,14 @@ class FrontController extends Controller
 
     public function updateOrderStatus($status)
     {
-        if (isset($_GET['id']))
+        if (isset($_GET['id'])) {
             $id = $_GET['id'];
+        }
 
         $newStatusId = null;
 
         $statusController = new StatusController();
-        $statuses = $statusController->readAll();
+        $statuses         = $statusController->readAll();
 
         foreach ($statuses as $s) {
             if ($s['status'] === $status) {
@@ -431,7 +434,7 @@ class FrontController extends Controller
         $status = $statusController->read($newStatusId);
 
         $orderController = new OrderController();
-        $order = $orderController->read($id);
+        $order           = $orderController->read($id);
         $order->setStatus($status);
     }
 
@@ -451,8 +454,8 @@ class FrontController extends Controller
     public function myOrders()
     {
         $userSession = new UserSessionController();
-        $user = (object)$userSession->read();
-        $orders = $user->getOrders();
+        $user        = (object)$userSession->read();
+        $orders      = $user->getOrders();
 
         $this->render(
           '/views/users/orders/my-orders.html.php',
@@ -463,13 +466,13 @@ class FrontController extends Controller
     public function myOrder()
     {
         $orderController = new OrderController();
-        $userSession = new UserSessionController();
+        $userSession     = new UserSessionController();
 
         $orderId = $orderController
           ->read($_GET['id'])
           ->getId();
-        $user = (object)$userSession->read();
-        $order = (object)$user->getOrder($orderId);
+        $user    = (object)$userSession->read();
+        $order   = (object)$user->getOrder($orderId);
 
 
         $this->render(
@@ -478,11 +481,12 @@ class FrontController extends Controller
         );
     }
 
-    public function cancelOrder($orderId) {
+    public function cancelOrder($orderId)
+    {
         $newStatusId = null;
 
         $statusController = new StatusController();
-        $statuses = $statusController->readAll();
+        $statuses         = $statusController->readAll();
 
         foreach ($statuses as $s) {
             if ($s['status'] === 'Canceled') {
@@ -493,7 +497,7 @@ class FrontController extends Controller
         $status = $statusController->read($newStatusId);
 
         $orderController = new OrderController();
-        $order = $orderController->read($orderId);
+        $order           = $orderController->read($orderId);
         $order->setStatus($status);
     }
 
@@ -512,13 +516,17 @@ class FrontController extends Controller
 
     public function publishBook()
     {
-        $title = $_POST['title'];
-        $authorName = $_POST['authorName'];
+        $title         = $_POST['title'];
+        $authorName    = $_POST['authorName'];
         $authorSurname = $_POST['authorSurname'];
-        $pages = $_POST['pages'];
-        $price = $_POST['price'];
-        $quantity = $_POST['quantity'];
-        $description = $_POST['description'];
+        $pages         = $_POST['pages'];
+        $price         = $_POST['price'];
+        $quantity      = $_POST['quantity'];
+        $description   = $_POST['description'];
+        $inStock       = false;
+        if ($quantity > 0) {
+            $inStock = true;
+        }
 
         $bookController = new BookController();
         $bookController->setTitle($title);
@@ -528,6 +536,49 @@ class FrontController extends Controller
         $bookController->setPrice($price);
         $bookController->setQuantity($quantity);
         $bookController->setDescription($description);
-        $bookController->create($bookController);
+        $bookController->setInStock($inStock);
+        $bookId = $bookController->create($bookController);
+
+        if (!empty(array_filter($_FILES['images']['name']))) {
+            $fileNames = $this->uploadImages($bookId);
+            $imagesObjectsArray = [];
+
+            foreach ($fileNames as $path) {
+                $imageController = new ImageController();
+                $imageController->setPath($path);
+                $imageId = $imageController->create($imageController);
+                $image = $imageController->read($imageId);
+
+                array_push($imagesObjectsArray, $image);
+            }
+            $book = $bookController->read($bookId);
+            $book->setImages($imagesObjectsArray);
+            $bookController->update($book);
+        }
+
+
+        //        header('Location: /books');
+    }
+
+    public function uploadImages($bookId)
+    {
+        $imgDir = ROOT . '/assets/images/books/' . $bookId;
+        @mkdir($imgDir, 0777);
+        $fileNames = [];
+
+        $extensions = ['jpg', 'jpeg', 'gif', 'png'];
+
+        foreach ($_FILES['images']['name'] as $k => $v) {
+            $fileName       = basename($_FILES['images']['name'][$k]);
+            $targetFilePath = $imgDir . '/' . $fileName;
+            array_push($fileNames, $fileName);
+
+            $fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
+            if (in_array($fileType, $extensions)) {
+                move_uploaded_file($_FILES['images']['tmp_name'][$k], $targetFilePath);
+            }
+        }
+        return $fileNames;
+
     }
 }

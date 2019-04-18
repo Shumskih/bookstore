@@ -24,30 +24,10 @@
                 <div class="wn__fotorama__wrapper">
                   <div class="fotorama wn__fotorama__action"
                        data-nav="thumbs">
-                    <a href="1.jpg"><img
-                              src="/assets/images/product/1.jpg"
-                              alt=""></a>
-                    <a href="2.jpg"><img
-                              src="/assets/images/product/2.jpg"
-                              alt=""></a>
-                    <a href="3.jpg"><img
-                              src="/assets/images/product/3.jpg"
-                              alt=""></a>
-                    <a href="4.jpg"><img
-                              src="/assets/images/product/4.jpg"
-                              alt=""></a>
-                    <a href="5.jpg"><img
-                              src="/assets/images/product/5.jpg"
-                              alt=""></a>
-                    <a href="6.jpg"><img
-                              src="/assets/images/product/6.jpg"
-                              alt=""></a>
-                    <a href="7.jpg"><img
-                              src="/assets/images/product/7.jpg"
-                              alt=""></a>
-                    <a href="8.jpg"><img
-                              src="/assets/images/product/8.jpg"
-                              alt=""></a>
+                      <?php foreach ($book->getImages() as $img): ?>
+                      <?php $img = (object)$img; ?>
+                        <a href="/assets/images/books/<?php echo $book->getId() . '/' . $img->getPath(); ?>"><img src="/assets/images/books/<?php echo $book->getId() . '/' . $img->getPath(); ?>" alt=""></a>
+                      <?php endforeach; ?>
                   </div>
                 </div>
               </div>
@@ -92,6 +72,16 @@
                         <a class="compare" href="#"></a>
                       </div>
                     </div>
+                      <?php
+                      $userSession = new UserSessionController();
+                      $user        = (object)$userSession->read();
+                      $permissions = $user->checkPermissions();
+                      ?>
+                      <?php if ($permissions): ?>
+                        <div>
+                          <button type="submit" name="deleteBook" class="btn btn-outline-danger">Delete Book</button>
+                        </div>
+                      <?php endif; ?>
                   </form>
                   <div class="product_meta">
 											<span class="posted_in">Categories:
@@ -288,11 +278,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/1.jpg"
+                              src="/assets/images/books/1/1.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/2.jpg"
+                              src="/assets/images/books/2/2.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">BEST SALLER</span>
@@ -338,11 +328,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/3.jpg"
+                              src="/assets/images/books/3/3.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/4.jpg"
+                              src="/assets/images/books/4/4.jpg"
                               alt="product image"></a>
                     <div class="hot__box color--2">
                       <span class="hot-label">HOT</span>
@@ -388,11 +378,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/7.jpg"
+                              src="/assets/images/books/7/7.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/8.jpg"
+                              src="/assets/images/books/8/8.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">HOT</span>
@@ -438,11 +428,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/9.jpg"
+                              src="/assets/images/books/9/9.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/10.jpg"
+                              src="/assets/images/books/10/10.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">HOT</span>
@@ -492,7 +482,7 @@
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/2.jpg"
+                              src="/assets/images/books/2/2.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">BEST SALER</span>
@@ -538,11 +528,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/1.jpg"
+                              src="/assets/images/books/1/1.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/6.jpg"
+                              src="/assets/images/books/6/6.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">BEST SALER</span>
@@ -597,11 +587,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/1.jpg"
+                              src="/assets/images/books/1/1.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/2.jpg"
+                              src="/assets/images/books/2/2.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">BEST SALLER</span>
@@ -647,11 +637,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/3.jpg"
+                              src="/assets/images/books/3/3.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/4.jpg"
+                              src="/assets/images/books/4/4.jpg"
                               alt="product image"></a>
                     <div class="hot__box color--2">
                       <span class="hot-label">HOT</span>
@@ -697,11 +687,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/7.jpg"
+                              src="/assets/images/books/7/7.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/8.jpg"
+                              src="/assets/images/books/8/8.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">HOT</span>
@@ -747,11 +737,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/9.jpg"
+                              src="/assets/images/books/9/9.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/10.jpg"
+                              src="/assets/images/books/10/10.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">HOT</span>
@@ -801,7 +791,7 @@
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/2.jpg"
+                              src="/assets/images/books/2/2.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">BEST SALER</span>
@@ -847,11 +837,11 @@
                 <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="product__thumb">
                     <a class="first__img" href="single-product.html"><img
-                              src="/assets/images/books/1.jpg"
+                              src="/assets/images/books/1/1.jpg"
                               alt="product image"></a>
                     <a class="second__img animation1"
                        href="single-product.html"><img
-                              src="/assets/images/books/6.jpg"
+                              src="/assets/images/books/6/6.jpg"
                               alt="product image"></a>
                     <div class="hot__box">
                       <span class="hot-label">BEST SALER</span>

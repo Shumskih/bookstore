@@ -1,8 +1,7 @@
 <?php
 
-
 /**
- * According to /sql/tablesData.php the class drop all tables from database then
+ * According to /sql/TablesData.php the class drop all tables from database then
  * create tables and populate it with faker https://github.com/fzaninotto/Faker
  */
 class FillTables
@@ -10,14 +9,28 @@ class FillTables
 
     private static $pdo;
 
+    private $tables = null;
+    private $relations = null;
+    private $users = null;
+    private $addresses = null;
+    private $roles = null;
+    private $delivery = null;
+    private $statuses = null;
+    private $images = null;
+
     /**
      * This is main function, which need to be called to do all work.
      * The parameters must be assoc arrays of tables and relations.
-     * The example of arrays is in /sql/tablesData.php
+     * The example of arrays is in /sql/TablesData.php
      *
      * @param array $tables
      * @param array $relations
-     *
+     * @param array $users
+     * @param array $addresses
+     * @param array $roles
+     * @param array $delivery
+     * @param array $statuses
+     * @param array $images
      */
     public static function faker(
       array $tables,
@@ -26,7 +39,8 @@ class FillTables
       array $addresses,
       array $roles,
       array $delivery,
-      array $statuses
+      array $statuses,
+      array $images
     ) {
         echo 'In faker<br>';
         echo '------------<br>';
@@ -80,6 +94,10 @@ class FillTables
                 self::populateStatus($statuses);
             }
 
+            if ($table == 'images') {
+                self::populateImages($images);
+            }
+
             if ($table == 'categories_books') {
                 self::populateCategoriesBooks($relations);
             }
@@ -90,6 +108,10 @@ class FillTables
 
             if ($table == 'users_roles') {
                 self::populateUsersRoles($relations);
+            }
+
+            if ($table == 'books_images') {
+                self::populateBooksImages($relations);
             }
         }
     }
@@ -130,7 +152,7 @@ class FillTables
             self::$pdo->beginTransaction();
 
             $query
-                     = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :img, :price, now(), :inStock, :quantity)';
+                     = 'INSERT INTO books VALUES (null, :title, :authorName, :authorSurname, :description, :pages, :price, now(), null, :inStock, :quantity)';
             $article = self::$pdo->prepare($query);
             for ($i = 0; $i < 10; $i++) {
 
@@ -139,7 +161,6 @@ class FillTables
                 $authorSurname = $faker->sentence($nbWords = 1, $variableNbWords = true);
                 $description   = '';
                 $pages         = rand(150, 1200);
-                $img           = '';
                 $price         = rand(10, 400);
                 $inStock       = true;
                 $quantity      = rand(1, 10);
@@ -154,7 +175,6 @@ class FillTables
                   'authorName'    => $authorName,
                   'authorSurname' => $authorSurname,
                   'description'   => $description,
-                  'img'           => $img,
                   'pages'         => $pages,
                   'price'         => $price,
                   'inStock'       => $inStock,
@@ -397,4 +417,163 @@ class FillTables
             echo 'Can\'t populate status<br>' . $e->getMessage();
         }
     }
+
+    public static function populateImages(array $images)
+    {
+        echo 'Populate Images<br>';
+        echo '------------<br>';
+
+        try {
+            self::$pdo->beginTransaction();
+            $query = 'INSERT INTO images (path) VALUES (:path)';
+            $stmt  = self::$pdo->prepare($query);
+            foreach ($images as $i) {
+                $path = $i;
+
+                $stmt->execute([
+                  'path' => $path
+                ]);
+            }
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate images<br>' . $e->getMessage();
+        }
+    }
+
+    public static function populateBooksImages($relations)
+    {
+        echo 'Populate Books_Images<br>';
+        echo '------------<br>';
+
+        try {
+            self::$pdo->beginTransaction();
+
+            foreach ($relations['booksImagesRelations'] as $book => $relations) {
+                foreach ($relations as $r) {
+                    $query = "INSERT INTO books_images (book_id, image_id) VALUES ($book, $r)";
+                    self::$pdo->query($query);
+                }
+            }
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t populate books_images<br>' . $e->getMessage();
+        }
+    }
+
+    /**
+     * @return null
+     */
+    public function getTables()
+    {
+        return $this->tables;
+    }
+
+    /**
+     * @param null $tables
+     */
+    public function setTables($tables): void
+    {
+        $this->tables = $tables;
+    }
+
+    /**
+     * @return null
+     */
+    public function getRelations()
+    {
+        return $this->relations;
+    }
+
+    /**
+     * @param null $relations
+     */
+    public function setRelations($relations): void
+    {
+        $this->relations = $relations;
+    }
+
+    /**
+     * @return null
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param null $users
+     */
+    public function setUsers($users): void
+    {
+        $this->users = $users;
+    }
+
+    /**
+     * @return null
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * @param null $addresses
+     */
+    public function setAddresses($addresses): void
+    {
+        $this->addresses = $addresses;
+    }
+
+    /**
+     * @return null
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param null $roles
+     */
+    public function setRoles($roles): void
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDelivery()
+    {
+        return $this->delivery;
+    }
+
+    /**
+     * @param null $delivery
+     */
+    public function setDelivery($delivery): void
+    {
+        $this->delivery = $delivery;
+    }
+
+    /**
+     * @return null
+     */
+    public function getStatuses()
+    {
+        return $this->statuses;
+    }
+
+    /**
+     * @param null $statuses
+     */
+    public function setStatuses($statuses): void
+    {
+        $this->statuses = $statuses;
+    }
+
+
 }

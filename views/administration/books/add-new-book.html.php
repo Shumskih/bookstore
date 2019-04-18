@@ -22,7 +22,7 @@
               <div class="customer_details">
                 <h3>Add New Book</h3>
                 <div class="customar__field">
-                  <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
+                  <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post" enctype="multipart/form-data">
                     <div class="input_box">
                       <label for="title">Title <span>*</span></label>
                       <input type="text" id="title" name="title" placeholder="Book Title" autofocus>
@@ -73,19 +73,20 @@
                       <button type="submit" name="publish" class="btn btn-outline-info">Publish</button>
                       <button type="submit" name="cancel" class="btn btn-outline-danger">Cancel</button>
                     </div>
-                  </form>
                 </div>
               </div>
             </div>
           <div class="col-lg-6 col-12 md-mt-40 sm-mt-40">
-            <form action="<?php $_SERVER['PHP_SELF']; ?>" method="post">
               <img src="https://fakeimg.pl/125/ff7675/fff" class="rounded mx-auto" alt="...">
               <img src="https://fakeimg.pl/125/6c5ce7/fff" class="rounded mx-auto" alt="...">
               <img src="https://fakeimg.pl/125/fd79a8/fff" class="rounded mx-auto" alt="...">
               <img src="https://fakeimg.pl/125/ffeaa7/fff" class="rounded mx-auto" alt="...">
               <div class="input_box">
                 <label for="file">Add Images <span>*</span></label>
-                <input type="file" id="file" name="img" class="form-control-file">
+                <input type="file" id="file" name="images[]" class="form-control-file" aria-describedby="describe" multiple>
+                <small id="describe" class="form-text text-muted">
+                  Image must be less than 1Mb
+                </small>
               </div>
               <div class="mt-4">
                 <button type="submit" name="uploadImg" class="btn btn-outline-info mr-1">Upload Image</button>

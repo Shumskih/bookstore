@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Book
  */
@@ -17,11 +18,11 @@ class Book implements Model
 
     private $description = null;
 
-    private $img = null;
-
     private $price = null;
 
-    private $added = null;
+    private $addedAt = null;
+
+    private $updatedAt = null;
 
     private $inStock = false;
 
@@ -32,9 +33,14 @@ class Book implements Model
      */
     private $categories = [];
 
+    /**
+     * @var array of Image objects
+     */
+    private $images = [];
+
     function create($book)
     {
-        // TODO: Implement create() method.
+        return BookDaoImpl::create($book);
     }
 
     /**
@@ -44,18 +50,17 @@ class Book implements Model
      */
     function read($id): Book
     {
-        $book = BookDaoImpl::read($id);
-        $this->id = $book['id'];
-        $this->title = $book['title'];
-        $this->authorName = $book['authorName'];
+        $book                = BookDaoImpl::read($id);
+        $this->id            = $book['id'];
+        $this->title         = $book['title'];
+        $this->authorName    = $book['authorName'];
         $this->authorSurname = $book['authorSurname'];
-        $this->pages = $book['pages'];
-        $this->description = $book['description'];
-        $this->img = $book['img'];
-        $this->price = $book['price'];
-        $this->added = $book['added'];
-        $this->inStock = $book['inStock'];
-        $this->quantity = $book['quantity'];
+        $this->pages         = $book['pages'];
+        $this->description   = $book['description'];
+        $this->price         = $book['price'];
+        $this->addedAt       = $book['addedAt'];
+        $this->inStock       = $book['inStock'];
+        $this->quantity      = $book['quantity'];
 
         FiveLastViewedBooks::lastViewedBooks($book);
 
@@ -72,12 +77,12 @@ class Book implements Model
 
     function update($book)
     {
-        // TODO: Implement update() method.
+        BookDaoImpl::update($book);
     }
 
     function delete($id)
     {
-        // TODO: Implement delete() method.
+        BookDaoImpl::delete($id);
     }
 
     public function getNewBooks(int $quantity = 6): array
@@ -184,22 +189,6 @@ class Book implements Model
     /**
      * @return null
      */
-    public function getImg()
-    {
-        return $this->img;
-    }
-
-    /**
-     * @param null $img
-     */
-    public function setImg($img): void
-    {
-        $this->img = $img;
-    }
-
-    /**
-     * @return null
-     */
     public function getPrice()
     {
         return $this->price;
@@ -216,17 +205,33 @@ class Book implements Model
     /**
      * @return null
      */
-    public function getAdded()
+    public function getAddedAt()
     {
-        return $this->added;
+        return $this->addedAt;
     }
 
     /**
-     * @param null $added
+     * @param null $addedAt
      */
-    public function setAdded($added): void
+    public function setAddedAt($addedAt): void
     {
-        $this->added = $added;
+        $this->addedAt = $addedAt;
+    }
+
+    /**
+     * @return null
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param null $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 
     /**
@@ -286,6 +291,36 @@ class Book implements Model
         $this->categories = $categories;
     }
 
+    /**
+     * @return array
+     */
+    public function getImages(): array
+    {
+        if (!empty($this->images)) {
+            return $this->images;
+        } else {
+            $images = BookDaoImpl::getImages($this->id);
+            $imagesArray = [];
+
+            foreach ($images as $image) {
+                $imageController = new ImageController();
+                $image = $imageController->read($image['id']);
+
+                array_push($imagesArray, $image);
+                unset($imageController);
+            }
+        }
+        return $imagesArray;
+    }
+
+    /**
+     * @param array $images
+     */
+    public function setImages(array $images): void
+    {
+        $this->images = $images;
+    }
+
     public function __sleep()
     {
         return [
@@ -295,12 +330,12 @@ class Book implements Model
           'authorSurname',
           'pages',
           'description',
-          'img',
           'price',
-          'added',
+          'addedAt',
           'categories',
+          'images',
           'inStock',
-          'quantity'
+          'quantity',
         ];
     }
 }

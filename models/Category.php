@@ -102,7 +102,7 @@ class Category implements Model
             $book->setPages($b['pages']);
             $book->setImg($b['img']);
             $book->setPrice($b['price']);
-            $book->setAdded($b['added']);
+            $book->setAddedAt($b['addedAt']);
 
             array_unshift($this->books, $book);
             unset($book);

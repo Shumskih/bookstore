@@ -66,7 +66,16 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 
     // /fake-it
 } elseif (URI == '/fake-it' || URI == '/fake-it/') {
-    FillTables::faker($tables, $relations, $users, $addresses, $roles, $delivery, $statuses);
+
+    FillTables::faker(
+      $tables = TablesData::$tables,
+      $relations = TablesData::$relations,
+      $users = TablesData::$users,
+      $addresses = TablesData::$addresses,
+      $roles = TablesData::$roles,
+      $delivery = TablesData::$delivery,
+      $statuses = TablesData::$statuses,
+      $images = TablesData::$images);
 
     // /book?id=?
 } elseif (isset($_GET['id']) && URI == '/book?id=' . $_GET['id']
@@ -77,6 +86,11 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
         $cartController = new CartController();
         $cartController->addToCart();
         unset($cartController);
+    }
+    if (isset($_POST['deleteBook'])) {
+        $bookController = new BookController();
+        $bookController->delete($_POST['id']);
+        header('Location: /books');
     }
 
     $frontController->showBook($_GET['id']);
@@ -163,9 +177,6 @@ elseif (URI == '/restore-password' || URI == '/restore-password/') {
 } else if (URI === '/administration/add-new-book' || URI === '/administration/add-new-book/') {
     if (!isset($_POST['publish']) || !isset($_POST['cancel']) || !isset($_POST['uploadImg'])) {
         $frontController->addABook();
-    }
-    if (isset($_POST['uploadImg'])) {
-        echo 'Uploading Image';
     }
     if (isset($_POST['publish'])) {
         $frontController->publishBook();

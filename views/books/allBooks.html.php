@@ -60,11 +60,11 @@
                               <div class="product__thumb">
                                 <a class="first__img"
                                    href="/book?id=<?php echo $book['id']; ?>"><img
-                                          src="/assets/images/books/1.jpg"
+                                          src="/assets/images/books/1/1.jpg"
                                           alt="product image"></a>
                                 <a class="second__img animation1"
                                    href="/book?id=<?php echo $book['id']; ?>"><img
-                                          src="/assets/images/books/2.jpg"
+                                          src="/assets/images/books/2/2.jpg"
                                           alt="product image"></a>
                                 <div class="hot__box">
                                   <span class="hot-label">BEST SELLER</span>

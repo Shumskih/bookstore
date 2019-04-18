@@ -19,7 +19,36 @@ class SqlQueries
                                     INNER JOIN categories ON categories.id = categories_books.category_id
                                     WHERE categories_books.book_id = :id';
 
-    const GET_NEW_BOOKS = 'SELECT * FROM books ORDER BY added DESC LIMIT :quantity';
+    const GET_NEW_BOOKS = 'SELECT * FROM books ORDER BY addedAt DESC LIMIT :quantity';
+
+    const DELETE_BOOK = 'DELETE FROM books WHERE id = :id';
+
+    const DELETE_BOOK_FROM_CATEGORY = 'DELETE FROM categories_books WHERE book_id = :id';
+
+    const DELETE_BOOKS_IMAGES = 'DELETE FROM books_images WHERE book_id = :id';
+
+    const INSERT_BOOK = 'INSERT INTO books (title, authorName, authorSurname, description, pages, price, addedAt, inStock, quantity) 
+                        VALUES (:title, :authorName, :authorSurname, :description, :pages, :price, now(), :inStock ,:quantity)';
+
+    const GET_BOOK_IMAGES = 'SELECT images.id, images.path FROM images
+                             INNER JOIN books_images ON books_images.image_id = images.id
+                             INNER JOIN books ON books.id = books_images.book_id
+                             WHERE books_images.book_id = :id';
+
+    const INSERT_BOOKS_IMAGES = 'INSERT INTO books_images VALUES (:bookId, :imageId)';
+
+    const UPDATE_BOOK = 'UPDATE books 
+                        SET title = :title, 
+                            authorName = :authorName, 
+                            authorSurname = :authorSurname,
+                            description = :description,
+                            pages = :pages,
+                            price = :price,
+                            addedAt = :addedAt,
+                            updatedAt = now(),
+                            inStock = :inStock,
+                            quantity = :quantity
+                        WHERE id = :id';
 
     // Categories
     const GET_ALL_CATEGORIES = 'SELECT * FROM categories';
@@ -152,4 +181,9 @@ WHERE statuses.status = \'New\'';
     const DELETE_USER_FROM_ORDER = 'DELETE FROM orders_users WHERE order_id = :orderId';
 
     const ADD_NEW_STATUS_TO_ORDER = 'UPDATE orders_statuses SET status_id = :statusId WHERE order_id = :orderId';
+
+    // images
+    const INSERT_IMAGE = 'INSERT INTO images (path) VALUES (:path)';
+
+    const SELECT_IMAGE = 'SELECT * FROM images WHERE id = :id';
 }

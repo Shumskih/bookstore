@@ -299,18 +299,17 @@ class Book implements Model
         if (!empty($this->images)) {
             return $this->images;
         } else {
-            $images = BookDaoImpl::getImages($this->id);
-            $imagesArray = [];
+            $images      = BookDaoImpl::getImages($this->id);
 
             foreach ($images as $image) {
                 $imageController = new ImageController();
-                $image = $imageController->read($image['id']);
+                $image           = $imageController->read($image['id']);
 
-                array_push($imagesArray, $image);
+                array_push($this->images, $image);
                 unset($imageController);
             }
         }
-        return $imagesArray;
+        return $this->images;
     }
 
     /**

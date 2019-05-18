@@ -26,4 +26,9 @@ class CategoryController extends Controller
     {
         return $this->getCountBooks();
     }
+
+    public function sortByName($o1, $o2)
+    {
+        return $this->category->sortByName($o1, $o2);
+    }
 }

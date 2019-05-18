@@ -35,6 +35,7 @@ class User implements Model
           'mobilePhone',
           'address',
           'roles',
+          'orders'
         ];
     }
 

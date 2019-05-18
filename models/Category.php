@@ -11,17 +11,6 @@ class Category implements Model
     // Array of Book objects
     private $books = [];
 
-    private $pdo;
-
-    /**
-     * Category constructor.
-     * Get instance of PDO object and assign it to $pdo variable
-     */
-    public function __construct()
-    {
-        $this->pdo = ConnectionUtil::getConnection();
-    }
-
     /**
      * @return mixed
      */
@@ -43,7 +32,30 @@ class Category implements Model
      */
     public function getBooks(): array
     {
-        return $this->books;
+        if (!empty($this->books))
+        {
+            return $this->books;
+        } else {
+            $books = CategoryDaoImpl::getBooks($this->id);
+
+            foreach ($books as $book) {
+                $bookController = new BookController();
+                $bookController->setId($book['id']);
+                $bookController->setTitle($book['title']);
+                $bookController->setAuthorName($book['authorName']);
+                $bookController->setAuthorSurname($book['authorSurname']);
+                $bookController->setDescription($book['description']);
+                $bookController->setPages($book['pages']);
+                $bookController->setPrice($book['price']);
+                $bookController->setAddedat($book['addedAt']);
+                $bookController->setUpdatedAt($book['updatedAt']);
+                $bookController->setInStock($book['inStock']);
+                $bookController->setQuantity($book['quantity']);
+
+                array_push($this->books, $bookController);
+            }
+            return $this->books;
+        }
     }
 
     /**
@@ -61,52 +73,7 @@ class Category implements Model
 
     function read($id)
     {
-        try {
-            $query = SqlQueries::GET_CATEGORY;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $id,
-            ]);
-            $category = $stmt->fetch();
-        } catch (PDOException $e) {
-            echo 'Can\'t get category<br>' . $e->getMessage();
-        }
-        $this->id   = $category['id'];
-        $this->name = $category['name'];
-
-        $this->readBooksByCategory();
-
-        return $this;
-    }
-
-    function readBooksByCategory()
-    {
-        try {
-            $query = SqlQueries::GET_BOOKS_BY_CATEGORY;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $this->id,
-            ]);
-            $books = $stmt->fetchAll();
-        } catch (PDOException $e) {
-            echo 'Can\'t get books by category<br>' . $e->getMessage();
-        }
-
-        foreach ($books as $b) {
-            $book = new Book();
-            $book->setId($b[0]);
-            $book->setTitle($b['title']);
-            $book->setAuthorName($b['authorName']);
-            $book->setAuthorSurname($b['authorSurname']);
-            $book->setDescription($b['description']);
-            $book->setPages($b['pages']);
-            $book->setImg($b['img']);
-            $book->setPrice($b['price']);
-            $book->setAddedAt($b['addedAt']);
-
-            array_unshift($this->books, $book);
-            unset($book);
-        }
+        return CategoryDaoImpl::read($id);
     }
 
     /**
@@ -153,20 +120,13 @@ class Category implements Model
         // TODO: Implement delete() method.
     }
 
-    public
-    function getCountBooks(): int
+    public function getCountBooks(): int
     {
-        try {
-            $query = SqlQueries::COUNT_BOOKS_IN_CATEGORY;
-            $stmt  = $this->pdo->prepare($query);
-            $stmt->execute([
-              'id' => $this->getId(),
-            ]);
-            $count = $stmt->fetch();
-        } catch (PDOException $e) {
-            echo 'Can\'t get count of books<br>' . $e->getMessage();
-        }
+        return CategoryDaoImpl::getCountBooks($this->id);
+    }
 
-        return (int)$count['count'];
+    public function sortByName($o1, $o2)
+    {
+        return $o1->name <=> $o2->name;
     }
 }

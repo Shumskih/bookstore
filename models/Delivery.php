@@ -10,13 +10,6 @@ class Delivery implements Model
 
     private $deliveryCost = null;
 
-    private $pdo = null;
-
-    public function __construct()
-    {
-        $this->pdo = ConnectionUtil::getConnection();
-    }
-
     function create($model)
     {
         // TODO: Implement create() method.

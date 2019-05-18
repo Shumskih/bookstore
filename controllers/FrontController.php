@@ -3,6 +3,8 @@
 class FrontController extends Controller
 {
 
+    private $errors = [];
+
     public function indexPage()
     {
         $controller = new IndexPageController();
@@ -501,13 +503,13 @@ class FrontController extends Controller
         $order->setStatus($status);
     }
 
-    public function addABook()
+    public function addABook(array $errors = [])
     {
         $userController = new UserController();
-
         if ($userController->checkPermissions()) {
             $this->render(
-              '/views/administration/books/add-new-book.html.php'
+              '/views/administration/books/add-new-book.html.php',
+              $errors
             );
         } else {
             header('Location: /account');
@@ -516,52 +518,113 @@ class FrontController extends Controller
 
     public function publishBook()
     {
-        $title         = $_POST['title'];
-        $authorName    = $_POST['authorName'];
-        $authorSurname = $_POST['authorSurname'];
-        $pages         = $_POST['pages'];
-        $price         = $_POST['price'];
-        $quantity      = $_POST['quantity'];
-        $description   = $_POST['description'];
-        $inStock       = false;
+        $errors = [];
+
+        // category
+        if (empty($_POST['category'])) {
+            $error = 'Select at least one category!';
+            array_push($errors, $error);
+        } else {
+            $categoryIds            = $_POST['category'];
+            $arrayCategoriesObjects = [];
+
+            $categoryController = new CategoryController();
+            foreach ($categoryIds as $id) {
+                $category = $categoryController->read($id);
+                array_push($arrayCategoriesObjects, $category);
+                unset($category);
+            }
+        }
+
+        // book
+        if (empty($_POST['title'])) {
+            $error = 'Title require!';
+            array_push($errors, $error);
+        } else {
+            $title = $_POST['title'];
+        }
+        if (empty($_POST['authorName'])) {
+            $error = 'Author Name require!';
+            array_push($errors, $error);
+        } else {
+            $authorName = $_POST['authorName'];
+        }
+        if (empty($_POST['authorSurname'])) {
+            $error = 'Author Surname require!';
+            array_push($errors, $error);
+        } else {
+            $authorSurname = $_POST['authorSurname'];
+        }
+        if (empty($_POST['pages'])) {
+            $error = 'Number of pages require!';
+            array_push($errors, $error);
+        } else {
+            $pages = $_POST['pages'];
+        }
+        if (empty($_POST['price'])) {
+            $error = 'Price require!';
+            array_push($errors, $error);
+        } else {
+            $price = $_POST['price'];
+        }
+        if (empty($_POST['quantity'])) {
+            $quantity = 0;
+        } else {
+            $quantity = $_POST['quantity'];
+        }
+        if (empty($_POST['description'])) {
+            $error = 'Description require!';
+            array_push($errors, $error);
+        } else {
+            $description = $_POST['description'];
+        }
+        $inStock = false;
         if ($quantity > 0) {
             $inStock = true;
         }
 
-        $bookController = new BookController();
-        $bookController->setTitle($title);
-        $bookController->setAuthorName($authorName);
-        $bookController->setAuthorSurname($authorSurname);
-        $bookController->setPages($pages);
-        $bookController->setPrice($price);
-        $bookController->setQuantity($quantity);
-        $bookController->setDescription($description);
-        $bookController->setInStock($inStock);
-        $bookId = $bookController->create($bookController);
+        if (count($errors) > 0 ) {
+            return $errors;
+        } else {
+            $bookController = new BookController();
+            $bookController->setTitle($title);
+            $bookController->setAuthorName($authorName);
+            $bookController->setAuthorSurname($authorSurname);
+            $bookController->setPages($pages);
+            $bookController->setPrice($price);
+            $bookController->setQuantity($quantity);
+            $bookController->setDescription($description);
+            $bookController->setInStock($inStock);
+            $bookController->setCategories($arrayCategoriesObjects);
+            $bookId = $bookController->create($bookController);
 
-        if (!empty(array_filter($_FILES['images']['name']))) {
-            $fileNames = $this->uploadImages($bookId);
-            $imagesObjectsArray = [];
+            if (!empty(array_filter($_FILES['images']['name']))) {
+                $fileNames          = $this->uploadImages($bookId);
+                $imagesObjectsArray = [];
 
-            foreach ($fileNames as $path) {
-                $imageController = new ImageController();
-                $imageController->setPath($path);
-                $imageId = $imageController->create($imageController);
-                $image = $imageController->read($imageId);
+                foreach ($fileNames as $path) {
+                    $imageController = new ImageController();
+                    $imageController->setPath($path);
+                    $imageId = $imageController->create($imageController);
+                    $image   = $imageController->read($imageId);
 
-                array_push($imagesObjectsArray, $image);
+                    array_push($imagesObjectsArray, $image);
+                    unset($imageController);
+                }
+                $book = $bookController->read($bookId);
+                $book->setImages($imagesObjectsArray);
+                $bookController->update($book);
+
+                unset($bookController);
             }
-            $book = $bookController->read($bookId);
-            $book->setImages($imagesObjectsArray);
-            $bookController->update($book);
         }
-
-
+        return 0;
         //        header('Location: /books');
     }
 
-    public function uploadImages($bookId)
-    {
+    public function uploadImages(
+      $bookId
+    ) {
         $imgDir = ROOT . '/assets/images/books/' . $bookId;
         @mkdir($imgDir, 0777);
         $fileNames = [];

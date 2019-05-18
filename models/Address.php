@@ -26,13 +26,6 @@ class Address implements Model
     // User object
     private $user = null;
 
-    private $pdo = null;
-
-    public function __construct()
-    {
-        $this->pdo = ConnectionUtil::getConnection();
-    }
-
     /**
      * @return mixed
      */

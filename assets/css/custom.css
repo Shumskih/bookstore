@@ -25,3 +25,10 @@
     border-color: #e59285;
     color: #e59285;
 }
+
+.select__option__multiple {
+    border: 1px solid #e1e1e1;
+    height: 90px;
+    padding: 0 43px 0 10px;
+    width: 100%
+}

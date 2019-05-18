@@ -3,9 +3,13 @@
 abstract class Controller
 {
 
+    /**
+     * @param string $view
+     * @param bool   $var
+     */
     public function render(string $view, $var = false)
     {
-        include $_SERVER['DOCUMENT_ROOT'] . $view;
+        include ROOT . $view;
     }
 
     public function renderError($errorCode)

@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/assets/css/plugins.css">
   <link rel="stylesheet" href="/assets/css/style.css">
 
-  <!-- Cusom css -->
+  <!-- Custom css -->
   <link rel="stylesheet" href="/assets/css/custom.css">
 
   <!-- Modernizer js -->

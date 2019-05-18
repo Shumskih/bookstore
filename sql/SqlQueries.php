@@ -37,6 +37,8 @@ class SqlQueries
 
     const INSERT_BOOKS_IMAGES = 'INSERT INTO books_images VALUES (:bookId, :imageId)';
 
+    const INSERT_CATEGORIES_BOOK = 'INSERT INTO categories_books VALUES (:categoryId, :bookId)';
+
     const UPDATE_BOOK = 'UPDATE books 
                         SET title = :title, 
                             authorName = :authorName, 

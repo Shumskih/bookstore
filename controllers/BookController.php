@@ -169,7 +169,7 @@ class BookController extends Controller
     /**
      * @return null
      */
-    public function getAdded()
+    public function getAddedAt()
     {
         return $this->book->getAddedAt();
     }
@@ -177,9 +177,19 @@ class BookController extends Controller
     /**
      * @param null $added
      */
-    public function setAdded($added): void
+    public function setAddedAt($added): void
     {
         $this->book->setAddedAt($added);
+    }
+
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->book->setUpdatedAt($updatedAt);
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->book->getUpdatedAt();
     }
 
     /**
@@ -209,5 +219,15 @@ class BookController extends Controller
     public function setQuantity($quantity)
     {
         $this->book->setQuantity($quantity);
+    }
+
+    public function getCategories()
+    {
+        return $this->book->getCategories();
+    }
+
+    public function setCategories($categories)
+    {
+        $this->book->setCategories($categories);
     }
 }

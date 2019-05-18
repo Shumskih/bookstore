@@ -29,9 +29,25 @@ class BookDaoImpl implements DaoInterface
 
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get new books<br>' .
+            echo 'Can\'t create new book<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
+
+        if (!empty($book->getCategories)) {
+            foreach ($book->getCategories() as $category) {
+                $category = (object)$category;
+                self::addCategoriesBooks($category->getId(), $bookId);
+            }
+        }
+
+        if (!empty($book->getImages)) {
+            foreach ($book->getImages() as $image) {
+                $image = (object)$image;
+                self::addBooksImages($book->getId(), $image->getId());
+            }
+        }
+
+
         return $bookId;
     }
 
@@ -261,6 +277,27 @@ class BookDaoImpl implements DaoInterface
         } catch (PDOException $e) {
             self::$pdo->rollBack();
             echo 'Can\'t insert to books_images<br>' .
+                 $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+    }
+
+    public static function addCategoriesBooks($categoryId, $bookId)
+    {
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query = SqlQueries::INSERT_BOOKS_IMAGES;
+            $stmt  = self::$pdo->prepare($query);
+            $stmt->execute([
+              'categoryId' => $categoryId,
+              'bookId' => $bookId
+            ]);
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t insert to categories_books<br>' .
                  $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
     }

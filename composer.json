@@ -1,0 +1,50 @@
+{
+  "name": "shumskih/bookstore",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Aleksander Shumeiko",
+      "email": "alex.shumskih@gmail.com"
+    }
+  ],
+  "description": "bookstore",
+  "type": "project",
+  "require" : {},
+  "autoload": {
+    "classmap": [
+      "controllers/",
+      "controllers/session/",
+      "dao/",
+      "dao/pdo/",
+      "helpers/",
+      "helpers/Faker/",
+      "models/",
+      "models/session/",
+      "sql/",
+      "vendor/",
+      "views/",
+      "views/administration/",
+      "views/administration/orders/",
+      "views/books/",
+      "views/cart/checkout/",
+      "views/categories/",
+      "views/contacts/",
+      "views/errors/",
+      "views/inc/",
+      "views/inc/sidebar/",
+      "views/users/",
+      "views/users/account/",
+      "routes/"
+    ],
+    "files" : [
+      "helpers/vardump.php",
+      "helpers/autoload.php",
+      "helpers/consts.php",
+      "sql/TablesData.php",
+      "helpers/ConnectionUtil.php"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true
+  }
+}

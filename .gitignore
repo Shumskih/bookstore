@@ -2,10 +2,10 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea
-composer.json
-composer.lock
-vendor
-populate
+#composer.json
+#composer.lock
+#vendor
+#populate
 template
 
 # User-specific stuff

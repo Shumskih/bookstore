@@ -1,5 +1,4 @@
 <?php
-require_once ROOT . '/helpers/vardump.php';
 
 class FiveLastViewedBooks
 {
@@ -10,13 +9,14 @@ class FiveLastViewedBooks
 
         if (isset($_SESSION['lastFiveViewedBooks'])) {
             $viewedBooks = $_SESSION['lastFiveViewedBooks'];
-        }
-
-        if (count($viewedBooks) <= 4) {
-            array_unshift($viewedBooks, $book);
-        } else {
-            array_pop($viewedBooks);
-            array_unshift($viewedBooks, $book);
+            if (!in_array($book, $viewedBooks)) {
+                if (count($viewedBooks) < 5) {
+                    array_unshift($viewedBooks, $book);
+                } else {
+                    array_pop($viewedBooks);
+                    array_unshift($viewedBooks, $book);
+                }
+            }
         }
 
         unset($_SESSION['lastFiveViewedBooks']);

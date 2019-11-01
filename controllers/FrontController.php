@@ -453,6 +453,13 @@ class FrontController extends Controller
         );
     }
 
+    public function pageNotFound()
+    {
+        $this->render(
+            '/views/errors/404.html.php'
+        );
+    }
+
     public function myOrders()
     {
         $userSession = new UserSessionController();

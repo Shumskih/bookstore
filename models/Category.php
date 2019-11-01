@@ -28,6 +28,7 @@ class Category implements Model
     }
 
     /**
+     * @param $categoryId
      * @return array
      */
     public function getBooks(): array
@@ -36,21 +37,14 @@ class Category implements Model
         {
             return $this->books;
         } else {
+            $this->id = $_GET['id'];
             $books = CategoryDaoImpl::getBooks($this->id);
 
             foreach ($books as $book) {
                 $bookController = new BookController();
-                $bookController->setId($book['id']);
-                $bookController->setTitle($book['title']);
-                $bookController->setAuthorName($book['authorName']);
-                $bookController->setAuthorSurname($book['authorSurname']);
-                $bookController->setDescription($book['description']);
-                $bookController->setPages($book['pages']);
-                $bookController->setPrice($book['price']);
-                $bookController->setAddedat($book['addedAt']);
-                $bookController->setUpdatedAt($book['updatedAt']);
-                $bookController->setInStock($book['inStock']);
-                $bookController->setQuantity($book['quantity']);
+                $bookController->setId($book['book_id']);
+                $bookController->setTitle($book['book_title']);
+                $bookController->setPrice($book['book_price']);
 
                 array_push($this->books, $bookController);
             }

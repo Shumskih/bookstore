@@ -31,7 +31,7 @@
             <a class="breadcrumb_item" href="/">Home</a>
             <span class="brd-separetor">/</span>
             <span class="breadcrumb_item active">
-              <?php if (URI === '/books' || URI === '/books/') {
+              <?php if ('/books' || '/books/') {
                   echo 'Books';
               } elseif (isset($category)) {
                   echo $category->getName();

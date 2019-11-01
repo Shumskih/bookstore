@@ -1,17 +1,7 @@
 <?php
 
-
 class ConnectionUtil
 {
-
-    private const DB_HOST = 'localhost';
-
-    private const DB_NAME = 'bookstore';
-
-    private const DB_USER = 'root';
-
-    private const DB_PASS = 'root';
-
     private static $pdo = null;
 
     private function __construct()
@@ -23,8 +13,8 @@ class ConnectionUtil
         if (!isset(self::$pdo)) {
             try {
                 self::$pdo = new PDO(
-                  'mysql:host=' . self::DB_HOST . ';dbname=' . self::DB_NAME, self::DB_USER, self::DB_PASS,
-                  [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+                    'mysql:host=' . Database::DB_HOST . ';dbname=' . Database::DB_NAME, Database::DB_USER, Database::DB_PASS,
+                    [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
                 );
             } catch (PDOException $e) {
                 $e->getMessage();

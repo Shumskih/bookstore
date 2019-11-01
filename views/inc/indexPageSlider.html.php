@@ -25,7 +25,7 @@
             <h2>Buy <span>your </span></h2>
             <h2>favourite <span>Book </span></h2>
             <h2>from <span>Here </span></h2>
-            <a class="shopbtn" href="#">shop now</a>
+            <a class="shopbtn" href="/books">shop now</a>
           </div>
         </div>
       </div>

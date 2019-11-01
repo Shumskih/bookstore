@@ -3,16 +3,21 @@
 
 class SqlQueries
 {
+    const GET_ALL_TABLES = 'SELECT COUNT(*) AS TABLE_COUNT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = :table_schema';
 
     // Books
     const GET_BOOK = 'SELECT * FROM books WHERE id = :id';
 
     const GET_ALL_BOOKS = 'SELECT * FROM books';
 
-    const GET_BOOKS_BY_CATEGORY = 'SELECT * FROM books
-                                   INNER JOIN categories_books ON categories_books.book_id = books.id
-                                   INNER JOIN categories ON categories.id = categories_books.category_id
-                                   WHERE categories_books.category_id = :id';
+    const GET_BOOKS_BY_CATEGORY = 'SELECT
+                                        books.id as book_id,
+                                        books.title as book_title,
+                                        books.price as book_price
+                                    FROM books
+                                        INNER JOIN categories_books ON categories_books.book_id = books.id
+                                        INNER JOIN categories ON categories.id = categories_books.category_id
+                                    WHERE categories_books.category_id = :id';
 
     const GET_CATEGORIES_OF_BOOK = 'SELECT * FROM books
                                     INNER JOIN categories_books ON categories_books.book_id = books.id

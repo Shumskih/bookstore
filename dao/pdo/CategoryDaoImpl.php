@@ -63,23 +63,24 @@ class CategoryDaoImpl implements DaoInterface
         // TODO: Implement delete() method.
     }
 
-    static function getBooks($categoryId)
+    public static function getBooks(): array
     {
+        $books = array();
         try {
             self::$pdo = ConnectionUtil::getConnection();
             self::$pdo->beginTransaction();
 
             $query  = SqlQueries::GET_BOOKS_BY_CATEGORY;
-            $stmt = self::$pdo->query($query);
+            $stmt = self::$pdo->prepare($query);
             $stmt->execute([
-              'id' => $categoryId
+              'id' => $_GET['id']
             ]);
             $books = $stmt->fetchAll();
 
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get all orders from database<br>'
+            echo 'Can\'t get all books by category from database<br>'
                  . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
         return $books;

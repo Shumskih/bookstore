@@ -75,9 +75,11 @@
                       <?php
                       $userSession = new UserSessionController();
                       $user        = (object)$userSession->read();
-                      $permissions = $user->checkPermissions();
+                      if (!$user instanceof stdClass) {
+                          $permissions = $user->checkPermissions();
+                      }
                       ?>
-                      <?php if ($permissions): ?>
+                      <?php if (isset($permissions)): ?>
                         <div>
                           <button type="submit" name="deleteBook" class="btn btn-outline-danger">Delete Book</button>
                         </div>

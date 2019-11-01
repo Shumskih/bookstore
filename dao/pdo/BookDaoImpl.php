@@ -1,6 +1,6 @@
 <?php
 
-class BookDaoImpl implements DaoInterface
+class BookDaoImpl extends Dao
 {
     private static $pdo = null;
 

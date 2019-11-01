@@ -5,6 +5,6 @@ session_start();
 ob_start("ob_gzhandler");
 
 $router = new Router();
-$router->route();
+$router->run();
 
 exit();

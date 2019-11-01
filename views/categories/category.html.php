@@ -51,8 +51,8 @@
                 <div class="row">
                   <!-- Start Single Product -->
                     <?php if (isset($category)): ?>
-                        <?php foreach ($category->getBooks() as $b): ?>
-                            <?php $book = (object) $b; ?>
+                        <?php foreach ($category->getBooks() as $book): ?>
+                            <?php $book = (object) $book; ?>
                         <div class="product product__style--3 col-lg-4 col-md-4 col-sm-6 col-12">
                           <div class="product__thumb">
                             <a class="first__img"

@@ -19,10 +19,10 @@ abstract class Controller
                 include ROOT . '/views/errors/404.html.php';
                 break;
             case (int) 500:
-                include ROOT . '/views/errors/404.html.php';
+                include ROOT . '/views/errors/500.html.php';
                 break;
             default:
-                include ROOT . '/views/errors/404.html.php';
+                include ROOT . '/views/errors/200.html.php';
                 break;
         }
     }

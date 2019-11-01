@@ -34,7 +34,8 @@
       "views/inc/sidebar/",
       "views/users/",
       "views/users/account/",
-      "routes/"
+      "routes/",
+      "config/"
     ],
     "files" : [
       "helpers/vardump.php",

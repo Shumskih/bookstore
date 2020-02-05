@@ -26,4 +26,10 @@ abstract class Controller
                 break;
         }
     }
+
+    abstract function create($model);
+    abstract function read($id);
+    abstract function readAll();
+    abstract function update($model);
+    abstract function delete($id);
 }

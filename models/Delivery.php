@@ -3,11 +3,11 @@
 class Delivery implements Model
 {
 
-    private $id = null;
+    private $id = NULL;
 
-    private $deliveryMethod = null;
+    private $deliveryMethod = NULL;
 
-    private $deliveryCost = null;
+    private $deliveryCost = NULL;
 
     public function __construct($id = NULL, $deliveryMethod = NULL, $deliveryCost = NULL)
     {
@@ -16,14 +16,14 @@ class Delivery implements Model
         $this->deliveryCost = $deliveryCost;
     }
 
-    function create($model)
+    function create($delivery): int
     {
-        // TODO: Implement create() method.
+        return DeliveryDaoImpl::create($delivery);
     }
 
-    function read($id)
+    function read($id): \Delivery
     {
-        // TODO: Implement read() method.
+        return DeliveryDaoImpl::read($id);
     }
 
     function readAll(): array
@@ -31,14 +31,14 @@ class Delivery implements Model
         return DeliveryDaoImpl::readAll();
     }
 
-    function update($model)
+    function update($delivery)
     {
-        // TODO: Implement update() method.
+        DeliveryDaoImpl::update($delivery);
     }
 
     function delete($id)
     {
-        // TODO: Implement delete() method.
+        DeliveryDaoImpl::delete($id);
     }
 
     public function getDeliveryByMethod($deliveryMethod) : \Delivery

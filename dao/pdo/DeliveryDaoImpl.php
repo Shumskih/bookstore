@@ -30,27 +30,27 @@ class DeliveryDaoImpl extends Dao
         return $deliveryId;
     }
 
-    static function read($id)
+    static function read($id): \Delivery
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
             self::$pdo->beginTransaction();
 
-            $query = SqlQueries::GET_BOOK;
+            $query = SqlQueries::GET_DELIVERY_BY_ID;
             $stmt = self::$pdo->prepare($query);
             $stmt->execute([
                 'id' => $id,
             ]);
-            $book = $stmt->fetch();
+            $delivery = $stmt->fetch();
 
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get book from database<br>' .
+            echo 'Can\'t get delivery from database<br>' .
                 $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
 
-        return $book;
+        return $delivery;
     }
 
     static function readAll(): array
@@ -68,52 +68,36 @@ class DeliveryDaoImpl extends Dao
         return $deliveries;
     }
 
-    static function update($book)
+    static function update($delivery)
     {
-        $book = (object)$book;
+        $delivery = (object)$delivery;
         try {
             self::$pdo = ConnectionUtil::getConnection();
             self::$pdo->beginTransaction();
 
-            $query = SqlQueries::UPDATE_BOOK;
+            $query = SqlQueries::UPDATE_DELIVERY;
             $stmt = self::$pdo->prepare($query);
             $stmt->execute([
-                'id' => $book->getId(),
-                'title' => $book->getTitle(),
-                'authorName' => $book->getAuthorName(),
-                'authorSurname' => $book->getAuthorSurname(),
-                'description' => $book->getDescription(),
-                'pages' => $book->getPages(),
-                'price' => $book->getPrice(),
-                'addedAt' => $book->getAddedAt(),
-                'inStock' => $book->isInStock(),
-                'quantity' => $book->getQuantity()
+                'id' => $delivery->getId(),
+                'deliveryMethod' => $delivery->getDeliveryMethod(),
+                'deliveryCost' => $delivery->getDeliveryCost()
             ]);
 
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get new books<br>' .
+            echo 'Can\'t update delivery<br>' .
                 $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
-        }
-
-        if (!empty($book->getImages())) {
-            foreach ($book->getImages() as $image) {
-                $image = (object)$image;
-                self::addBooksImages($book->getId(), $image->getId());
-            }
         }
     }
 
     static function delete($id)
     {
-        self::deleteBookFromCategory($id);
-        self::deleteBooksImages($id);
         try {
             self::$pdo = ConnectionUtil::getConnection();
             self::$pdo->beginTransaction();
 
-            $query = SqlQueries::DELETE_BOOK;
+            $query = SqlQueries::DELETE_DELIVERY;
             $stmt = self::$pdo->prepare($query);
             $stmt->execute([
                 'id' => $id
@@ -122,7 +106,7 @@ class DeliveryDaoImpl extends Dao
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get new books<br>' .
+            echo 'Can\'t delete delivery<br>' .
                 $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
     }

@@ -11,9 +11,29 @@ class DeliveryController extends Controller
         $this->delivery = new Delivery();
     }
 
-    public function readAll()
+    public function create($delivery): int
+    {
+        return $this->delivery->create($delivery);
+    }
+
+    public function read($id): \Delivery
+    {
+        return $this->delivery->read($id);
+    }
+
+    public function readAll(): array
     {
         return $this->delivery->readAll();
+    }
+
+    public function update($delivery): void
+    {
+        $this->delivery->update($delivery);
+    }
+
+    public function delete($id): void
+    {
+        $this->delivery->delete($id);
     }
 
     public function getDeliveryByMethod($deliveryMethod)

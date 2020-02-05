@@ -168,7 +168,11 @@ WHERE statuses.status = \'New\'';
 
     const GET_ALL_DELIVERIES = 'SELECT * FROM deliveries';
 
+    const GET_DELIVERY_BY_ID = 'SELECT * FROM deliveries WHERE id = :id';
+
     const GET_DELIVERY_BY_METHOD = 'SELECT * FROM deliveries WHERE deliveryMethod = :deliveryMethod';
+
+    const DELETE_DELIVERY = 'DELETE FROM delivery WHERE id = :id';
 
     // order status
     const GET_STATUS = 'SELECT * FROM statuses WHERE id = :id';

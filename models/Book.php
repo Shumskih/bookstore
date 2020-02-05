@@ -38,7 +38,7 @@ class Book implements Model
      */
     private $images = [];
 
-    function create($book)
+    function create($book): int
     {
         return BookDaoImpl::create($book);
     }

@@ -651,4 +651,12 @@ class FrontController extends Controller
         return $fileNames;
 
     }
+
+    public function create($model){}
+    public function read($id){}
+    public function readAll(){}
+    public function update($delivery){}
+    public function delete($id){}
+
+
 }

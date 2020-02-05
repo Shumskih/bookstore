@@ -10,12 +10,9 @@ use \Propel\Runtime\Map\ColumnMap;
  */
 class EntityPopulator
 {
-
     protected $class;
-
-    protected $columnFormatters = [];
-
-    protected $modifiers = [];
+    protected $columnFormatters = array();
+    protected $modifiers = array();
 
     /**
      * Class constructor.
@@ -35,6 +32,19 @@ class EntityPopulator
         return $this->class;
     }
 
+    public function setColumnFormatters($columnFormatters)
+    {
+        $this->columnFormatters = $columnFormatters;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumnFormatters()
+    {
+        return $this->columnFormatters;
+    }
+
     public function mergeColumnFormattersWith($columnFormatters)
     {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
@@ -42,16 +52,15 @@ class EntityPopulator
 
     /**
      * @param \Faker\Generator $generator
-     *
      * @return array
      */
     public function guessColumnFormatters(\Faker\Generator $generator)
     {
-        $formatters        = [];
-        $class             = $this->class;
-        $peerClass         = $class::TABLE_MAP;
-        $tableMap          = $peerClass::getTableMap();
-        $nameGuesser       = new \Faker\Guesser\Name($generator);
+        $formatters = array();
+        $class = $this->class;
+        $peerClass = $class::TABLE_MAP;
+        $tableMap = $peerClass::getTableMap();
+        $nameGuesser = new \Faker\Guesser\Name($generator);
         $columnTypeGuesser = new \Faker\ORM\Propel2\ColumnTypeGuesser($generator);
         foreach ($tableMap->getColumns() as $columnMap) {
             // skip behavior columns, handled by modifiers
@@ -59,11 +68,10 @@ class EntityPopulator
                 continue;
             }
             if ($columnMap->isForeignKey()) {
-                $relatedClass                         = $columnMap->getRelation()->getForeignTable()->getClassname();
+                $relatedClass = $columnMap->getRelation()->getForeignTable()->getClassname();
                 $formatters[$columnMap->getPhpName()] = function ($inserted) use ($relatedClass) {
                     $relatedClass = trim($relatedClass, "\\");
-                    return isset($inserted[$relatedClass]) ? $inserted[$relatedClass][mt_rand(0,
-                      count($inserted[$relatedClass]) - 1)] : null;
+                    return isset($inserted[$relatedClass]) ? $inserted[$relatedClass][mt_rand(0, count($inserted[$relatedClass]) - 1)] : null;
                 };
                 continue;
             }
@@ -85,7 +93,6 @@ class EntityPopulator
 
     /**
      * @param ColumnMap $columnMap
-     *
      * @return bool
      */
     protected function isColumnBehavior(ColumnMap $columnMap)
@@ -94,13 +101,13 @@ class EntityPopulator
             $columnName = Base::toLower($columnMap->getName());
             switch ($name) {
                 case 'nested_set':
-                    $columnNames = [$params['left_column'], $params['right_column'], $params['level_column']];
+                    $columnNames = array($params['left_column'], $params['right_column'], $params['level_column']);
                     if (in_array($columnName, $columnNames)) {
                         return true;
                     }
                     break;
                 case 'timestampable':
-                    $columnNames = [$params['create_column'], $params['update_column']];
+                    $columnNames = array($params['create_column'], $params['update_column']);
                     if (in_array($columnName, $columnNames)) {
                         return true;
                     }
@@ -111,6 +118,19 @@ class EntityPopulator
         return false;
     }
 
+    public function setModifiers($modifiers)
+    {
+        $this->modifiers = $modifiers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModifiers()
+    {
+        return $this->modifiers;
+    }
+
     public function mergeModifiersWith($modifiers)
     {
         $this->modifiers = array_merge($this->modifiers, $modifiers);
@@ -118,22 +138,21 @@ class EntityPopulator
 
     /**
      * @param \Faker\Generator $generator
-     *
      * @return array
      */
     public function guessModifiers(\Faker\Generator $generator)
     {
-        $modifiers = [];
-        $class     = $this->class;
+        $modifiers = array();
+        $class = $this->class;
         $peerClass = $class::TABLE_MAP;
-        $tableMap  = $peerClass::getTableMap();
+        $tableMap = $peerClass::getTableMap();
         foreach ($tableMap->getBehaviors() as $name => $params) {
             switch ($name) {
                 case 'nested_set':
                     $modifiers['nested_set'] = function ($obj, $inserted) use ($class, $generator) {
                         if (isset($inserted[$class])) {
                             $queryClass = $class . 'Query';
-                            $parent     = $queryClass::create()->findPk($generator->randomElement($inserted[$class]));
+                            $parent = $queryClass::create()->findPk($generator->randomElement($inserted[$class]));
                             $obj->insertAsLastChildOf($parent);
                         } else {
                             $obj->makeRoot();
@@ -169,31 +188,5 @@ class EntityPopulator
         $obj->save($con);
 
         return $obj->getPrimaryKey();
-    }
-
-    /**
-     * @return array
-     */
-    public function getColumnFormatters()
-    {
-        return $this->columnFormatters;
-    }
-
-    public function setColumnFormatters($columnFormatters)
-    {
-        $this->columnFormatters = $columnFormatters;
-    }
-
-    /**
-     * @return array
-     */
-    public function getModifiers()
-    {
-        return $this->modifiers;
-    }
-
-    public function setModifiers($modifiers)
-    {
-        $this->modifiers = $modifiers;
     }
 }

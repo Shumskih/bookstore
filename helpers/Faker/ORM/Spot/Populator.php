@@ -10,42 +10,37 @@ use Spot\Locator;
  */
 class Populator
 {
-
     protected $generator;
-
     protected $locator;
-
-    protected $entities = [];
-
-    protected $quantities = [];
+    protected $entities = array();
+    protected $quantities = array();
 
     /**
      * Populator constructor.
-     *
      * @param \Faker\Generator $generator
-     * @param Locator|null     $locator
+     * @param Locator|null $locator
      */
     public function __construct(\Faker\Generator $generator, Locator $locator = null)
     {
         $this->generator = $generator;
-        $this->locator   = $locator;
+        $this->locator = $locator;
     }
 
     /**
      * Add an order for the generation of $number records for $entity.
      *
-     * @param $entityName             string Name of Entity object to generate
-     * @param $number                 int The number of entities to populate
+     * @param $entityName string Name of Entity object to generate
+     * @param $number int The number of entities to populate
      * @param $customColumnFormatters array
-     * @param $customModifiers        array
-     * @param $useExistingData        bool Should we use existing rows (e.g. roles) to populate relations?
+     * @param $customModifiers array
+     * @param $useExistingData bool Should we use existing rows (e.g. roles) to populate relations?
      */
     public function addEntity(
-      $entityName,
-      $number,
-      $customColumnFormatters = [],
-      $customModifiers = [],
-      $useExistingData = false
+        $entityName,
+        $number,
+        $customColumnFormatters = array(),
+        $customModifiers = array(),
+        $useExistingData = false
     ) {
         $mapper = $this->locator->mapper($entityName);
         if (null === $mapper) {
@@ -59,7 +54,7 @@ class Populator
         }
         $entity->mergeModifiersWith($customModifiers);
 
-        $this->entities[$entityName]   = $entity;
+        $this->entities[$entityName] = $entity;
         $this->quantities[$entityName] = $number;
     }
 
@@ -79,11 +74,11 @@ class Populator
             throw new \InvalidArgumentException("No entity manager passed to Spot Populator.");
         }
 
-        $insertedEntities = [];
+        $insertedEntities = array();
         foreach ($this->quantities as $entityName => $number) {
             for ($i = 0; $i < $number; $i++) {
                 $insertedEntities[$entityName][] = $this->entities[$entityName]->execute(
-                  $insertedEntities
+                    $insertedEntities
                 );
             }
         }

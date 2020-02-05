@@ -4,54 +4,31 @@ namespace Faker\Provider\ms_MY;
 
 class PhoneNumber extends \Faker\Provider\PhoneNumber
 {
-
-    protected static $formats
-      = [
+    protected static $formats = array(
         '{{mobileNumber}}',
         '{{fixedLineNumber}}',
-        '{{voipNumber}}',
-      ];
+        '{{voipNumber}}'
+    );
 
-    protected static $plusSymbol
-      = [
-        '+',
-      ];
+    protected static $plusSymbol = array(
+        '+'
+    );
 
-    protected static $countryCodePrefix
-      = [
-        '6',
-      ];
+    protected static $countryCodePrefix = array(
+        '6'
+    );
 
     /**
      * @link https://en.wikipedia.org/wiki/Telephone_numbers_in_Malaysia#Mobile_phone_codes_and_IP_telephony
      */
-    protected static $zeroOneOnePrefix
-      = [
-        '10',
-        '11',
-        '12',
-        '13',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-        '20',
-        '22',
-        '23',
-        '32',
-      ];
-
-    protected static $zeroOneFourPrefix = ['2', '3', '4', '5', '6', '7', '8', '9'];
-
-    protected static $zeroOneFivePrefix = ['1', '2', '3', '4', '5', '6', '9'];
+    protected static $zeroOneOnePrefix = array('10','11','12','13','14','15','16','17','18','19','20','22','23','32');
+    protected static $zeroOneFourPrefix = array('2','3','4','5','6','7','8','9');
+    protected static $zeroOneFivePrefix = array('1','2','3','4','5','6','9');
 
     /**
      * @link https://en.wikipedia.org/wiki/Telephone_numbers_in_Malaysia#Mobile_phone_codes_and_IP_telephony
      */
-    protected static $mobileNumberFormatsWithFormatting
-      = [
+    protected static $mobileNumberFormatsWithFormatting = array(
         '010-### ####',
         '011-{{zeroOneOnePrefix}}## ####',
         '012-### ####',
@@ -61,10 +38,9 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
         '017-### ####',
         '018-### ####',
         '019-### ####',
-      ];
+    );
 
-    protected static $mobileNumberFormats
-      = [
+    protected static $mobileNumberFormats = array(
         '010#######',
         '011{{zeroOneOnePrefix}}######',
         '012#######',
@@ -74,13 +50,12 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
         '017#######',
         '018#######',
         '019#######',
-      ];
+    );
 
     /**
      * @link https://en.wikipedia.org/wiki/Telephone_numbers_in_Malaysia#Geographic_area_codes
      */
-    protected static $fixedLineNumberFormatsWithFormatting
-      = [
+    protected static $fixedLineNumberFormatsWithFormatting = array(
         '03-#### ####',
         '04-### ####',
         '05-### ####',
@@ -88,10 +63,9 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
         '07-### ####',
         '08#-## ####',
         '09-### ####',
-      ];
+    );
 
-    protected static $fixedLineNumberFormats
-      = [
+    protected static $fixedLineNumberFormats = array(
         '03########',
         '04#######',
         '05#######',
@@ -99,20 +73,43 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
         '07#######',
         '08#######',
         '09#######',
-      ];
+    );
 
     /**
      * @link https://en.wikipedia.org/wiki/Telephone_numbers_in_Malaysia#Mobile_phone_codes_and_IP_telephony
      */
-    protected static $voipNumberWithFormatting
-      = [
-        '015-{{zeroOneFivePrefix}}## ####',
-      ];
+    protected static $voipNumberWithFormatting = array(
+        '015-{{zeroOneFivePrefix}}## ####'
+    );
 
-    protected static $voipNumber
-      = [
-        '015{{zeroOneFivePrefix}}######',
-      ];
+    protected static $voipNumber = array(
+        '015{{zeroOneFivePrefix}}######'
+    );
+
+    /**
+     * Return a Malaysian Mobile Phone Number.
+     *
+     * @example '+6012-345-6789'
+     *
+     * @param bool $countryCodePrefix true, false
+     * @param bool $formatting true, false
+     *
+     * @return string
+     */
+    public function mobileNumber($countryCodePrefix = true, $formatting = true)
+    {
+        if ($formatting) {
+            $format = static::randomElement(static::$mobileNumberFormatsWithFormatting);
+        } else {
+            $format = static::randomElement(static::$mobileNumberFormats);
+        }
+
+        if ($countryCodePrefix) {
+            return static::countryCodePrefix($formatting) . static::numerify($this->generator->parse($format));
+        } else {
+            return static::numerify($this->generator->parse($format));
+        }
+    }
 
     /**
      * Return prefix digits for 011 numbers
@@ -151,55 +148,12 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
     }
 
     /**
-     * Return a Malaysian Mobile Phone Number.
-     *
-     * @example '+6012-345-6789'
-     *
-     * @param bool $countryCodePrefix true, false
-     * @param bool $formatting        true, false
-     *
-     * @return string
-     */
-    public function mobileNumber($countryCodePrefix = true, $formatting = true)
-    {
-        if ($formatting) {
-            $format = static::randomElement(static::$mobileNumberFormatsWithFormatting);
-        } else {
-            $format = static::randomElement(static::$mobileNumberFormats);
-        }
-
-        if ($countryCodePrefix) {
-            return static::countryCodePrefix($formatting) . static::numerify($this->generator->parse($format));
-        } else {
-            return static::numerify($this->generator->parse($format));
-        }
-    }
-
-    /**
-     * Return a Malaysian Country Code Prefix.
-     *
-     * @example '+6'
-     *
-     * @param bool $formatting true, false
-     *
-     * @return string
-     */
-    public static function countryCodePrefix($formatting = true)
-    {
-        if ($formatting) {
-            return static::randomElement(static::$plusSymbol) . static::randomElement(static::$countryCodePrefix);
-        } else {
-            return static::randomElement(static::$countryCodePrefix);
-        }
-    }
-
-    /**
      * Return a Malaysian Fixed Line Phone Number.
      *
      * @example '+603-4567-8912'
      *
      * @param bool $countryCodePrefix true, false
-     * @param bool $formatting        true, false
+     * @param bool $formatting true, false
      *
      * @return string
      */
@@ -224,7 +178,7 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
      * @example '+6015-678-9234'
      *
      * @param bool $countryCodePrefix true, false
-     * @param bool $formatting        true, false
+     * @param bool $formatting true, false
      *
      * @return string
      */
@@ -240,6 +194,24 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
             return static::countryCodePrefix($formatting) . static::numerify($this->generator->parse($format));
         } else {
             return static::numerify($this->generator->parse($format));
+        }
+    }
+
+    /**
+     * Return a Malaysian Country Code Prefix.
+     *
+     * @example '+6'
+     *
+     * @param bool $formatting true, false
+     *
+     * @return string
+     */
+    public static function countryCodePrefix($formatting = true)
+    {
+        if ($formatting) {
+            return static::randomElement(static::$plusSymbol) . static::randomElement(static::$countryCodePrefix);
+        } else {
+            return static::randomElement(static::$countryCodePrefix);
         }
     }
 }

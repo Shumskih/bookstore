@@ -27,11 +27,10 @@ class Cart
 
     private $shippingMethod = null;
 
-    // Array of Delivery objects
-    private $deliveries = [];
+    private array $deliveries = [];
 
     // Array of Book objects
-    private $books = [];
+    private array $books = [];
 
     public function addToCart()
     {

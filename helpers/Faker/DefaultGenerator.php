@@ -8,7 +8,6 @@ namespace Faker;
  */
 class DefaultGenerator
 {
-
     protected $default;
 
     public function __construct($default = null)
@@ -28,7 +27,7 @@ class DefaultGenerator
 
     /**
      * @param string $method
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return mixed
      */

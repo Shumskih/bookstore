@@ -4,7 +4,6 @@ namespace Faker\Provider\en_US;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      * Project Gutenberg's Alice's Adventures in Wonderland, by Lewis Carroll
      *
@@ -36,8 +35,7 @@ class Text extends \Faker\Provider\Text
      * @see http://www.gutenberg.org/cache/epub/11/pg11.txt
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 CHAPTER I. Down the Rabbit-Hole
 
 Alice was beginning to get very tired of sitting by her sister on the
@@ -3692,7 +3690,7 @@ EOT;
     any statements concerning tax treatment of donations received from
     outside the United States.  U.S. laws alone swamp our small staff.
 
-    Please check the Project Gutenberg Web views for current donation
+    Please check the Project Gutenberg Web pages for current donation
     methods and addresses.  Donations are accepted in a number of other
     ways including checks, online payments and credit card donations.
     To donate, please visit: http://pglaf.org/donate

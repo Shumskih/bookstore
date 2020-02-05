@@ -4,7 +4,6 @@ namespace Faker\Provider\pl_PL;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      * The Project Gutenberg EBook of Sklepy cynamonowe, by Bruno Schulz
      *
@@ -68,8 +67,7 @@ class Text extends \Faker\Provider\Text
      * @see http://www.gutenberg.org/cache/epub/8119/pg8119.txt
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 SIERPIEŃ
 
 1 W lipcu ojciec mój wyjeżdżał do wód i zostawiał mnie z matką i

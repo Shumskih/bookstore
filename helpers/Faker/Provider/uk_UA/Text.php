@@ -4,7 +4,6 @@ namespace Faker\Provider\uk_UA;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      * From uk.wikisource.org
      *
@@ -26,8 +25,7 @@ class Text extends \Faker\Provider\Text
      * @link    http://uk.wikisource.org/wiki/%D0%97%D0%B0%D1%85%D0%B0%D1%80_%D0%91%D0%B5%D1%80%D0%BA%D1%83%D1%82
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 
 I
 

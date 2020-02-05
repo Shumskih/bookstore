@@ -4,7 +4,7 @@ require_once ROOT . '/controllers/Controller.php';
 
 class DeliveryController extends Controller
 {
-    private $delivery = null;
+    private \Delivery $delivery;
 
     public function __construct()
     {

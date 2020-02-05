@@ -10,10 +10,8 @@ use Faker\Provider\Base;
  */
 class EntityPopulator
 {
-
     protected $class;
-
-    protected $columnFormatters = [];
+    protected $columnFormatters = array();
 
     /**
      * Class constructor.
@@ -33,17 +31,17 @@ class EntityPopulator
         return $this->class;
     }
 
+    public function setColumnFormatters($columnFormatters)
+    {
+        $this->columnFormatters = $columnFormatters;
+    }
+
     /**
      * @return array
      */
     public function getColumnFormatters()
     {
         return $this->columnFormatters;
-    }
-
-    public function setColumnFormatters($columnFormatters)
-    {
-        $this->columnFormatters = $columnFormatters;
     }
 
     public function mergeColumnFormattersWith($columnFormatters)
@@ -53,14 +51,13 @@ class EntityPopulator
 
     /**
      * @param \Faker\Generator $generator
-     * @param Mandango         $mandango
-     *
+     * @param Mandango $mandango
      * @return array
      */
     public function guessColumnFormatters(\Faker\Generator $generator, Mandango $mandango)
     {
-        $formatters        = [];
-        $nameGuesser       = new \Faker\Guesser\Name($generator);
+        $formatters = array();
+        $nameGuesser = new \Faker\Guesser\Name($generator);
         $columnTypeGuesser = new \Faker\ORM\Mandango\ColumnTypeGuesser($generator);
 
         $metadata = $mandango->getMetadata($this->class);
@@ -96,7 +93,6 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
-     *
      * @param Mandango $mandango
      */
     public function execute(Mandango $mandango, $insertedEntities)
@@ -106,15 +102,15 @@ class EntityPopulator
         $obj = $mandango->create($this->class);
         foreach ($this->columnFormatters as $column => $format) {
             if (null !== $format) {
-                $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
+                $value =  is_callable($format) ? $format($insertedEntities, $obj) : $format;
 
-                if (isset($metadata['fields'][$column])
-                    || isset($metadata['referencesOne'][$column])) {
+                if (isset($metadata['fields'][$column]) ||
+                    isset($metadata['referencesOne'][$column])) {
                     $obj->set($column, $value);
                 }
 
                 if (isset($metadata['referencesMany'][$column])) {
-                    $adder = 'add' . ucfirst($column);
+                    $adder = 'add'.ucfirst($column);
                     $obj->$adder($value);
                 }
             }

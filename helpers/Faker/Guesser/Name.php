@@ -6,7 +6,6 @@ use \Faker\Provider\Base;
 
 class Name
 {
-
     protected $generator;
 
     /**
@@ -18,14 +17,13 @@ class Name
     }
 
     /**
-     * @param string   $name
+     * @param string $name
      * @param int|null $size Length of field, if known
-     *
      * @return callable
      */
     public function guessFormat($name, $size = null)
     {
-        $name      = Base::toLower($name);
+        $name = Base::toLower($name);
         $generator = $this->generator;
         if (preg_match('/^is[_A-Z]/', $name)) {
             return function () use ($generator) {

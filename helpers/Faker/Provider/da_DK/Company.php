@@ -7,12 +7,10 @@ namespace Faker\Provider\da_DK;
  */
 class Company extends \Faker\Provider\Company
 {
-
     /**
      * @var array Danish company name formats.
      */
-    protected static $formats
-      = [
+    protected static $formats = array(
         '{{lastName}} {{companySuffix}}',
         '{{lastName}} {{companySuffix}}',
         '{{lastName}} {{companySuffix}}',
@@ -29,12 +27,12 @@ class Company extends \Faker\Provider\Company
         '{{middleName}} og {{middleName}} {{companySuffix}}',
         '{{middleName}} & {{lastName}}',
         '{{middleName}} og {{lastName}}',
-      ];
+    );
 
     /**
      * @var array Company suffixes.
      */
-    protected static $companySuffix = ['ApS', 'A/S', 'I/S', 'K/S'];
+    protected static $companySuffix = array('ApS', 'A/S', 'I/S', 'K/S');
 
     /**
      * @link http://cvr.dk/Site/Forms/CMS/DisplayPage.aspx?pageid=60

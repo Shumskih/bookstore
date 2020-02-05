@@ -3,6 +3,7 @@
 namespace Faker\ORM\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Faker\Generator;
 
 /**
  * Service class for populating a database using the Doctrine ORM or ODM.
@@ -10,25 +11,35 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class Populator
 {
+    /** @var int  */
+    protected $batchSize;
 
+    /** @var Generator  */
     protected $generator;
 
+    /** @var ObjectManager|null  */
     protected $manager;
 
-    protected $entities = [];
+    /** @var array  */
+    protected $entities = array();
 
-    protected $quantities = [];
+    /** @var array  */
+    protected $quantities = array();
 
-    protected $generateId = [];
+    /** @var array  */
+    protected $generateId = array();
 
     /**
-     * @param \Faker\Generator   $generator
+     * Populator constructor.
+     * @param Generator $generator
      * @param ObjectManager|null $manager
+     * @param int $batchSize
      */
-    public function __construct(\Faker\Generator $generator, ObjectManager $manager = null)
+    public function __construct(Generator $generator, ObjectManager $manager = null, $batchSize = 1000)
     {
         $this->generator = $generator;
-        $this->manager   = $manager;
+        $this->manager = $manager;
+        $this->batchSize = $batchSize;
     }
 
     /**
@@ -37,13 +48,8 @@ class Populator
      * @param mixed $entity A Doctrine classname, or a \Faker\ORM\Doctrine\EntityPopulator instance
      * @param int   $number The number of entities to populate
      */
-    public function addEntity(
-      $entity,
-      $number,
-      $customColumnFormatters = [],
-      $customModifiers = [],
-      $generateId = false
-    ) {
+    public function addEntity($entity, $number, $customColumnFormatters = array(), $customModifiers = array(), $generateId = false)
+    {
         if (!$entity instanceof \Faker\ORM\Doctrine\EntityPopulator) {
             if (null === $this->manager) {
                 throw new \InvalidArgumentException("No entity manager passed to Doctrine Populator.");
@@ -57,13 +63,16 @@ class Populator
         $entity->mergeModifiersWith($customModifiers);
         $this->generateId[$entity->getClass()] = $generateId;
 
-        $class                    = $entity->getClass();
-        $this->entities[$class]   = $entity;
+        $class = $entity->getClass();
+        $this->entities[$class] = $entity;
         $this->quantities[$class] = $number;
     }
 
     /**
      * Populate the database using all the Entity classes previously added.
+     *
+     * Please note that large amounts of data will result in more memory usage since the the Populator will return
+     * all newly created primary keys after executing.
      *
      * @param null|EntityManager $entityManager A Doctrine connection object
      *
@@ -78,14 +87,22 @@ class Populator
             throw new \InvalidArgumentException("No entity manager passed to Doctrine Populator.");
         }
 
-        $insertedEntities = [];
+        $insertedEntities = array();
         foreach ($this->quantities as $class => $number) {
             $generateId = $this->generateId[$class];
-            for ($i = 0; $i < $number; $i++) {
-                $insertedEntities[$class][] = $this->entities[$class]->execute($entityManager, $insertedEntities,
-                  $generateId);
+            for ($i=0; $i < $number; $i++) {
+                $insertedEntities[$class][]= $this->entities[$class]->execute(
+                    $entityManager,
+                    $insertedEntities,
+                    $generateId
+                );
+                if (count($insertedEntities) % $this->batchSize === 0) {
+                    $entityManager->flush();
+                    $entityManager->clear($class);
+                }
             }
             $entityManager->flush();
+            $entityManager->clear($class);
         }
 
         return $insertedEntities;

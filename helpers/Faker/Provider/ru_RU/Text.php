@@ -4,7 +4,13 @@ namespace Faker\Provider\ru_RU;
 
 class Text extends \Faker\Provider\Text
 {
+    public function realText($maxNbChars = 200, $indexSize = 2)
+    {
+        $realText = parent::realText($maxNbChars, $indexSize);
 
+        return iconv('UTF-8', 'UTF-8//IGNORE', $realText);
+    }
+    
     /**
      * From ru.wikisource.org
      *
@@ -26,8 +32,7 @@ class Text extends \Faker\Provider\Text
      * @link    http://ru.wikisource.org/wiki/%D0%9C%D1%91%D1%80%D1%82%D0%B2%D1%8B%D0%B5_%D0%B4%D1%83%D1%88%D0%B8_(%D0%93%D0%BE%D0%B3%D0%BE%D0%BB%D1%8C)/%D0%A2%D0%BE%D0%BC_I/%D0%93%D0%BB%D0%B0%D0%B2%D0%B0_I
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 
 Глава первая
 
@@ -4197,13 +4202,6 @@ class Text extends \Faker\Provider\Text
 кипело и животрепетало, как метко сказанное русское слово.
 
 EOT;
-
-    public function realText($maxNbChars = 200, $indexSize = 2)
-    {
-        $realText = parent::realText($maxNbChars, $indexSize);
-
-        return iconv('UTF-8', 'UTF-8//IGNORE', $realText);
-    }
 
     /*
     *** START: FULL LICENSE ***

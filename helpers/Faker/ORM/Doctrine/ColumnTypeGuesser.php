@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 class ColumnTypeGuesser
 {
-
     protected $generator;
 
     /**
@@ -19,21 +18,19 @@ class ColumnTypeGuesser
 
     /**
      * @param ClassMetadata $class
-     *
      * @return \Closure|null
      */
     public function guessFormat($fieldName, ClassMetadata $class)
     {
         $generator = $this->generator;
-        $type      = $class->getTypeOfField($fieldName);
+        $type = $class->getTypeOfField($fieldName);
         switch ($type) {
             case 'boolean':
                 return function () use ($generator) {
                     return $generator->boolean;
                 };
             case 'decimal':
-                $size = isset($class->fieldMappings[$fieldName]['precision'])
-                  ? $class->fieldMappings[$fieldName]['precision'] : 2;
+                $size = isset($class->fieldMappings[$fieldName]['precision']) ? $class->fieldMappings[$fieldName]['precision'] : 2;
 
                 return function () use ($generator, $size) {
                     return $generator->randomNumber($size + 2) / 100;
@@ -52,11 +49,10 @@ class ColumnTypeGuesser
                 };
             case 'float':
                 return function () {
-                    return mt_rand(0, intval('4294967295')) / mt_rand(1, intval('4294967295'));
+                    return mt_rand(0, intval('4294967295'))/mt_rand(1, intval('4294967295'));
                 };
             case 'string':
-                $size = isset($class->fieldMappings[$fieldName]['length']) ? $class->fieldMappings[$fieldName]['length']
-                  : 255;
+                $size = isset($class->fieldMappings[$fieldName]['length']) ? $class->fieldMappings[$fieldName]['length'] : 255;
 
                 return function () use ($generator, $size) {
                     return $generator->text($size);

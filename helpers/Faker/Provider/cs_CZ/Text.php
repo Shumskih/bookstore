@@ -4,6 +4,13 @@ namespace Faker\Provider\cs_CZ;
 
 class Text extends \Faker\Provider\Text
 {
+    public function realText($maxNbChars = 200, $indexSize = 2)
+    {
+        $text = parent::realText($maxNbChars, $indexSize);
+        $text = str_replace('„', '', $text);
+
+        return str_replace('“', '', $text);
+    }
 
     /**
      * License: PD old 70
@@ -25,8 +32,7 @@ class Text extends \Faker\Provider\Text
      * Elektronické publikování díla Karla Čapka je společným projektem Městské knihovny v Praze,
      * Společnosti bratří Čapků, Památníku Karla Čapka a Českého národního korpusu.
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 I.
 S večerem zhoustla mlha sychravého dne. Je ti, jako by ses protlačoval řídkou
 vlhkou hmotou, jež se za tebou neodvratně zavírá. Chtěl bys být doma. Doma, u
@@ -7176,12 +7182,4 @@ Tu počal dědeček měkce prozpěvovat divnou a tichou píseň: „Lalala hou, 
 pán, binkili bunkili hou ta ta…“
 Prokop konečně usnul pokojným a posilujícím spánkem beze snů.
 EOT;
-
-    public function realText($maxNbChars = 200, $indexSize = 2)
-    {
-        $text = parent::realText($maxNbChars, $indexSize);
-        $text = str_replace('„', '', $text);
-
-        return str_replace('“', '', $text);
-    }
 }

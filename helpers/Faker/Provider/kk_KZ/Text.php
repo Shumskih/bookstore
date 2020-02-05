@@ -4,7 +4,6 @@ namespace Faker\Provider\kk_KZ;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      * From kk.wikipedia.org
      *
@@ -24,8 +23,7 @@ class Text extends \Faker\Provider\Text
      * @link    http://ru.wikipedia.org/wiki/%D0%92%D0%B8%D0%BA%D0%B8%D0%BF%D0%B5%D0%B4%D0%B8%D1%8F:%D0%A2%D0%B5%D0%BA%D1%81%D1%82_%D0%BB%D0%B8%D1%86%D0%B5%D0%BD%D0%B7%D0%B8%D0%B8_Creative_Commons_Attribution-ShareAlike_3.0_Unported
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 Арыстан баб кесенесі - көне Отырар жеріндегі сәулет өнері ескерткіші.
 
 Түркістан халқының арасында мұсылман дінін таратушы Қожа Ахмет Иасауидің ұстазы болған Арыстан баб ата

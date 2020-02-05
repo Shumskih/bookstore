@@ -6,13 +6,11 @@ use Faker\Generator;
 
 class ColumnTypeGuesser
 {
-
     protected $generator;
 
 
     /**
      * ColumnTypeGuesser constructor.
-     *
      * @param Generator $generator
      */
     public function __construct(Generator $generator)
@@ -22,13 +20,12 @@ class ColumnTypeGuesser
 
     /**
      * @param array $field
-     *
      * @return \Closure|null
      */
     public function guessFormat(array $field)
     {
         $generator = $this->generator;
-        $type      = $field['type'];
+        $type = $field['type'];
         switch ($type) {
             case 'boolean':
                 return function () use ($generator) {

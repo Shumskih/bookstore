@@ -6,25 +6,20 @@ require_once "check_digit.php";
 
 class Company extends \Faker\Provider\Company
 {
-
-    protected static $formats
-      = [
+    protected static $formats = array(
         '{{lastName}} {{companySuffix}}',
         '{{lastName}}-{{lastName}}',
         '{{lastName}} e {{lastName}}',
         '{{lastName}} e {{lastName}} {{companySuffix}}',
-        '{{lastName}} Comercial Ltda.',
-      ];
+        '{{lastName}} Comercial Ltda.'
+    );
 
-    protected static $companySuffix = ['e Filhos', 'e Associados', 'Ltda.', 'S.A.'];
+    protected static $companySuffix = array('e Filhos', 'e Associados', 'Ltda.', 'S.A.');
 
     /**
      * A random CNPJ number.
-     *
      * @link http://en.wikipedia.org/wiki/CNPJ
-     *
      * @param bool $formatted If the number should have dots/slashes/dashes or not.
-     *
      * @return string
      */
     public function cnpj($formatted = true)
@@ -33,6 +28,6 @@ class Company extends \Faker\Provider\Company
         $n .= check_digit($n);
         $n .= check_digit($n);
 
-        return $formatted ? vsprintf('%d%d.%d%d%d.%d%d%d/%d%d%d%d-%d%d', str_split($n)) : $n;
+        return $formatted? vsprintf('%d%d.%d%d%d.%d%d%d/%d%d%d%d-%d%d', str_split($n)) : $n;
     }
 }

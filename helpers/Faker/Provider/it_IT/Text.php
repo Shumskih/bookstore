@@ -4,7 +4,6 @@ namespace Faker\Provider\it_IT;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      * Carlo Collodi
      * Pinocchio
@@ -27,11 +26,9 @@ class Text extends \Faker\Provider\Text
      *
      * DIRITTI D'AUTORE: no
      *
-     * LICENZA: questo testo è distribuito con la licenza specificata al seguente indirizzo Internet:
-     * http://www.liberliber.it/libri/licenze/ (Attribution-NonCommercial-ShareAlike 4.0 International)
+     * LICENZA: questo testo è distribuito con la licenza specificata al seguente indirizzo Internet: http://www.liberliber.it/libri/licenze/ (Attribution-NonCommercial-ShareAlike 4.0 International)
      *
-     * TRATTO DA: Le avventure di Pinocchio : storia di un burattino / di Carlo Collodi ; illustrata da Enrico
-     * Mazzanti. – 2a edizione. – Milano : Rizzoli Editore, Milano, 1949.
+     * TRATTO DA: Le avventure di Pinocchio : storia di un burattino / di Carlo Collodi ; illustrata da Enrico Mazzanti. – 2a edizione. – Milano : Rizzoli Editore, Milano, 1949.
      *
      * CODICE ISBN: informazione non disponibile
      *
@@ -59,32 +56,54 @@ class Text extends \Faker\Provider\Text
      * PUBBLICAZIONE:
      * Marco Calvo, http://www.marcocalvo.it/
      * Informazioni sul "progetto Manuzio"
-     * Il "progetto Manuzio" è una iniziativa dell'associazione culturale Liber Liber. Aperto a chiunque voglia
-     * collaborare, si pone come scopo la pubblicazione e la diffusione gratuita di opere letterarie in formato
-     * elettronico. Ulteriori informazioni sono disponibili sul sito Internet: http://www.liberliber.it/ Aiuta anche tu
-     * il "progetto Manuzio" Se questo "libro elettronico" è stato di tuo gradimento, o se condividi le finalità del
-     * "progetto Manuzio", invia una donazione a Liber Liber. Il tuo sostegno ci aiuterà a far crescere ulteriormente
-     * la nostra biblioteca. Qui le istruzioni: http://www.liberliber.it/aiuta/
+     * Il "progetto Manuzio" è una iniziativa dell'associazione culturale Liber Liber. Aperto a chiunque voglia collaborare, si pone come scopo la pubblicazione e la diffusione gratuita di opere letterarie in formato elettronico. Ulteriori informazioni sono disponibili sul sito Internet:
+     * http://www.liberliber.it/
+     * Aiuta anche tu il "progetto Manuzio"
+     * Se questo "libro elettronico" è stato di tuo gradimento, o se condividi le finalità del "progetto Manuzio", invia una donazione a Liber Liber. Il tuo sostegno ci aiuterà a far crescere ulteriormente la nostra biblioteca. Qui le istruzioni:
+     * http://www.liberliber.it/aiuta/
      *
      * Indice generale
      * I. Come andò che maestro Ciliegia, falegname, trovò un pezzo di legno, che piangeva e rideva come un bambino.
-     * II. Maestro Ciliegia regala il pezzo di legno al suo amico Geppetto, il quale lo prende per fabbricarsi un
-     * burattino maraviglioso che sappia ballare, tirar di scherma e fare i salti mortali. III Geppetto, tornato a
-     * casa, comincia subito a fabbricarsi il burattino e gli mette il nome di Pinocchio. Prime monellerie del
-     * burattino. IV La storia di Pinocchio col Grillo-parlante, dove si vede come i ragazzi cattivi hanno a noia di
-     * sentirsi correggere da chi ne sa più di loro. V Pinocchio ha fame, e cerca un uovo per farsi una frittata; ma
-     * sul più bello, la frittata gli vola via dalla finestra. VI Pinocchio si addormenta coi piedi sul caldano, e la
-     * mattina dopo si sveglia coi piedi tutti bruciati. VII Geppetto torna a casa, e dà al burattino la colazione che
-     * il pover’uomo aveva portata con sé. VIII Geppetto rifà i piedi a Pinocchio e vende la propria casacca per
-     * comprargli l’Abbecedario. IX Pinocchio vende l’Abbecedario per andare a vedere il teatrino dei burattini. X I
-     * burattini riconoscono il loro fratello Pinocchio e gli fanno una grandissima festa; ma sul più bello, esce fuori
-     * il burattinaio Mangiafoco, e Pinocchio corre il pericolo di fare una brutta fine. XI Mangiafoco starnutisce e perdona a Pinocchio, il quale poi difende dalla morte il suo amico Arlecchino. XII Il burattinaio Mangiafoco regala cinque monete d’oro a Pinocchio, perché le porti al suo babbo Geppetto: e Pinocchio, invece, si lascia abbindolare dalla Volpe e dal Gatto e se ne va con loro. XIII L’osteria del Gambero Rosso. XIV Pinocchio, per non aver dato retta ai buoni consigli del Grillo-parlante, s’imbatte negli assassini. XV Gli assassini inseguono Pinocchio; e, dopo averlo raggiunto, lo impiccano a un ramo della Quercia grande. XVI La bella Bambina dai capelli turchini fa raccogliere il burattino: lo mette a letto, e chiama tre medici per sapere se sia vivo o morto. XVII Pinocchio mangia lo zucchero, ma non vuol purgarsi: Però quando vede i becchini che vengono a portarlo via, allora si purga. Poi dice una bugia e per gastigo gli cresce il naso. XVIII Pinocchio ritrova la Volpe e il Gatto, e va con loro a seminare le quattro monete nel Campo de’ Miracoli. XIX Pinocchio è derubato delle sue monete d’oro e, per gastigo, si busca quattro mesi di prigione. XX Liberato dalla prigione, si avvia per tornare a casa della Fata; ma lungo la strada trova un serpente orribile, e poi rimane preso alla tagliuola. XXI Pinocchio è preso da un contadino, il quale lo costringe a far da can da guardia a un pollaio. XXII Pinocchio scuopre i ladri e, in ricompensa di essere stato fedele, vien posto in libertà. XXIII Pinocchio piange la morte della bella Bambina dai capelli turchini: poi trova un Colombo che lo porta sulla riva del mare, e lì si getta nell’acqua per andare in aiuto del suo babbo Geppetto. XXIV Pinocchio arriva all’isola delle Api industriose e ritrova la Fata. XXV Pinocchio promette alla Fata di essere buono e di studiare, perché è stufo di fare il burattino e vuol diventare un bravo ragazzo. XXVI Pinocchio va co’ suoi compagni di scuola in riva al mare, per vedere il terribile Pescecane. XXVII Gran combattimento fra Pinocchio e i suoi compagni: uno de’ quali essendo rimasto ferito, Pinocchio viene arrestato dai carabinieri. XXVIII Pinocchio corre pericolo di essere fritto in padella come un pesce. XXIX Ritorna a casa della Fata, la quale gli promette che il giorno dopo non sarà più un burattino, ma diventerà un ragazzo. Gran colazione di caffè-e-latte per festeggiare questo grande avvenimento. XXX Pinocchio, invece di diventare un ragazzo, parte di nascosto col suo amico Lucignolo per il Paese dei Balocchi. XXXI Dopo cinque mesi di cuccagna, Pinocchio, con sua grande maraviglia, sente spuntarsi un bel paio d’orecchie asinine e diventa un ciuchino, con la coda e tutto. XXXII A Pinocchio gli vengono gli orecchi di ciuco, e poi diventa un ciuchino vero e comincia a ragliare. XXXIII Diventato un ciuchino vero, è portato a vendere, e lo compra il direttore di una compagnia di pagliacci per insegnargli a ballare e a saltare i cerchi; ma una sera azzoppisce e allora lo ricompra un altro, per far con la sua pelle un tamburo. XXXIV Pinocchio, gettato in mare, è mangiato dai pesci e ritorna ad essere un burattino come prima; ma mentre nuota per salvarsi, è ingoiato dal terribile Pesce-cane. XXXV Pinocchio ritrova in corpo al Pesce-cane... Chi ritrova? Leggete questo capitolo e lo saprete. XXXVI Finalmente Pinocchio cessa d’essere un burattino e diventa un ragazzo.
+     * II. Maestro Ciliegia regala il pezzo di legno al suo amico Geppetto, il quale lo prende per fabbricarsi un burattino maraviglioso che sappia ballare, tirar di scherma e fare i salti mortali.
+     * III Geppetto, tornato a casa, comincia subito a fabbricarsi il burattino e gli mette il nome di Pinocchio. Prime monellerie del burattino.
+     * IV La storia di Pinocchio col Grillo-parlante, dove si vede come i ragazzi cattivi hanno a noia di sentirsi correggere da chi ne sa più di loro.
+     * V Pinocchio ha fame, e cerca un uovo per farsi una frittata; ma sul più bello, la frittata gli vola via dalla finestra.
+     * VI Pinocchio si addormenta coi piedi sul caldano, e la mattina dopo si sveglia coi piedi tutti bruciati.
+     * VII Geppetto torna a casa, e dà al burattino la colazione che il pover’uomo aveva portata con sé.
+     * VIII Geppetto rifà i piedi a Pinocchio e vende la propria casacca per comprargli l’Abbecedario.
+     * IX Pinocchio vende l’Abbecedario per andare a vedere il teatrino dei burattini.
+     * X I burattini riconoscono il loro fratello Pinocchio e gli fanno una grandissima festa; ma sul più bello, esce fuori il burattinaio Mangiafoco, e Pinocchio corre il pericolo di fare una brutta fine.
+     * XI Mangiafoco starnutisce e perdona a Pinocchio, il quale poi difende dalla morte il suo amico Arlecchino.
+     * XII Il burattinaio Mangiafoco regala cinque monete d’oro a Pinocchio, perché le porti al suo babbo Geppetto: e Pinocchio, invece, si lascia abbindolare dalla Volpe e dal Gatto e se ne va con loro.
+     * XIII L’osteria del Gambero Rosso.
+     * XIV Pinocchio, per non aver dato retta ai buoni consigli del Grillo-parlante, s’imbatte negli assassini.
+     * XV Gli assassini inseguono Pinocchio; e, dopo averlo raggiunto, lo impiccano a un ramo della Quercia grande.
+     * XVI La bella Bambina dai capelli turchini fa raccogliere il burattino: lo mette a letto, e chiama tre medici per sapere se sia vivo o morto.
+     * XVII Pinocchio mangia lo zucchero, ma non vuol purgarsi: Però quando vede i becchini che vengono a portarlo via, allora si purga. Poi dice una bugia e per gastigo gli cresce il naso.
+     * XVIII Pinocchio ritrova la Volpe e il Gatto, e va con loro a seminare le quattro monete nel Campo de’ Miracoli.
+     * XIX Pinocchio è derubato delle sue monete d’oro e, per gastigo, si busca quattro mesi di prigione.
+     * XX Liberato dalla prigione, si avvia per tornare a casa della Fata; ma lungo la strada trova un serpente orribile, e poi rimane preso alla tagliuola.
+     * XXI Pinocchio è preso da un contadino, il quale lo costringe a far da can da guardia a un pollaio.
+     * XXII Pinocchio scuopre i ladri e, in ricompensa di essere stato fedele, vien posto in libertà.
+     * XXIII Pinocchio piange la morte della bella Bambina dai capelli turchini: poi trova un Colombo che lo porta sulla riva del mare, e lì si getta nell’acqua per andare in aiuto del suo babbo Geppetto.
+     * XXIV Pinocchio arriva all’isola delle Api industriose e ritrova la Fata.
+     * XXV Pinocchio promette alla Fata di essere buono e di studiare, perché è stufo di fare il burattino e vuol diventare un bravo ragazzo.
+     * XXVI Pinocchio va co’ suoi compagni di scuola in riva al mare, per vedere il terribile Pescecane.
+     * XXVII Gran combattimento fra Pinocchio e i suoi compagni: uno de’ quali essendo rimasto ferito, Pinocchio viene arrestato dai carabinieri.
+     * XXVIII Pinocchio corre pericolo di essere fritto in padella come un pesce.
+     * XXIX Ritorna a casa della Fata, la quale gli promette che il giorno dopo non sarà più un burattino, ma diventerà un ragazzo. Gran colazione di caffè-e-latte per festeggiare questo grande avvenimento.
+     * XXX Pinocchio, invece di diventare un ragazzo, parte di nascosto col suo amico Lucignolo per il Paese dei Balocchi.
+     * XXXI Dopo cinque mesi di cuccagna, Pinocchio, con sua grande maraviglia, sente spuntarsi un bel paio d’orecchie asinine e diventa un ciuchino, con la coda e tutto.
+     * XXXII A Pinocchio gli vengono gli orecchi di ciuco, e poi diventa un ciuchino vero e comincia a ragliare.
+     * XXXIII Diventato un ciuchino vero, è portato a vendere, e lo compra il direttore di una compagnia di pagliacci per insegnargli a ballare e a saltare i cerchi; ma una sera azzoppisce e allora lo ricompra un altro, per far con la sua pelle un tamburo.
+     * XXXIV Pinocchio, gettato in mare, è mangiato dai pesci e ritorna ad essere un burattino come prima; ma mentre nuota per salvarsi, è ingoiato dal terribile Pesce-cane.
+     * XXXV Pinocchio ritrova in corpo al Pesce-cane... Chi ritrova? Leggete questo capitolo e lo saprete.
+     * XXXVI Finalmente Pinocchio cessa d’essere un burattino e diventa un ragazzo.
      *
      * @see http://www.liberliber.it/libri/c/collodi/index.php#elenco_opere
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 I. Come andò che maestro Ciliegia, falegname, trovò un pezzo di legno, che piangeva e rideva come un bambino.
 
 C’era una volta...

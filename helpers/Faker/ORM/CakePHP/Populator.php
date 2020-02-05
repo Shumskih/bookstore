@@ -6,11 +6,8 @@ class Populator
 {
 
     protected $generator;
-
     protected $entities = [];
-
     protected $quantities = [];
-
     protected $guessers = [];
 
     /**
@@ -69,7 +66,6 @@ class Populator
     /**
      * @param array $customColumnFormatters
      * @param array $customModifiers
-     *
      * @return $this
      */
     public function addEntity($entity, $number, $customColumnFormatters = [], $customModifiers = [])
@@ -88,15 +84,14 @@ class Populator
             $entity->mergeModifiersWith($customModifiers);
         }
 
-        $class                    = $entity->class;
-        $this->entities[$class]   = $entity;
+        $class = $entity->class;
+        $this->entities[$class] = $entity;
         $this->quantities[$class] = $number;
         return $this;
     }
 
     /**
      * @param array $options
-     *
      * @return array
      */
     public function execute($options = [])

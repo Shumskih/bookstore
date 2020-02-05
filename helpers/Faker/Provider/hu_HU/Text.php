@@ -4,7 +4,6 @@ namespace Faker\Provider\hu_HU;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      *
      * Author: Rejtő Jenő
@@ -17,8 +16,7 @@ class Text extends \Faker\Provider\Text
      * @see http://mek.oszk.hu/01000/01038/
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 ELSŐ FEJEZET
 1
 - Uram! A késemért jöttem!

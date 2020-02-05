@@ -13,7 +13,6 @@ use Spot\Relation\BelongsTo;
  */
 class EntityPopulator
 {
-
     /**
      * When fetching existing data - fetch only few first rows.
      */
@@ -32,12 +31,11 @@ class EntityPopulator
     /**
      * @var array
      */
-    protected $columnFormatters = [];
-
+    protected $columnFormatters = array();
     /**
      * @var array
      */
-    protected $modifiers = [];
+    protected $modifiers = array();
 
     /**
      * @var bool
@@ -47,14 +45,14 @@ class EntityPopulator
     /**
      * Class constructor.
      *
-     * @param Mapper  $mapper
+     * @param Mapper $mapper
      * @param Locator $locator
-     * @param         $useExistingData
+     * @param $useExistingData
      */
     public function __construct(Mapper $mapper, Locator $locator, $useExistingData = false)
     {
-        $this->mapper          = $mapper;
-        $this->locator         = $locator;
+        $this->mapper = $mapper;
+        $this->locator = $locator;
         $this->useExistingData = $useExistingData;
     }
 
@@ -64,6 +62,14 @@ class EntityPopulator
     public function getMapper()
     {
         return $this->mapper;
+    }
+
+    /**
+     * @param $columnFormatters
+     */
+    public function setColumnFormatters($columnFormatters)
+    {
+        $this->columnFormatters = $columnFormatters;
     }
 
     /**
@@ -77,17 +83,25 @@ class EntityPopulator
     /**
      * @param $columnFormatters
      */
-    public function setColumnFormatters($columnFormatters)
-    {
-        $this->columnFormatters = $columnFormatters;
-    }
-
-    /**
-     * @param $columnFormatters
-     */
     public function mergeColumnFormattersWith($columnFormatters)
     {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
+    }
+
+    /**
+     * @param array $modifiers
+     */
+    public function setModifiers(array $modifiers)
+    {
+        $this->modifiers = $modifiers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModifiers()
+    {
+        return $this->modifiers;
     }
 
     /**
@@ -100,15 +114,14 @@ class EntityPopulator
 
     /**
      * @param Generator $generator
-     *
      * @return array
      */
     public function guessColumnFormatters(Generator $generator)
     {
-        $formatters        = [];
-        $nameGuesser       = new Name($generator);
+        $formatters = array();
+        $nameGuesser = new Name($generator);
         $columnTypeGuesser = new ColumnTypeGuesser($generator);
-        $fields            = $this->mapper->fields();
+        $fields = $this->mapper->fields();
         foreach ($fields as $fieldName => $field) {
             if ($field['primary'] === true) {
                 continue;
@@ -123,16 +136,15 @@ class EntityPopulator
             }
         }
         $entityName = $this->mapper->entity();
-        $entity     = $this->mapper->build([]);
-        $relations  = $entityName::relations($this->mapper, $entity);
+        $entity = $this->mapper->build([]);
+        $relations = $entityName::relations($this->mapper, $entity);
         foreach ($relations as $relation) {
             // We don't need any other relation here.
             if ($relation instanceof BelongsTo) {
-
-                $fieldName  = $relation->localKey();
+                $fieldName = $relation->localKey();
                 $entityName = $relation->entityName();
-                $field      = $fields[$fieldName];
-                $required   = $field['required'];
+                $field = $fields[$fieldName];
+                $required = $field['required'];
 
                 $locator = $this->locator;
 
@@ -144,7 +156,7 @@ class EntityPopulator
                     if ($required && $this->useExistingData) {
                         // We did not add anything like this, but it's required,
                         // So let's find something existing in DB.
-                        $mapper  = $locator->mapper($entityName);
+                        $mapper = $locator->mapper($entityName);
                         $records = $mapper->all()->limit(self::RELATED_FETCH_COUNT)->toArray();
                         if (empty($records)) {
                             return null;
@@ -155,7 +167,6 @@ class EntityPopulator
 
                     return null;
                 };
-
             }
         }
 
@@ -166,7 +177,6 @@ class EntityPopulator
      * Insert one new record using the Entity class.
      *
      * @param $insertedEntities
-     *
      * @return string
      */
     public function execute($insertedEntities)
@@ -205,21 +215,5 @@ class EntityPopulator
         foreach ($this->getModifiers() as $modifier) {
             $modifier($obj, $insertedEntities);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getModifiers()
-    {
-        return $this->modifiers;
-    }
-
-    /**
-     * @param array $modifiers
-     */
-    public function setModifiers(array $modifiers)
-    {
-        $this->modifiers = $modifiers;
     }
 }

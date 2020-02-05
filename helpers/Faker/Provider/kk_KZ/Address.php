@@ -4,30 +4,22 @@ namespace Faker\Provider\kk_KZ;
 
 class Address extends \Faker\Provider\Address
 {
+    protected static $citySuffix = array('қаласы');
 
-    protected static $citySuffix = ['қаласы'];
+    protected static $regionSuffix = array('облысы');
+    protected static $streetSuffix = array(
+        'көшесі', 'даңғылы',
+    );
 
-    protected static $regionSuffix = ['облысы'];
-
-    protected static $streetSuffix
-      = [
-        'көшесі',
-        'даңғылы',
-      ];
-
-    protected static $buildingNumber = ['###'];
-
-    protected static $postcode = ['0#####'];
-
+    protected static $buildingNumber = array('###');
+    protected static $postcode = array('0#####');
     // TODO list all country names in the world
-    protected static $country
-      = [
+    protected static $country = array(
         'Қазақстан',
         'Ресей',
-      ];
+    );
 
-    protected static $region
-      = [
+    protected static $region = array(
         'Алматы',
         'Ақтау',
         'Ақтөбе',
@@ -46,10 +38,9 @@ class Address extends \Faker\Provider\Address
         'Орал',
         'Өскемен',
         'Шымкент',
-      ];
+    );
 
-    protected static $city
-      = [
+    protected static $city = array(
         'Алматы',
         'Ақтау',
         'Ақтөбе',
@@ -68,27 +59,24 @@ class Address extends \Faker\Provider\Address
         'Орал',
         'Өскемен',
         'Шымкент',
-      ];
+    );
 
-    protected static $street
-      = [
+    protected static $street = array(
         'Абай',
         'Гоголь',
         'Кенесары',
         'Бейбітшілік',
         'Достық',
         'Бұқар жырау',
-      ];
+    );
 
-    protected static $addressFormats
-      = [
+    protected static $addressFormats = array(
         "{{postcode}}, {{region}} {{regionSuffix}}, {{city}} {{citySuffix}}, {{street}} {{streetSuffix}}, {{buildingNumber}}",
-      ];
+    );
 
-    protected static $streetAddressFormats
-      = [
-        "{{street}} {{streetSuffix}}, {{buildingNumber}}",
-      ];
+    protected static $streetAddressFormats = array(
+        "{{street}} {{streetSuffix}}, {{buildingNumber}}"
+    );
 
     public static function buildingNumber()
     {
@@ -105,13 +93,13 @@ class Address extends \Faker\Provider\Address
         return static::randomElement(static::$region);
     }
 
-    public static function street()
-    {
-        return static::randomElement(static::$street);
-    }
-
     public function city()
     {
         return static::randomElement(static::$city);
+    }
+
+    public static function street()
+    {
+        return static::randomElement(static::$street);
     }
 }

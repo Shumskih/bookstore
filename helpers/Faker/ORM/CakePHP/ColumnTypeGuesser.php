@@ -4,7 +4,6 @@ namespace Faker\ORM\CakePHP;
 
 class ColumnTypeGuesser
 {
-
     protected $generator;
 
     public function __construct(\Faker\Generator $generator)
@@ -18,7 +17,7 @@ class ColumnTypeGuesser
     public function guessFormat($column, $table)
     {
         $generator = $this->generator;
-        $schema    = $table->schema();
+        $schema = $table->schema();
 
         switch ($schema->columnType($column)) {
             case 'boolean':
@@ -43,8 +42,12 @@ class ColumnTypeGuesser
                     return $generator->uuid();
                 };
             case 'string':
-                $columnData = $schema->column($column);
-                $length     = $columnData['length'];
+                if (method_exists($schema, 'getColumn')) {
+                    $columnData = $schema->getColumn($column);
+                } else {
+                    $columnData = $schema->column($column);
+                }
+                $length = $columnData['length'];
                 return function () use ($generator, $length) {
                     return $generator->text($length);
                 };

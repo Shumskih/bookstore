@@ -6,13 +6,9 @@ use Cake\ORM\TableRegistry;
 
 class EntityPopulator
 {
-
     protected $class;
-
     protected $connectionName;
-
     protected $columnFormatters = [];
-
     protected $modifiers = [];
 
     public function __construct($class)
@@ -51,13 +47,12 @@ class EntityPopulator
      */
     public function guessColumnFormatters($populator)
     {
-        $formatters   = [];
-        $class        = $this->class;
-        $table        = $this->getTable($class);
-        $schema       = $table->schema();
-        $pk           = $schema->primaryKey();
-        $guessers     = $populator->getGuessers()
-                        + ['ColumnTypeGuesser' => new ColumnTypeGuesser($populator->getGenerator())];
+        $formatters = [];
+        $class = $this->class;
+        $table = $this->getTable($class);
+        $schema = $table->schema();
+        $pk = $schema->primaryKey();
+        $guessers = $populator->getGuessers() + ['ColumnTypeGuesser' => new ColumnTypeGuesser($populator->getGenerator())];
         $isForeignKey = function ($column) use ($table) {
             foreach ($table->associations()->type('BelongsTo') as $assoc) {
                 if ($column == $assoc->foreignKey()) {
@@ -84,27 +79,18 @@ class EntityPopulator
         return $formatters;
     }
 
-    protected function getTable($class)
-    {
-        $options = [];
-        if (!empty($this->connectionName)) {
-            $options['connection'] = $this->connectionName;
-        }
-        return TableRegistry::get($class, $options);
-    }
-
     /**
      * @return array
      */
     public function guessModifiers()
     {
         $modifiers = [];
-        $table     = $this->getTable($this->class);
+        $table = $this->getTable($this->class);
 
         $belongsTo = $table->associations()->type('BelongsTo');
         foreach ($belongsTo as $assoc) {
             $modifiers['belongsTo' . $assoc->name()] = function ($data, $insertedEntities) use ($assoc) {
-                $table        = $assoc->target();
+                $table = $assoc->target();
                 $foreignModel = $table->alias();
 
                 $foreignKeys = [];
@@ -112,19 +98,18 @@ class EntityPopulator
                     $foreignKeys = $insertedEntities[$foreignModel];
                 } else {
                     $foreignKeys = $table->find('all')
-                                         ->select(['id'])
-                                         ->map(function ($row) {
-                                             return $row->id;
-                                         })
-                                         ->toArray();
+                    ->select(['id'])
+                    ->map(function ($row) {
+                        return $row->id;
+                    })
+                    ->toArray();
                 }
 
                 if (empty($foreignKeys)) {
-                    throw new \Exception(sprintf('%s belongsTo %s, which seems empty at this point.',
-                      $this->getTable($this->class)->table(), $assoc->table()));
+                    throw new \Exception(sprintf('%s belongsTo %s, which seems empty at this point.', $this->getTable($this->class)->table(), $assoc->table()));
                 }
 
-                $foreignKey                 = $foreignKeys[array_rand($foreignKeys)];
+                $foreignKey = $foreignKeys[array_rand($foreignKeys)];
                 $data[$assoc->foreignKey()] = $foreignKey;
                 return $data;
             };
@@ -140,7 +125,7 @@ class EntityPopulator
      */
     public function execute($class, $insertedEntities, $options = [])
     {
-        $table  = $this->getTable($class);
+        $table = $this->getTable($class);
         $entity = $table->newEntity();
 
         foreach ($this->columnFormatters as $column => $format) {
@@ -168,5 +153,14 @@ class EntityPopulator
     public function setConnection($name)
     {
         $this->connectionName = $name;
+    }
+
+    protected function getTable($class)
+    {
+        $options = [];
+        if (!empty($this->connectionName)) {
+            $options['connection'] = $this->connectionName;
+        }
+        return TableRegistry::get($class, $options);
     }
 }

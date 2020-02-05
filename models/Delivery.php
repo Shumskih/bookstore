@@ -1,5 +1,4 @@
 <?php
-require_once ROOT . '/models/Model.php';
 
 class Delivery implements Model
 {
@@ -9,6 +8,13 @@ class Delivery implements Model
     private $deliveryMethod = null;
 
     private $deliveryCost = null;
+
+    public function __construct($id = NULL, $deliveryMethod = NULL, $deliveryCost = NULL)
+    {
+        $this->id = $id;
+        $this->deliveryMethod = $deliveryMethod;
+        $this->deliveryCost = $deliveryCost;
+    }
 
     function create($model)
     {
@@ -20,16 +26,9 @@ class Delivery implements Model
         // TODO: Implement read() method.
     }
 
-    function readAll()
+    function readAll(): array
     {
-        try {
-            $query      = SqlQueries::GET_ALL_DELIVERIES;
-            $deliveries = $this->pdo->query($query)->fetchAll();
-        } catch (PDOException $e) {
-            echo 'Can\'t get all deliveries<br>' . $e->getMessage();
-        }
-
-        return $deliveries;
+        return DeliveryDaoImpl::readAll();
     }
 
     function update($model)
@@ -44,25 +43,7 @@ class Delivery implements Model
 
     public function getDeliveryByMethod($deliveryMethod) : \Delivery
     {
-        try {
-            $query = SqlQueries::GET_DELIVERY_BY_METHOD;
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute([
-              'deliveryMethod' => $deliveryMethod
-            ]);
-        } catch (PDOException $e) {
-            echo 'Can\'t get delivery by method<br>' . $e->getMessage();
-        }
-
-        $result = $stmt->fetch();
-
-        $this->id = $result['id'];
-        $this->deliveryMethod = $result['deliveryMethod'];
-        $this->deliveryCost = $result['deliveryCost'];
-
-        unset($result);
-
-        return $this;
+        return DeliveryDaoImpl::getDeliveryByMethod($deliveryMethod);
     }
 
     /**

@@ -4,9 +4,7 @@ namespace Faker\Provider\es_AR;
 
 class PhoneNumber extends \Faker\Provider\PhoneNumber
 {
-
-    protected static $formats
-      = [
+    protected static $formats = array(
         '+##(#)##########',
         '+##(#)##########',
         '###-###-####',
@@ -40,5 +38,5 @@ class PhoneNumber extends \Faker\Provider\PhoneNumber
         '(####)154#-####',
         '(####)154#-####',
         '(####)155#-####',
-      ];
+    );
 }

@@ -4,7 +4,6 @@ namespace Faker\Provider\nl_NL;
 
 class Text extends \Faker\Provider\Text
 {
-
     /**
      * Project Gutenberg's Dichtertje - De Uitvreter - Titaantjes, by Nescio
      *
@@ -43,8 +42,7 @@ class Text extends \Faker\Provider\Text
      * @see http://www.gutenberg.org/cache/epub/29719/pg29719.txt
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 DICHTERTJE.
 
                                             In 't derde oorlogsjaar.
@@ -2240,7 +2238,7 @@ drieën hadden ze 't een heel eind soldaat gemaakt en toen had Japi
 dikke boterhammen gesneden van Bavink z'n brood en toen waren ze met
 hun drieën naar 't Amstelveld gegaan en hadden voor 70 cent een nieuw
 kacheltje gekocht ('t was Maandag), een kachel van een voorwereldlijk
-models; en met z' drieën hadden ze die op een handkar naar huis gekruid.
+model; en met z' drieën hadden ze die op een handkar naar huis gekruid.
 
 Ik presenteerde Japi een kop thee. Hij dronk uit een spoelkom, een
 kopje had ik niet voor 'm, steunde behagelijk en zette de kom hard

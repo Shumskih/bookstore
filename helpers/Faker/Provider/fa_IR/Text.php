@@ -4,6 +4,61 @@ namespace Faker\Provider\fa_IR;
 
 class Text extends \Faker\Provider\Text
 {
+    /**
+     * generates text string in arabic
+     *
+     * @example 'از تاریخ‌الشعرا را بکوبند روی نبش دیوار کوچه‌شان. تابلوی مدرسه.'
+     * @param  integer                   $maxNbChars
+     * @param  integer                   $indexSize
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function realText($maxNbChars = 200, $indexSize = 2)
+    {
+        if ($maxNbChars < 10) {
+            throw new \InvalidArgumentException('maxNbChars must be at least 10');
+        }
+
+        if ($indexSize < 1) {
+            throw new \InvalidArgumentException('indexSize must be at least 1');
+        }
+
+        if ($indexSize > 5) {
+            throw new \InvalidArgumentException('indexSize must be at most 5');
+        }
+
+        $words = $this->getConsecutiveWords($indexSize);
+        $result = array();
+        $resultLength = 0;
+        // take a random starting point
+        $next = static::randomKey($words);
+        while ($resultLength < $maxNbChars && isset($words[$next])) {
+            // fetch a random word to append
+            $word = static::randomElement($words[$next]);
+
+            // calculate next index
+            $currentWords = explode(' ', $next);
+
+            $currentWords[] = $word;
+            array_shift($currentWords);
+            $next = implode(' ', $currentWords);
+
+            if ($resultLength == 0 && !preg_match('/^[\x{0600}-\x{06FF}]/u', $word)) {
+                continue;
+            }
+            // append the element
+            $result[] = $word;
+            $resultLength += strlen($word) + 1;
+        }
+
+        // remove the element that caused the text to overflow
+        array_pop($result);
+
+        // build result
+        $result = implode(' ', $result);
+
+        return $result.'.';
+    }
 
     /**
      * License: Creative Commons Attribution-ShareAlike License
@@ -15,8 +70,7 @@ class Text extends \Faker\Provider\Text
      * @see http://fa.wikisource.org/wiki/%D9%85%D8%AF%DB%8C%D8%B1_%D9%85%D8%AF%D8%B1%D8%B3%D9%87
      * @var string
      */
-    protected static $baseText
-      = <<<'EOT'
+    protected static $baseText = <<<'EOT'
 از در که وارد شدم سیگارم دستم بود. زورم آمد سلام کنم. همین طوری دنگم گرفته بود قد باشم. رئیس فرهنگ که اجازه‌ی نشستن داد، نگاهش لحظه‌ای روی دستم مکث کرد و بعد چیزی را که می‌نوشت، تمام کرد و می‌خواست متوجه من بشود که رونویس حکم را روی میزش گذاشته بودم. حرفی نزدیم. رونویس را با کاغذهای ضمیمه‌اش زیر و رو کرد و بعد غبغب انداخت و آرام و مثلاً خالی از عصبانیت گفت:
 
 - جا نداریم آقا. این که نمی‌شه! هر روز یه حکم می‌دند دست یکی می‌فرستنش سراغ من... دیروز به آقای مدیر کل...
@@ -489,62 +543,4 @@ class Text extends \Faker\Provider\Text
 
 که عرق سرد بر بدن من نشست. چایی‌ام را که خوردم، روی همان کاغذ نشان‌دار دادگستری استعفانامه‌ام را نوشتم و به نام هم‌کلاسی پخمه‌ام که تازه رئیس شده بود، دم در پست کردم.
 EOT;
-
-    /**
-     * generates text string in arabic
-     *
-     * @example 'از تاریخ‌الشعرا را بکوبند روی نبش دیوار کوچه‌شان. تابلوی مدرسه.'
-     *
-     * @param  integer $maxNbChars
-     * @param  integer $indexSize
-     *
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    public function realText($maxNbChars = 200, $indexSize = 2)
-    {
-        if ($maxNbChars < 10) {
-            throw new \InvalidArgumentException('maxNbChars must be at least 10');
-        }
-
-        if ($indexSize < 1) {
-            throw new \InvalidArgumentException('indexSize must be at least 1');
-        }
-
-        if ($indexSize > 5) {
-            throw new \InvalidArgumentException('indexSize must be at most 5');
-        }
-
-        $words        = $this->getConsecutiveWords($indexSize);
-        $result       = [];
-        $resultLength = 0;
-        // take a random starting point
-        $next = static::randomKey($words);
-        while ($resultLength < $maxNbChars && isset($words[$next])) {
-            // fetch a random word to append
-            $word = static::randomElement($words[$next]);
-
-            // calculate next index
-            $currentWords = explode(' ', $next);
-
-            $currentWords[] = $word;
-            array_shift($currentWords);
-            $next = implode(' ', $currentWords);
-
-            if ($resultLength == 0 && !preg_match('/^[\x{0600}-\x{06FF}]/u', $word)) {
-                continue;
-            }
-            // append the element
-            $result[]     = $word;
-            $resultLength += strlen($word) + 1;
-        }
-
-        // remove the element that caused the text to overflow
-        array_pop($result);
-
-        // build result
-        $result = implode(' ', $result);
-
-        return $result . '.';
-    }
 }

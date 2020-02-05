@@ -10,21 +10,18 @@ use Doctrine\Common\Persistence\Mapping\ClassMetadata;
  */
 class EntityPopulator
 {
-
     /**
      * @var ClassMetadata
      */
     protected $class;
-
     /**
      * @var array
      */
-    protected $columnFormatters = [];
-
+    protected $columnFormatters = array();
     /**
      * @var array
      */
-    protected $modifiers = [];
+    protected $modifiers = array();
 
     /**
      * Class constructor.
@@ -45,14 +42,6 @@ class EntityPopulator
     }
 
     /**
-     * @return array
-     */
-    public function getColumnFormatters()
-    {
-        return $this->columnFormatters;
-    }
-
-    /**
      * @param $columnFormatters
      */
     public function setColumnFormatters($columnFormatters)
@@ -60,9 +49,33 @@ class EntityPopulator
         $this->columnFormatters = $columnFormatters;
     }
 
+    /**
+     * @return array
+     */
+    public function getColumnFormatters()
+    {
+        return $this->columnFormatters;
+    }
+
     public function mergeColumnFormattersWith($columnFormatters)
     {
         $this->columnFormatters = array_merge($this->columnFormatters, $columnFormatters);
+    }
+
+    /**
+     * @param array $modifiers
+     */
+    public function setModifiers(array $modifiers)
+    {
+        $this->modifiers = $modifiers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getModifiers()
+    {
+        return $this->modifiers;
     }
 
     /**
@@ -75,21 +88,19 @@ class EntityPopulator
 
     /**
      * @param \Faker\Generator $generator
-     *
      * @return array
      */
     public function guessColumnFormatters(\Faker\Generator $generator)
     {
-        $formatters        = [];
-        $nameGuesser       = new \Faker\Guesser\Name($generator);
+        $formatters = array();
+        $nameGuesser = new \Faker\Guesser\Name($generator);
         $columnTypeGuesser = new ColumnTypeGuesser($generator);
         foreach ($this->class->getFieldNames() as $fieldName) {
             if ($this->class->isIdentifier($fieldName) || !$this->class->hasField($fieldName)) {
                 continue;
             }
 
-            $size = isset($this->class->fieldMappings[$fieldName]['length'])
-              ? $this->class->fieldMappings[$fieldName]['length'] : null;
+            $size = isset($this->class->fieldMappings[$fieldName]['length']) ? $this->class->fieldMappings[$fieldName]['length'] : null;
             if ($formatter = $nameGuesser->guessFormat($fieldName, $size)) {
                 $formatters[$fieldName] = $formatter;
                 continue;
@@ -113,9 +124,8 @@ class EntityPopulator
                 foreach ($mappings as $mapping) {
                     if ($mapping['targetEntity'] == $relatedClass) {
                         if ($mapping['type'] == \Doctrine\ORM\Mapping\ClassMetadata::ONE_TO_ONE) {
-                            $unique   = true;
-                            $optional = isset($mapping['joinColumns'][0]['nullable'])
-                              ? $mapping['joinColumns'][0]['nullable'] : false;
+                            $unique = true;
+                            $optional = isset($mapping['joinColumns'][0]['nullable']) ? $mapping['joinColumns'][0]['nullable'] : false;
                             break;
                         }
                     }
@@ -124,9 +134,8 @@ class EntityPopulator
                 $mappings = $this->class->associationMappings;
                 foreach ($mappings as $mapping) {
                     if ($mapping['targetDocument'] == $relatedClass) {
-                        if ($mapping['type'] == \Doctrine\ODM\MongoDB\Mapping\ClassMetadata::ONE
-                            && $mapping['association'] == \Doctrine\ODM\MongoDB\Mapping\ClassMetadata::REFERENCE_ONE) {
-                            $unique   = true;
+                        if ($mapping['type'] == \Doctrine\ODM\MongoDB\Mapping\ClassMetadata::ONE && $mapping['association'] == \Doctrine\ODM\MongoDB\Mapping\ClassMetadata::REFERENCE_ONE) {
+                            $unique = true;
                             $optional = isset($mapping['nullable']) ? $mapping['nullable'] : false;
                             break;
                         }
@@ -134,7 +143,7 @@ class EntityPopulator
                 }
             }
 
-            $index                  = 0;
+            $index = 0;
             $formatters[$assocName] = function ($inserted) use ($relatedClass, &$index, $unique, $optional) {
 
                 if (isset($inserted[$relatedClass])) {
@@ -161,10 +170,8 @@ class EntityPopulator
 
     /**
      * Insert one new record using the Entity class.
-     *
      * @param ObjectManager $manager
-     * @param bool          $generateId
-     *
+     * @param bool $generateId
      * @return EntityPopulator
      */
     public function execute(ObjectManager $manager, $insertedEntities, $generateId = false)
@@ -196,15 +203,15 @@ class EntityPopulator
                     $value = is_callable($format) ? $format($insertedEntities, $obj) : $format;
                 } catch (\InvalidArgumentException $ex) {
                     throw new \InvalidArgumentException(sprintf(
-                      "Failed to generate a value for %s::%s: %s",
-                      get_class($obj),
-                      $field,
-                      $ex->getMessage()
+                        "Failed to generate a value for %s::%s: %s",
+                        get_class($obj),
+                        $field,
+                        $ex->getMessage()
                     ));
                 }
                 // Try a standard setter if it's available, otherwise fall back on reflection
                 $setter = sprintf("set%s", ucfirst($field));
-                if (is_callable([$obj, $setter])) {
+                if (is_callable(array($obj, $setter))) {
                     $obj->$setter($value);
                 } else {
                     $this->class->reflFields[$field]->setValue($obj, $value);
@@ -221,35 +228,18 @@ class EntityPopulator
     }
 
     /**
-     * @return array
-     */
-    public function getModifiers()
-    {
-        return $this->modifiers;
-    }
-
-    /**
-     * @param array $modifiers
-     */
-    public function setModifiers(array $modifiers)
-    {
-        $this->modifiers = $modifiers;
-    }
-
-    /**
      * @param ObjectManager $manager
-     *
      * @return int|null
      */
     private function generateId($obj, $column, ObjectManager $manager)
     {
         /* @var $repository \Doctrine\Common\Persistence\ObjectRepository */
         $repository = $manager->getRepository(get_class($obj));
-        $result     = $repository->createQueryBuilder('e')
-                                 ->select(sprintf('e.%s', $column))
-                                 ->getQuery()
-                                 ->execute();
-        $ids        = array_map('current', $result->toArray());
+        $result = $repository->createQueryBuilder('e')
+                ->select(sprintf('e.%s', $column))
+                ->getQuery()
+                ->execute();
+        $ids = array_map('current', $result->toArray());
 
         $id = null;
         do {

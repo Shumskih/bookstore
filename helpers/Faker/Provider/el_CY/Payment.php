@@ -4,27 +4,6 @@ namespace Faker\Provider\el_CY;
 
 class Payment extends \Faker\Provider\Payment
 {
-
-    /**
-     * @var array Cyprus banks
-     * @link http://www.acb.com.cy/cgibin/hweb?-A=206&-V=membership
-     */
-    protected static $banks
-      = [
-        'Τράπεζα Κύπρου',
-        'Ελληνική Τράπεζα',
-        'Alpha Bank Cyprus',
-        'Εθνική Τράπεζα της Ελλάδος (Κύπρου)',
-        'USB BANK',
-        'Κυπριακή Τράπεζα Αναπτύξεως',
-        'Societe Gererale Cyprus',
-        'Τράπεζα Πειραιώς (Κύπρου)',
-        'RCB Bank',
-        'Eurobank Cyprus',
-        'Συνεργατική Κεντρική Τράπεζα',
-        'Ancoria Bank',
-      ];
-
     /**
      * International Bank Account Number (IBAN).
      *
@@ -40,6 +19,25 @@ class Payment extends \Faker\Provider\Payment
     {
         return static::iban($countryCode, $prefix, $length);
     }
+
+    /**
+     * @var array Cyprus banks
+     * @link http://www.acb.com.cy/cgibin/hweb?-A=206&-V=membership
+     */
+    protected static $banks = array(
+        'Τράπεζα Κύπρου',
+        'Ελληνική Τράπεζα',
+        'Alpha Bank Cyprus',
+        'Εθνική Τράπεζα της Ελλάδος (Κύπρου)',
+        'USB BANK',
+        'Κυπριακή Τράπεζα Αναπτύξεως',
+        'Societe Gererale Cyprus',
+        'Τράπεζα Πειραιώς (Κύπρου)',
+        'RCB Bank',
+        'Eurobank Cyprus',
+        'Συνεργατική Κεντρική Τράπεζα',
+        'Ancoria Bank',
+    );
 
     /**
      * @example 'Τράπεζα Κύπρου'

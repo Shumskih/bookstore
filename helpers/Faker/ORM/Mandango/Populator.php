@@ -10,23 +10,19 @@ use Mandango\Mandango;
  */
 class Populator
 {
-
     protected $generator;
-
     protected $mandango;
-
-    protected $entities = [];
-
-    protected $quantities = [];
+    protected $entities = array();
+    protected $quantities = array();
 
     /**
      * @param \Faker\Generator $generator
-     * @param Mandango         $mandango
+     * @param Mandango $mandango
      */
     public function __construct(\Faker\Generator $generator, Mandango $mandango)
     {
         $this->generator = $generator;
-        $this->mandango  = $mandango;
+        $this->mandango = $mandango;
     }
 
     /**
@@ -35,7 +31,7 @@ class Populator
      * @param mixed $entity A Propel ActiveRecord classname, or a \Faker\ORM\Propel\EntityPopulator instance
      * @param int   $number The number of entities to populate
      */
-    public function addEntity($entity, $number, $customColumnFormatters = [])
+    public function addEntity($entity, $number, $customColumnFormatters = array())
     {
         if (!$entity instanceof \Faker\ORM\Mandango\EntityPopulator) {
             $entity = new \Faker\ORM\Mandango\EntityPopulator($entity);
@@ -44,8 +40,8 @@ class Populator
         if ($customColumnFormatters) {
             $entity->mergeColumnFormattersWith($customColumnFormatters);
         }
-        $class                    = $entity->getClass();
-        $this->entities[$class]   = $entity;
+        $class = $entity->getClass();
+        $this->entities[$class] = $entity;
         $this->quantities[$class] = $number;
     }
 
@@ -56,10 +52,10 @@ class Populator
      */
     public function execute()
     {
-        $insertedEntities = [];
+        $insertedEntities = array();
         foreach ($this->quantities as $class => $number) {
-            for ($i = 0; $i < $number; $i++) {
-                $insertedEntities[$class][] = $this->entities[$class]->execute($this->mandango, $insertedEntities);
+            for ($i=0; $i < $number; $i++) {
+                $insertedEntities[$class][]= $this->entities[$class]->execute($this->mandango, $insertedEntities);
             }
         }
         $this->mandango->flush();

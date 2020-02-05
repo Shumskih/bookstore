@@ -9,7 +9,9 @@
   ],
   "description": "bookstore",
   "type": "project",
-  "require" : {},
+  "require" : {
+    "ext-pdo": "*"
+  },
   "autoload": {
     "classmap": [
       "controllers/",

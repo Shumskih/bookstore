@@ -3,7 +3,7 @@
 class IndexPageController extends Controller
 {
 
-    private $bookController;
+    private BookController $bookController;
 
     public function __construct()
     {

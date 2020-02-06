@@ -14,15 +14,16 @@
             <div class="furniture--4 border--round arrows_style owl-carousel owl-theme row mt--50">
                 <!-- Start Single Product -->
                 <?php foreach ($_SESSION['lastFiveViewedBooks'] as $book): ?>
+                <?php $book = (object)$book; ?>
                     <div class="product product__style--3">
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                             <div class="product__thumb">
                                 <a class="first__img"
-                                   href="/book?id=<?php echo $book['id']; ?>"><img
+                                   href="/book?id=<?php echo $book->getId(); ?>"><img
                                             src="/assets/images/books/1/1.jpg"
                                             alt="product image"></a>
                                 <a class="second__img animation1"
-                                   href="/book?id=<?php echo $book['id']; ?>"><img
+                                   href="/book?id=<?php echo $book->getId(); ?>"><img
                                             src="/assets/images/books/2/2.jpg"
                                             alt="product image"></a>
                                 <div class="hot__box">
@@ -31,10 +32,10 @@
                             </div>
                             <div class="product__content content--center">
                                 <h4>
-                                    <a href="/book?id=<?php echo $book['id']; ?>"><?php echo $book['title']; ?></a>
+                                    <a href="/book?id=<?php echo $book->getId(); ?>"><?php echo $book->getTitle(); ?></a>
                                 </h4>
                                 <ul class="prize d-flex">
-                                    <li><?php echo $book['price']; ?>$</li>
+                                    <li><?php echo $book->getPrice(); ?>$</li>
                                 </ul>
                                 <div class="action">
                                     <div class="actions_inner">

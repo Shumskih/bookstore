@@ -57,4 +57,26 @@ class UserController extends Controller
     {
         return $this->user->checkPermissions();
     }
+
+    function create($model)
+    {
+        // TODO: Implement create() method.
+    }
+
+    function read($id)
+    {
+        // TODO: Implement read() method.
+    }
+
+    function readAll()
+    {
+        // TODO: Implement readAll() method.
+    }
+
+    function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
+
+
 }

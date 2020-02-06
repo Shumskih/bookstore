@@ -1,6 +1,4 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/models/Category.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/controllers/Controller.php';
 
 class CategoryController extends Controller
 {
@@ -31,4 +29,21 @@ class CategoryController extends Controller
     {
         return $this->category->sortByName($o1, $o2);
     }
+
+    function create($model)
+    {
+        // TODO: Implement create() method.
+    }
+
+    function update($model)
+    {
+        // TODO: Implement update() method.
+    }
+
+    function delete($id)
+    {
+        // TODO: Implement delete() method.
+    }
+
+
 }

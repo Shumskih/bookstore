@@ -1,7 +1,7 @@
 <?php
 
 
-class RoleController
+class RoleController extends Controller
 {
     private $role = null;
 

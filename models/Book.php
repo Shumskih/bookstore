@@ -38,6 +38,31 @@ class Book implements Model
      */
     private $images = [];
 
+    public function __construct(
+        $id = NULL,
+        $title = NULL,
+        $authorName = NULL,
+        $authorSurname = NULL,
+        $pages = NULL,
+        $description = NULL,
+        $price = NULL,
+        $addedAt = NULL,
+        $inStock = NULL,
+        $quantity = NULL
+    )
+    {
+        $this->id = $id;
+        $this->title = $title;
+        $this->authorName = $authorName;
+        $this->authorSurname = $authorSurname;
+        $this->pages = $pages;
+        $this->description = $description;
+        $this->price = $price;
+        $this->addedAt = $addedAt;
+        $this->inStock = $inStock;
+        $this->quantity = $quantity;
+    }
+
     function create($book): int
     {
         return BookDaoImpl::create($book);
@@ -50,23 +75,9 @@ class Book implements Model
      */
     function read($id): Book
     {
-        $book                = BookDaoImpl::read($id);
-        $this->id            = $book['id'];
-        $this->title         = $book['title'];
-        $this->authorName    = $book['authorName'];
-        $this->authorSurname = $book['authorSurname'];
-        $this->pages         = $book['pages'];
-        $this->description   = $book['description'];
-        $this->price         = $book['price'];
-        $this->addedAt       = $book['addedAt'];
-        $this->inStock       = $book['inStock'];
-        $this->quantity      = $book['quantity'];
+        $book = $this->createBookObject(BookDaoImpl::read($id));
 
-        FiveLastViewedBooks::lastViewedBooks($book);
-
-        unset($book);
-
-        return $this;
+        return $book;
     }
 
     function readAll(): array
@@ -85,9 +96,37 @@ class Book implements Model
         BookDaoImpl::delete($id);
     }
 
+
+    /**
+     * @param int $quantity
+     * @return array of books objects
+     */
     public function getNewBooks(int $quantity = 6): array
     {
-        return BookDaoImpl::getNewBooks($quantity);
+        $books = BookDaoImpl::getNewBooks($quantity);
+        $bookObjects = [];
+
+        foreach ($books as $book) {
+            array_unshift($bookObjects, $this->createBookObject($book));
+        }
+
+        return $bookObjects;
+    }
+
+    private function createBookObject($book): \Book
+    {
+        return new Book(
+            $book['id'],
+            $book['title'],
+            $book['authorName'],
+            $book['authorSurname'],
+            $book['pages'],
+            $book['description'],
+            $book['price'],
+            $book['addedAt'],
+            $book['inStock'],
+            $book['quantity']
+        );
     }
 
     /**
@@ -299,11 +338,11 @@ class Book implements Model
         if (!empty($this->images)) {
             return $this->images;
         } else {
-            $images      = BookDaoImpl::getImages($this->id);
+            $images = BookDaoImpl::getImages($this->id);
 
             foreach ($images as $image) {
                 $imageController = new ImageController();
-                $image           = $imageController->read($image['id']);
+                $image = $imageController->read($image['id']);
 
                 array_push($this->images, $image);
                 unset($imageController);
@@ -323,18 +362,18 @@ class Book implements Model
     public function __sleep()
     {
         return [
-          'id',
-          'title',
-          'authorName',
-          'authorSurname',
-          'pages',
-          'description',
-          'price',
-          'addedAt',
-          'categories',
-          'images',
-          'inStock',
-          'quantity',
+            'id',
+            'title',
+            'authorName',
+            'authorSurname',
+            'pages',
+            'description',
+            'price',
+            'addedAt',
+            'categories',
+            'images',
+            'inStock',
+            'quantity',
         ];
     }
 }

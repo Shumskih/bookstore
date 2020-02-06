@@ -1,7 +1,7 @@
 <?php
 
 
-class StatusController
+class StatusController extends Controller
 {
     private $status = null;
 

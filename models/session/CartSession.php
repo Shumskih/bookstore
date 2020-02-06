@@ -11,7 +11,7 @@ class CartSession implements SessionInterface
 
     function create($cart)
     {
-        $this->cart = (object) $cart;
+        $this->cart = (object)$cart;
 
         if (isset($_SESSION[self::CART])) {
             $this->update($cart);
@@ -26,14 +26,14 @@ class CartSession implements SessionInterface
         unset($this->cart);
     }
 
-    function read() : array
+    function read(): array
     {
         return $_SESSION[self::CART];
     }
 
     function update($cart)
     {
-        $this->cart = (object) $cart;
+        $this->cart = (object)$cart;
         array_push($_SESSION[self::CART], ['book' => serialize($this->cart->getBook()), 'qty' => $this->cart->getBookQty()]);
 
         unset($cart);

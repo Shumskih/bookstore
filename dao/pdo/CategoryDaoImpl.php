@@ -33,7 +33,7 @@ class CategoryDaoImpl implements DaoInterface
         return $category;
     }
 
-    static function readAll()
+    static function readAll(): array
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
@@ -47,7 +47,7 @@ class CategoryDaoImpl implements DaoInterface
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get all orders from database<br>'
+            echo 'Can\'t get all categories from database<br>'
                  . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
         return $categories;

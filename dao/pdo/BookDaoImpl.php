@@ -51,7 +51,7 @@ class BookDaoImpl extends Dao
         return $bookId;
     }
 
-    static function read($id): \Book
+    static function read($id): array
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();

@@ -8,10 +8,10 @@ class FrontController extends Controller
     public function indexPage()
     {
         $controller = new IndexPageController();
-        $books      = $controller->getNewBooks();
+        $books = $controller->getNewBooks();
         $controller->render(
-          '/views/index.html.php',
-          $books
+            '/views/index.html.php',
+            $books
         );
     }
 
@@ -20,17 +20,17 @@ class FrontController extends Controller
         $vars = [];
 
         $bookController = new BookController();
-        $books          = $bookController->readAll();
+        $books = $bookController->readAll();
 
         $categoryController = new Category();
-        $categories         = $categoryController->readAll();
+        $categories = $categoryController->readAll();
 
         array_unshift($vars, ['books' => $books]);
         array_unshift($vars, ['categories' => $categories]);
 
         $bookController->render(
-          '/views/books/allBooks.html.php',
-          $vars
+            '/views/books/allBooks.html.php',
+            $vars
         );
     }
 
@@ -38,11 +38,13 @@ class FrontController extends Controller
     {
         $vars = [];
 
-        $controller = new BookController();
-        $book       = (object)$controller->read($bookId);
+        $bookController = new BookController();
+        $book = (object)$bookController->read($bookId);
 
         $categoryController = new Category();
-        $categories         = $categoryController->readAll();
+        $categories = $categoryController->readAll();
+
+        FiveLastViewedBooks::lastViewedBooks($book);
 
         array_unshift($vars, ['book' => $book]);
         array_unshift($vars, ['categories' => $categories]);
@@ -51,12 +53,12 @@ class FrontController extends Controller
             unset($book);
             unset($category);
 
-            $controller->render(
-              '/views/books/book.html.php',
-              $vars
+            $bookController->render(
+                '/views/books/book.html.php',
+                $vars
             );
         } else {
-            $controller->renderError(404);
+            $bookController->renderError(404);
         }
     }
 
@@ -65,7 +67,7 @@ class FrontController extends Controller
         $vars = [];
 
         $controller = new CategoryController();
-        $category   = $controller->read($categoryId);
+        $category = $controller->read($categoryId);
         $categories = $controller->readAll();
 
         array_unshift($vars, ['category' => $category]);
@@ -76,8 +78,8 @@ class FrontController extends Controller
             unset($categories);
 
             $controller->render(
-              '/views/categories/category.html.php',
-              $vars
+                '/views/categories/category.html.php',
+                $vars
             );
         } else {
             $controller->renderError(404);
@@ -89,34 +91,34 @@ class FrontController extends Controller
         $user = new UserController();
 
         $user->render(
-          '/views/users/account/account.html.php'
+            '/views/users/account/account.html.php'
         );
     }
 
     public function accountInfo()
     {
         $userController = new UserController();
-        $session        = new UserSession();
+        $session = new UserSession();
 
         // User
-        $userId      = null;
-        $name        = null;
-        $surname     = null;
-        $email       = null;
+        $userId = null;
+        $name = null;
+        $surname = null;
+        $email = null;
         $mobilePhone = null;
 
         // Address
         $addressId = null;
-        $country   = null;
-        $district  = null;
-        $city      = null;
-        $street    = null;
-        $building  = null;
+        $country = null;
+        $district = null;
+        $city = null;
+        $street = null;
+        $building = null;
         $apartment = null;
 
         $user = $session->read();
 
-        $errors         = [];
+        $errors = [];
         $incorrectField = false;
 
         if (isset($_POST['personalInfo'])) {
@@ -129,7 +131,7 @@ class FrontController extends Controller
                 $name = $_POST['name'];
             } else {
                 $incorrectField = true;
-                $errorName      = 'Incorrect field \'Name\'';
+                $errorName = 'Incorrect field \'Name\'';
                 array_unshift($errors, $errorName);
             }
 
@@ -137,7 +139,7 @@ class FrontController extends Controller
                 $surname = $_POST['surname'];
             } else {
                 $incorrectField = true;
-                $errorSurname   = 'Incorrect field \'Surname\'';
+                $errorSurname = 'Incorrect field \'Surname\'';
                 array_unshift($errors, $errorSurname);
             }
 
@@ -145,7 +147,7 @@ class FrontController extends Controller
                 $email = $_POST['email'];
             } else {
                 $incorrectField = true;
-                $errorEmail     = 'Incorrect field \'Email\'';
+                $errorEmail = 'Incorrect field \'Email\'';
                 array_unshift($errors, $errorEmail);
             }
 
@@ -153,7 +155,7 @@ class FrontController extends Controller
                 $mobilePhone = $_POST['mobilePhone'];
             } else {
                 $incorrectField = true;
-                $errorPhone     = 'Incorrect field \'Mobile Phone\'';
+                $errorPhone = 'Incorrect field \'Mobile Phone\'';
                 array_unshift($errors, $errorPhone);
             }
 
@@ -166,7 +168,7 @@ class FrontController extends Controller
                 $country = $_POST['country'];
             } else {
                 $incorrectField = true;
-                $errorCountry   = 'Incorrect field \'Country\'';
+                $errorCountry = 'Incorrect field \'Country\'';
                 array_unshift($errors, $errorCountry);
             }
 
@@ -174,7 +176,7 @@ class FrontController extends Controller
                 $region = $_POST['state'];
             } else {
                 $incorrectField = true;
-                $errorState     = 'Incorrect field \'State\'';
+                $errorState = 'Incorrect field \'State\'';
                 array_unshift($errors, $errorState);
             }
 
@@ -182,7 +184,7 @@ class FrontController extends Controller
                 $city = $_POST['city'];
             } else {
                 $incorrectField = true;
-                $errorCity      = 'Incorrect field \'City\'';
+                $errorCity = 'Incorrect field \'City\'';
                 array_unshift($errors, $errorCity);
             }
 
@@ -190,7 +192,7 @@ class FrontController extends Controller
                 $street = $_POST['street'];
             } else {
                 $incorrectField = true;
-                $errorStreet    = 'Incorrect field \'Street\'';
+                $errorStreet = 'Incorrect field \'Street\'';
                 array_unshift($errors, $errorStreet);
             }
 
@@ -198,7 +200,7 @@ class FrontController extends Controller
                 $building = $_POST['building'];
             } else {
                 $incorrectField = true;
-                $errorBuilding  = 'Incorrect field \'Building\'';
+                $errorBuilding = 'Incorrect field \'Building\'';
                 array_unshift($errors, $errorBuilding);
             }
 
@@ -213,8 +215,8 @@ class FrontController extends Controller
 
         if ($incorrectField) {
             $userController->render(
-              '/views/users/account/account.html.php',
-              $errors
+                '/views/users/account/account.html.php',
+                $errors
             );
         } elseif (isset($_POST['personalInfo']) && !$incorrectField) {
             $user = new User();
@@ -242,8 +244,8 @@ class FrontController extends Controller
 
         if (!isset($_POST['personalInfo'])) {
             $userController->render(
-              '/views/users/account/account.html.php',
-              $user
+                '/views/users/account/account.html.php',
+                $user
             );
         }
     }
@@ -252,7 +254,7 @@ class FrontController extends Controller
     {
         $user = new UserController();
 
-        $email    = htmlspecialchars($_POST['registerEmail'], ENT_QUOTES, 'UTF-8');
+        $email = htmlspecialchars($_POST['registerEmail'], ENT_QUOTES, 'UTF-8');
         $password = md5(htmlspecialchars($_POST['registerPassword'], ENT_QUOTES, 'UTF-8') . 'bookstore');
 
         if ($user->register($email, $password)) {
@@ -260,8 +262,8 @@ class FrontController extends Controller
         } else {
             $error = 'Incorrect email or password';
             $user->render(
-              '/views/users/loginOrRegister.html.php',
-              $error
+                '/views/users/loginOrRegister.html.php',
+                $error
             );
         }
     }
@@ -270,14 +272,14 @@ class FrontController extends Controller
     {
         $user = new UserController();
 
-        $email    = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
+        $email = htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8');
         $password = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
 
         if (!$user->login($email, $password)) {
             $error = 'Incorrect email or password';
             $user->render(
-              '/views/users/loginOrRegister.html.php',
-              $error
+                '/views/users/loginOrRegister.html.php',
+                $error
             );
         }
     }
@@ -294,47 +296,47 @@ class FrontController extends Controller
     public function cart()
     {
         $cartController = new CartController();
-        $books          = $cartController->getCart();
+        $books = $cartController->getCart();
 
         $this->render(
-          '/views/cart/cart.html.php',
-          $books
+            '/views/cart/cart.html.php',
+            $books
         );
     }
 
     public function checkout($shippingMethod = 'Courier')
     {
         $cartController = new CartController();
-        $vars           = $cartController->checkout($shippingMethod);
+        $vars = $cartController->checkout($shippingMethod);
 
         $this->render(
-          '/views/cart/checkout/checkout.html.php',
-          $vars
+            '/views/cart/checkout/checkout.html.php',
+            $vars
         );
     }
 
     public function submitCheckout()
     {
         // user
-        $userName    = $_POST['userName'];
+        $userName = $_POST['userName'];
         $userSurname = $_POST['surname'];
-        $phone       = $_POST['phone'];
-        $email       = $_POST['email'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
 
         // address
-        $country   = $_POST['country'];
-        $district  = $_POST['district'];
-        $city      = $_POST['city'];
-        $street    = $_POST['street'];
-        $building  = $_POST['building'];
+        $country = $_POST['country'];
+        $district = $_POST['district'];
+        $city = $_POST['city'];
+        $street = $_POST['street'];
+        $building = $_POST['building'];
         $apartment = $_POST['apartment'];
-        $postcode  = $_POST['postcode'];
+        $postcode = $_POST['postcode'];
 
         // order message
         $userMessage = $_POST['userMessage'];
 
         $userSession = new UserSessionController();
-        $user        = $userSession->read();
+        $user = $userSession->read();
         $user->setName($userName);
         $user->setSurname($userSurname);
         $user->setMobilePhone($phone);
@@ -363,7 +365,7 @@ class FrontController extends Controller
         $count = count($_SESSION['cart']);
         for ($i = 0; $i < $count; $i++) {
             $book = (object)unserialize($_SESSION['cart'][$i]['book']);
-            $qty  = $_SESSION['cart'][$i]['qty'];
+            $qty = $_SESSION['cart'][$i]['qty'];
             array_push($booksAndQty, ['book' => $book, 'qty' => $qty]);
             unset($book);
         }
@@ -387,15 +389,15 @@ class FrontController extends Controller
     public function orders()
     {
         $userController = new UserController();
-        $permissions    = $userController->checkPermissions();
+        $permissions = $userController->checkPermissions();
 
         if ($permissions) {
             $orderController = new OrderController();
-            $orders          = $orderController->readAll();
+            $orders = $orderController->readAll();
 
             $this->render(
-              '/views/administration/orders/orders.html.php',
-              $orders
+                '/views/administration/orders/orders.html.php',
+                $orders
             );
         } else {
             header('Location: /account');
@@ -409,10 +411,10 @@ class FrontController extends Controller
         }
 
         $orderController = new OrderController();
-        $order           = $orderController->read($id);
+        $order = $orderController->read($id);
         $this->render(
-          '/views/administration/orders/order.html.php',
-          $order
+            '/views/administration/orders/order.html.php',
+            $order
         );
     }
 
@@ -425,7 +427,7 @@ class FrontController extends Controller
         $newStatusId = null;
 
         $statusController = new StatusController();
-        $statuses         = $statusController->readAll();
+        $statuses = $statusController->readAll();
 
         foreach ($statuses as $s) {
             if ($s['status'] === $status) {
@@ -436,7 +438,7 @@ class FrontController extends Controller
         $status = $statusController->read($newStatusId);
 
         $orderController = new OrderController();
-        $order           = $orderController->read($id);
+        $order = $orderController->read($id);
         $order->setStatus($status);
     }
 
@@ -449,7 +451,7 @@ class FrontController extends Controller
     public function contact()
     {
         $this->render(
-          '/views/contacts/contact.html.php'
+            '/views/contacts/contact.html.php'
         );
     }
 
@@ -463,30 +465,30 @@ class FrontController extends Controller
     public function myOrders()
     {
         $userSession = new UserSessionController();
-        $user        = (object)$userSession->read();
-        $orders      = $user->getOrders();
+        $user = (object)$userSession->read();
+        $orders = $user->getOrders();
 
         $this->render(
-          '/views/users/orders/my-orders.html.php',
-          $orders
+            '/views/users/orders/my-orders.html.php',
+            $orders
         );
     }
 
     public function myOrder()
     {
         $orderController = new OrderController();
-        $userSession     = new UserSessionController();
+        $userSession = new UserSessionController();
 
         $orderId = $orderController
-          ->read($_GET['id'])
-          ->getId();
-        $user    = (object)$userSession->read();
-        $order   = (object)$user->getOrder($orderId);
+            ->read($_GET['id'])
+            ->getId();
+        $user = (object)$userSession->read();
+        $order = (object)$user->getOrder($orderId);
 
 
         $this->render(
-          '/views/users/orders/my-order.html.php',
-          $order
+            '/views/users/orders/my-order.html.php',
+            $order
         );
     }
 
@@ -495,7 +497,7 @@ class FrontController extends Controller
         $newStatusId = null;
 
         $statusController = new StatusController();
-        $statuses         = $statusController->readAll();
+        $statuses = $statusController->readAll();
 
         foreach ($statuses as $s) {
             if ($s['status'] === 'Canceled') {
@@ -506,7 +508,7 @@ class FrontController extends Controller
         $status = $statusController->read($newStatusId);
 
         $orderController = new OrderController();
-        $order           = $orderController->read($orderId);
+        $order = $orderController->read($orderId);
         $order->setStatus($status);
     }
 
@@ -515,8 +517,8 @@ class FrontController extends Controller
         $userController = new UserController();
         if ($userController->checkPermissions()) {
             $this->render(
-              '/views/administration/books/add-new-book.html.php',
-              $errors
+                '/views/administration/books/add-new-book.html.php',
+                $errors
             );
         } else {
             header('Location: /account');
@@ -532,7 +534,7 @@ class FrontController extends Controller
             $error = 'Select at least one category!';
             array_push($errors, $error);
         } else {
-            $categoryIds            = $_POST['category'];
+            $categoryIds = $_POST['category'];
             $arrayCategoriesObjects = [];
 
             $categoryController = new CategoryController();
@@ -590,7 +592,7 @@ class FrontController extends Controller
             $inStock = true;
         }
 
-        if (count($errors) > 0 ) {
+        if (count($errors) > 0) {
             return $errors;
         } else {
             $bookController = new BookController();
@@ -606,14 +608,14 @@ class FrontController extends Controller
             $bookId = $bookController->create($bookController);
 
             if (!empty(array_filter($_FILES['images']['name']))) {
-                $fileNames          = $this->uploadImages($bookId);
+                $fileNames = $this->uploadImages($bookId);
                 $imagesObjectsArray = [];
 
                 foreach ($fileNames as $path) {
                     $imageController = new ImageController();
                     $imageController->setPath($path);
                     $imageId = $imageController->create($imageController);
-                    $image   = $imageController->read($imageId);
+                    $image = $imageController->read($imageId);
 
                     array_push($imagesObjectsArray, $image);
                     unset($imageController);
@@ -630,8 +632,9 @@ class FrontController extends Controller
     }
 
     public function uploadImages(
-      $bookId
-    ) {
+        $bookId
+    )
+    {
         $imgDir = ROOT . '/assets/images/books/' . $bookId;
         @mkdir($imgDir, 0777);
         $fileNames = [];
@@ -639,7 +642,7 @@ class FrontController extends Controller
         $extensions = ['jpg', 'jpeg', 'gif', 'png'];
 
         foreach ($_FILES['images']['name'] as $k => $v) {
-            $fileName       = basename($_FILES['images']['name'][$k]);
+            $fileName = basename($_FILES['images']['name'][$k]);
             $targetFilePath = $imgDir . '/' . $fileName;
             array_push($fileNames, $fileName);
 
@@ -652,11 +655,25 @@ class FrontController extends Controller
 
     }
 
-    public function create($model){}
-    public function read($id){}
-    public function readAll(){}
-    public function update($delivery){}
-    public function delete($id){}
+    public function create($model)
+    {
+    }
+
+    public function read($id)
+    {
+    }
+
+    public function readAll()
+    {
+    }
+
+    public function update($delivery)
+    {
+    }
+
+    public function delete($id)
+    {
+    }
 
 
 }

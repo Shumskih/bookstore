@@ -195,6 +195,11 @@ class Router
                 }
                 break;
 
+            case '/administration/delivery':
+            case '/administration/delivery/':
+                $this->frontController->delivery();
+                break;
+
             case '/contact':
             case '/contact/':
                 $this->frontController->contact();

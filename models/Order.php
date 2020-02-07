@@ -161,4 +161,12 @@ class Order implements Model
             OrderDaoImpl::setStatus($status, $this->id);
         }
     }
+
+    /**
+     * @return int
+     */
+    public function getCountNewOrders(): int
+    {
+        return OrderDaoImpl::getCountNewOrders();
+    }
 }

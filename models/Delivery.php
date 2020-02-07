@@ -3,13 +3,13 @@
 class Delivery implements Model
 {
 
-    private $id = NULL;
+    private int $id;
 
-    private $deliveryMethod = NULL;
+    private string $deliveryMethod;
 
-    private $deliveryCost = NULL;
+    private string $deliveryCost;
 
-    public function __construct($id = NULL, $deliveryMethod = NULL, $deliveryCost = NULL)
+    public function __construct(int $id = 0, string $deliveryMethod = '', string $deliveryCost = '')
     {
         $this->id = $id;
         $this->deliveryMethod = $deliveryMethod;
@@ -28,7 +28,18 @@ class Delivery implements Model
 
     function readAll(): array
     {
-        return DeliveryDaoImpl::readAll();
+        $deliveryArray =  DeliveryDaoImpl::readAll();
+        $deliveryArrayOfObjects = [];
+
+        foreach ($deliveryArray as $delivery) {
+            array_unshift($deliveryArrayOfObjects, new Delivery(
+                $delivery['id'],
+                $delivery['deliveryMethod'],
+                $delivery['deliveryCost']
+            ));
+        }
+
+        return $deliveryArrayOfObjects;
     }
 
     function update($delivery)

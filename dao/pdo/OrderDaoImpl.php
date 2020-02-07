@@ -293,7 +293,7 @@ class OrderDaoImpl implements DaoInterface
         }
     }
 
-    public static function getNewOrders(): int
+    public static function getCountNewOrders(): int
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();

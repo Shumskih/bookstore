@@ -237,7 +237,7 @@ class BookDaoImpl extends Dao
         return $categories;
     }
 
-    public static function getImages($bookId)
+    public static function getImages($bookId): array
     {
         try {
             self::$pdo = ConnectionUtil::getConnection();
@@ -253,7 +253,7 @@ class BookDaoImpl extends Dao
             self::$pdo->commit();
         } catch (PDOException $e) {
             self::$pdo->rollBack();
-            echo 'Can\'t get categories of book<br>' .
+            echo 'Can\'t get book images<br>' .
                 $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
         }
 

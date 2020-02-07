@@ -74,4 +74,9 @@ class OrderController extends Controller
     {
         $this->order->setUserMessage($userMessage);
     }
+
+    public function getCountNewOrders(): int
+    {
+        return $this->order->getCountNewOrders();
+    }
 }

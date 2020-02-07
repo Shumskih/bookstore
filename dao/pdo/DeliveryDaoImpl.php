@@ -61,7 +61,9 @@ class DeliveryDaoImpl extends Dao
 
             $query = SqlQueries::GET_ALL_DELIVERIES;
             $deliveries = self::$pdo->query($query)->fetchAll();
+            self::$pdo->commit();
         } catch (PDOException $e) {
+            self::$pdo->rollBack();
             echo 'Can\'t get all deliveries<br>' . $e->getMessage();
         }
 

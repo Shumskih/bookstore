@@ -14,6 +14,7 @@
                   && URI !== '/administration/orders'
                   && URI !== '/administration/orders/'
                   && (URI !== '/administration/add-new-book' && URI !== '/administration/add-new-book/')
+                  && (URI !== '/administration/delivery/' &&  URI !== '/administration/delivery')
                   && (URI !== '/my-orders' && URI !== '/my-orders/')
                   && (URI !== '/my-order?id=' . $_GET['id'] && URI !== '/my-order?id=' . $_GET['id'] . '/')
               ) {
@@ -73,6 +74,10 @@
                   echo '<a class="breadcrumb_item" href="/my-orders">My Orders</a>
                         <span class="brd-separetor">/</span>';
                   echo 'View Order';
+              } elseif (URI === '/administration/delivery' || URI === '/administration/delivery/') {
+                  echo '<a class="breadcrumb_item" href="/administration/delivery">Administration</a>
+                        <span class="brd-separetor">/</span>';
+                  echo 'Delivery';
               }
               ?>
             </span>

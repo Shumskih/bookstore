@@ -1,54 +1,41 @@
 <?php
 
-/**
- * Class Book
- */
 class Book implements Model
 {
 
-    private $id = null;
-
-    private $title = null;
-
-    private $authorName = null;
-
-    private $authorSurname = null;
-
-    private $pages = null;
-
-    private $description = null;
-
-    private $price = null;
-
-    private $addedAt = null;
-
-    private $updatedAt = null;
-
-    private $inStock = false;
-
-    private $quantity = 0;
+    private int $id;
+    private string $title;
+    private string $authorName;
+    private string $authorSurname;
+    private int $pages;
+    private string $description;
+    private float $price;
+    private string $addedAt;
+    private string $updatedAt;
+    private bool $inStock;
+    private int $quantity;
 
     /**
      * @var array of Category objects
      */
-    private $categories = [];
+    private array $categories = [];
 
     /**
      * @var array of Image objects
      */
-    private $images = [];
+    private array $images = [];
 
     public function __construct(
-        $id = NULL,
-        $title = NULL,
-        $authorName = NULL,
-        $authorSurname = NULL,
-        $pages = NULL,
-        $description = NULL,
-        $price = NULL,
-        $addedAt = NULL,
-        $inStock = NULL,
-        $quantity = NULL
+        int $id = 0,
+        string $title = '',
+        string $authorName = '',
+        string $authorSurname = '',
+        int $pages = 0,
+        string $description = '',
+        float $price = 0,
+        string $addedAt = '',
+        string $inStock = '',
+        int $quantity = 0
     )
     {
         $this->id = $id;
@@ -63,8 +50,14 @@ class Book implements Model
         $this->quantity = $quantity;
     }
 
+
+    /**
+     * @param $book
+     * @return int
+     */
     function create($book): int
     {
+        $this->createBookObject($book);
         return BookDaoImpl::create($book);
     }
 
@@ -75,14 +68,26 @@ class Book implements Model
      */
     function read($id): Book
     {
-        $book = $this->createBookObject(BookDaoImpl::read($id));
-
-        return $book;
+        return $this->createBookObject(BookDaoImpl::read($id));
     }
 
     function readAll(): array
     {
-        return BookDaoImpl::readAll();
+        $booksArray = BookDaoImpl::readAll();
+        $booksArrayOfObjects = [];
+
+        foreach ($booksArray as $book) {
+            $newBookObj = new Book();
+            $newBookObj->setId($book['id']);
+            $newBookObj->setTitle($book['title']);
+            $newBookObj->setAuthorName($book['authorName']);
+            $newBookObj->setAuthorSurname($book['authorSurname']);
+            $newBookObj->setDescription($book['description']);
+            $newBookObj->setPrice($book['price']);
+
+            array_unshift($booksArrayOfObjects, $newBookObj);
+        }
+        return $booksArrayOfObjects;
     }
 
 
@@ -113,7 +118,7 @@ class Book implements Model
         return $bookObjects;
     }
 
-    private function createBookObject($book): \Book
+    private function createBookObject($book): Book
     {
         return new Book(
             $book['id'],
@@ -130,17 +135,17 @@ class Book implements Model
     }
 
     /**
-     * @return null
+     * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
     /**
-     * @param null $id
+     * @param int $id
      */
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
@@ -202,9 +207,9 @@ class Book implements Model
     }
 
     /**
-     * @param null $pages
+     * @param int $pages
      */
-    public function setPages($pages): void
+    public function setPages(int $pages): void
     {
         $this->pages = $pages;
     }
@@ -218,57 +223,57 @@ class Book implements Model
     }
 
     /**
-     * @param null $description
+     * @param string $description
      */
-    public function setDescription($description): void
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
     /**
-     * @return null
+     * @return float
      */
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->price;
     }
 
     /**
-     * @param null $price
+     * @param float $price
      */
-    public function setPrice($price): void
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }
 
     /**
-     * @return null
+     * @return string
      */
-    public function getAddedAt()
+    public function getAddedAt(): string
     {
         return $this->addedAt;
     }
 
     /**
-     * @param null $addedAt
+     * @param string $addedAt
      */
-    public function setAddedAt($addedAt): void
+    public function setAddedAt(string $addedAt): void
     {
         $this->addedAt = $addedAt;
     }
 
     /**
-     * @return null
+     * @return string
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param null $updatedAt
+     * @param string $updatedAt
      */
-    public function setUpdatedAt($updatedAt): void
+    public function setUpdatedAt(string $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -297,7 +302,11 @@ class Book implements Model
         return $this->quantity;
     }
 
-    public function setQuantity($quantity)
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity(int $quantity)
     {
         $this->quantity = $quantity;
     }

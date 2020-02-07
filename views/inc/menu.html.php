@@ -26,10 +26,10 @@ $userSession           = $userSessionController->read();
                   <div class="megamenu dropdown">
                     <ul class="item item01">
                       <li><a href="/administration/orders">Orders <span
-                                  class="badge badge-info">New: <?php echo OrderDaoImpl::getNewOrders(); ?></span></a>
+                                  class="badge badge-info">New: <?php echo OrderDaoImpl::getCountNewOrders(); ?></span></a>
                       </li>
                       <li><a href="/administration/add-new-book">Add New Book</a></li>
-                      <li><a href="administration/delivery">Delivery</a></li>
+                      <li><a href="/administration/delivery">Delivery</a></li>
                     </ul>
                   </div>
                 </li>

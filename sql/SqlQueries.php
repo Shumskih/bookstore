@@ -6,6 +6,8 @@ class SqlQueries
     const GET_ALL_TABLES = 'SELECT COUNT(*) AS TABLE_COUNT FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = :table_schema';
 
     // Books
+    const GET_COUNT_BOOKS = 'SELECT COUNT(*) FROM books';
+
     const GET_BOOK = 'SELECT * FROM books WHERE id = :id';
 
     const GET_ALL_BOOKS = 'SELECT * FROM books';

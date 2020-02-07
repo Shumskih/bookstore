@@ -17,16 +17,16 @@ class FrontController extends Controller
 
     public function books()
     {
-        $vars = [];
-
         $bookController = new BookController();
         $books = $bookController->readAll();
 
         $categoryController = new Category();
         $categories = $categoryController->readAll();
 
-        array_unshift($vars, ['books' => $books]);
-        array_unshift($vars, ['categories' => $categories]);
+        $pagination = new PaginationController();
+        $p = 5;
+
+        $vars = array('books' => $books) + array('categories' => $categories) + array('p' => $p);
 
         $bookController->render(
             '/views/books/allBooks.html.php',
@@ -266,6 +266,21 @@ class FrontController extends Controller
                 $error
             );
         }
+    }
+
+    public function delivery()
+    {
+
+        $deliveryController = new DeliveryController();
+        $countNewOrders = new OrderController();
+
+        $vars = array('delivery' => $deliveryController->readAll())
+            + array('countNewOrders' => [$countNewOrders->getCountNewOrders()]);
+
+        $deliveryController->render(
+            '/views/administration/delivery/index.html.php',
+            $vars
+        );
     }
 
     public function login()
@@ -512,7 +527,7 @@ class FrontController extends Controller
         $order->setStatus($status);
     }
 
-    public function addABook(array $errors = [])
+    public function addABook(array $errors = []): void
     {
         $userController = new UserController();
         if ($userController->checkPermissions()) {

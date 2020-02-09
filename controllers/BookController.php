@@ -19,6 +19,11 @@ class BookController extends Controller
         return $this->book->create($book);
     }
 
+    public function createBookObjects($book): array
+    {
+        return $this->book->createBookObjects($book);
+    }
+
     public function read($id): Book
     {
         return $this->book->read($id);

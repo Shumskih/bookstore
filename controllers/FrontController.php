@@ -9,6 +9,7 @@ class FrontController extends Controller
     {
         $controller = new IndexPageController();
         $books = $controller->getNewBooks();
+
         $controller->render(
             '/views/index.html.php',
             $books
@@ -18,15 +19,17 @@ class FrontController extends Controller
     public function books()
     {
         $bookController = new BookController();
-        $books = $bookController->readAll();
+//        $books = $bookController->readAll();
 
         $categoryController = new Category();
         $categories = $categoryController->readAll();
 
-        $pagination = new PaginationController();
-        $p = 5;
+        $paginate = new Paginate();
+        $paginate = $paginate->getPaginatedBooks();
 
-        $vars = array('books' => $books) + array('categories' => $categories) + array('p' => $p);
+        $books = $bookController->createBookObjects($paginate['books']);
+
+        $vars = array('books'=> $books) + array('categories' => $categories) + array('paginate' => $paginate);
 
         $bookController->render(
             '/views/books/allBooks.html.php',

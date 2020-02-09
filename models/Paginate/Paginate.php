@@ -2,26 +2,30 @@
 
 class Paginate
 {
+    /**
+     * @var int
+     */
     private int $currentPage;
     private int $countRecordsInDb;
     private int $quantityItemsOnPage;
     private int $startPosition;
-    private int $showQuantityRecordsOnPage;
+    private int $countPages;
 
     /**
      * @return int
      */
     public function getCurrentPage(): int
     {
+        $this->setCurrentPage();
+
         return $this->currentPage;
     }
 
-    /**
-     * @param int $currentPage
-     */
-    public function setCurrentPage(int $currentPage): void
+
+    public function setCurrentPage(): void
     {
-        $this->currentPage = $currentPage;
+        if (isset($_GET['page'])) $this ->currentPage = $_GET['page'];
+        else  $this->currentPage = 1;
     }
 
     /**
@@ -45,15 +49,18 @@ class Paginate
      */
     public function getQuantityItemsOnPage(): int
     {
+        $this->setQuantityItemsOnPage();
+
         return $this->quantityItemsOnPage;
     }
 
     /**
      * @param int $quantityItemsOnPage
      */
-    public function setQuantityItemsOnPage(int $quantityItemsOnPage): void
+    public function setQuantityItemsOnPage(int $quantityItemsOnPage = 5): void
     {
-        $this->quantityItemsOnPage = $quantityItemsOnPage;
+        if (isset($_GET['countItems'])) $this->quantityItemsOnPage = $_GET['countItems'];
+        else $this->quantityItemsOnPage = $quantityItemsOnPage;
     }
 
     /**
@@ -61,30 +68,46 @@ class Paginate
      */
     public function getStartPosition(): int
     {
+        $this->setStartPosition();
+
         return $this->startPosition;
     }
 
     /**
      * @param int $startPosition
      */
-    public function setStartPosition(int $startPosition): void
+    public function setStartPosition(int $startPosition = 1): void
     {
-        $this->startPosition = $startPosition;
+        $this->startPosition = ($this->getCurrentPage() * $this->getQuantityItemsOnPage()) - $this->getQuantityItemsOnPage();
     }
 
     /**
      * @return int
      */
-    public function getShowQuantityRecordsOnPage(): int
+    public function getCountPages(): int
     {
-        return $this->showQuantityRecordsOnPage;
+        $this->setCountPages();
+
+        return $this->countPages;
     }
 
     /**
-     * @param int $showQuantityRecordsOnPage
+     * @param int $countPages
      */
-    public function setShowQuantityRecordsOnPage(int $showQuantityRecordsOnPage): void
+    public function setCountPages(int $countPages = null): void
     {
-        $this->showQuantityRecordsOnPage = $showQuantityRecordsOnPage;
+        $this->countPages = ceil($this->getCountRecordsInDb() / $this->getQuantityItemsOnPage());
+    }
+
+    public function getPaginatedBooks()
+    {
+        $array = [];
+        $books = PaginationDaoImpl::read($this->getStartPosition(), ($this->getQuantityItemsOnPage()));
+        $countPages = $this->getCountPages();
+
+        $array['books'] = $books;
+        $array['countPages'] = $countPages;
+
+        return $array;
     }
 }

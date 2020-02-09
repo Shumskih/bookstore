@@ -118,7 +118,7 @@ class Book implements Model
         return $bookObjects;
     }
 
-    private function createBookObject($book): Book
+    private function createBookObject(array $book): Book
     {
         return new Book(
             $book['id'],
@@ -132,6 +132,15 @@ class Book implements Model
             $book['inStock'],
             $book['quantity']
         );
+    }
+
+    public function createBookObjects(array $books): array
+    {
+        $bookObjects = [];
+        foreach ($books as $book) {
+            array_unshift($bookObjects, $this->createBookObject($book));
+        }
+        return $bookObjects;
     }
 
     /**

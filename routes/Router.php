@@ -16,8 +16,8 @@ class Router
                 $this->frontController->indexPage();
                 break;
 
-            case '/books':
-            case '/books/':
+
+            case $this->getBooks():
                 $this->frontController->books();
                 break;
 
@@ -221,6 +221,17 @@ class Router
             default:
                 $this->frontController->renderError(404);
                 break;
+        }
+    }
+
+    private function getBooks(): string
+    {
+        if(URI == '/books' || URI == '/books/') {
+            return '/books';
+        }
+        if (isset($_GET['page']) && URI == '/books?page='.$_GET['page'] ||
+            $_GET['page'] && URI == '/books?page='.$_GET['page'].'/') {
+            return '/books?page=' . $_GET['page'];
         }
     }
 

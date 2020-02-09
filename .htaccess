@@ -6,3 +6,12 @@
 
 	RewriteRule ^.*$ index.php [NC,L]
 </IfModule>
+
+<IfModule mod_php7.c>
+  php_flag session.use_trans_sid off
+  php_flag default_charset UTF-8
+  php_value display_errors 1
+  php_value error_reporting 7
+  php_value mbstring.internal_encoding UTF-8
+  php_value mbstring.func_overload 0
+</IfModule>

@@ -1,7 +1,7 @@
 <?php
 
 
-class PaginationDaoImpl implements DaoInterface
+class PaginationDaoImpl
 {
     private static $pdo = null;
 
@@ -29,9 +29,27 @@ class PaginationDaoImpl implements DaoInterface
         // TODO: Implement create() method.
     }
 
-    static function read($id)
+    static function read($startPosition, $countItemsOnPage)
     {
-        // TODO: Implement read() method.
+
+        try {
+            self::$pdo = ConnectionUtil::getConnection();
+            self::$pdo->beginTransaction();
+
+            $query  = SqlQueries::GET_PAGINATED_BOOKS;
+            $stmt = self::$pdo->prepare($query);
+            $stmt->bindParam('startPosition', $startPosition, PDO::PARAM_INT);
+            $stmt->bindParam('countItemsOnPage', $countItemsOnPage, PDO::PARAM_INT);
+            $stmt->execute();
+            $books = $stmt->fetchAll();
+
+            self::$pdo->commit();
+        } catch (PDOException $e) {
+            self::$pdo->rollBack();
+            echo 'Can\'t get count records in book table<br>'
+                . $e->getFile() . ': line ' . $e->getLine() . '<br>' . $e->getMessage();
+        }
+        return $books;
     }
 
     static function readAll()

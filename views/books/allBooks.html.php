@@ -115,7 +115,7 @@
                                     <?php endforeach; ?>
                                 </div>
                                 <ul class="wn__pagination">
-                                    <?php for ($i = 1; $i <= $var['p']; $i++): ?>
+                                    <?php for ($i = 1; $i <= $var['paginate']['countPages']; $i++): ?>
                                         <li>
                                             <a href="<?php echo '?page=' . $i ?>">
                                                 <?php echo $i; ?>

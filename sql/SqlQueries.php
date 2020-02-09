@@ -8,6 +8,8 @@ class SqlQueries
     // Books
     const GET_COUNT_BOOKS = 'SELECT COUNT(*) FROM books';
 
+    const GET_PAGINATED_BOOKS = 'SELECT * FROM books LIMIT :startPosition, :countItemsOnPage';
+
     const GET_BOOK = 'SELECT * FROM books WHERE id = :id';
 
     const GET_ALL_BOOKS = 'SELECT * FROM books';

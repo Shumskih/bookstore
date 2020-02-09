@@ -57,7 +57,7 @@ class Paginate
     /**
      * @param int $quantityItemsOnPage
      */
-    public function setQuantityItemsOnPage(int $quantityItemsOnPage = 5): void
+    public function setQuantityItemsOnPage(int $quantityItemsOnPage = 3): void
     {
         if (isset($_GET['countItems'])) $this->quantityItemsOnPage = $_GET['countItems'];
         else $this->quantityItemsOnPage = $quantityItemsOnPage;

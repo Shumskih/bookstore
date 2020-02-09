@@ -16,11 +16,6 @@ class Router
                 $this->frontController->indexPage();
                 break;
 
-
-            case $this->getBooks():
-                $this->frontController->books();
-                break;
-
             case $this->getBook():
                 if (isset($_POST['addToCart']) && isset($_POST['id']) && isset($_POST['qty'])) {
                     $cartController = new CartController();
@@ -34,6 +29,10 @@ class Router
                 }
 
                 $this->frontController->showBook($_GET['id']);
+                break;
+
+            case $this->getBooks():
+                $this->frontController->books();
                 break;
 
             case '/administration/add-new-book':
@@ -230,7 +229,7 @@ class Router
             return '/books';
         }
         if (isset($_GET['page']) && URI == '/books?page='.$_GET['page'] ||
-            $_GET['page'] && URI == '/books?page='.$_GET['page'].'/') {
+            isset($_GET['page']) && URI == '/books?page='.$_GET['page'].'/') {
             return '/books?page=' . $_GET['page'];
         }
     }

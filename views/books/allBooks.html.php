@@ -34,6 +34,14 @@
                                     </div>
                                     <p>Showing 1–12 of 40 results</p>
                                     <div class="orderby__wrapper">
+                                        <span>Books per page</span>
+                                        <select class="shot__byselect">
+                                            <option>10</option>
+                                            <option>5</option>
+                                            <option>3</option>
+                                        </select>
+                                    </div>
+                                    <div class="orderby__wrapper">
                                         <span>Sort By</span>
                                         <select class="shot__byselect">
                                             <option>Default sorting</option>

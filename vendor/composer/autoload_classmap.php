@@ -502,6 +502,7 @@ return array(
     'PaginationDaoImpl' => $baseDir . '/dao/pdo/Pagination/PaginationDaoImpl.php',
     'Role' => $baseDir . '/models/Role.php',
     'RoleController' => $baseDir . '/controllers/RoleController.php',
+    'Route' => $baseDir . '/routes/Route.php',
     'Router' => $baseDir . '/routes/Router.php',
     'SessionInterface' => $baseDir . '/models/session/SessionInterface.php',
     'SqlQueries' => $baseDir . '/sql/SqlQueries.php',

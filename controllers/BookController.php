@@ -14,6 +14,16 @@ class BookController extends Controller
         $this->book = new Book();
     }
 
+    public function index()
+    {
+        include 'views/books/index.html.php';
+    }
+
+    public function book($id)
+    {
+        include 'views/books/book.html.php';
+    }
+
     public function create($book)
     {
         return $this->book->create($book);

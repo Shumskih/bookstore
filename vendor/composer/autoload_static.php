@@ -511,6 +511,7 @@ class ComposerStaticInit11f089d801818391015bde05bd873b8b
         'PaginationDaoImpl' => __DIR__ . '/../..' . '/dao/pdo/Pagination/PaginationDaoImpl.php',
         'Role' => __DIR__ . '/../..' . '/models/Role.php',
         'RoleController' => __DIR__ . '/../..' . '/controllers/RoleController.php',
+        'Route' => __DIR__ . '/../..' . '/routes/Route.php',
         'Router' => __DIR__ . '/../..' . '/routes/Router.php',
         'SessionInterface' => __DIR__ . '/../..' . '/models/session/SessionInterface.php',
         'SqlQueries' => __DIR__ . '/../..' . '/sql/SqlQueries.php',
